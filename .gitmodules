@@ -1,0 +1,3 @@
+[submodule "hmc-e155"]
+	path = hmc-e155
+	url = https://github.com/HMC-E155/hmc-e155.git
