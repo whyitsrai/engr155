@@ -1,0 +1,16 @@
+- embedded systems collide with the real world
+
+
+- Analog design for Digital
+
+#sym.ballot.cross is the symbol for the pin
+
+- Receive side of a chip is basically a capacitor
+- Programmable pull-up and pull-down switches
+
+
+(V_dd - V_on)/(R_s + R_d)
+
+- Double-check pin current limit!!! (probably around 8mA)
+
+- Make sure to learn ideomatic system verilog
