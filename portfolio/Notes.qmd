@@ -1,16 +1,19 @@
-- embedded systems collide with the real world
+## 2026-09-01
 
+- embedded systems collide with the real world
 
 - Analog design for Digital
 
-#sym.ballot.cross is the symbol for the pin
+
+- square with x is the symbol for the pin
 
 - Receive side of a chip is basically a capacitor
 - Programmable pull-up and pull-down switches
 
-
-(V_dd - V_on)/(R_s + R_d)
+$$ \frac{V_\text{dd} - V_\text{on}}{R_s + R_d $$
 
 - Double-check pin current limit!!! (probably around 8mA)
 
 - Make sure to learn ideomatic system verilog
+
+## 2026-09-03
