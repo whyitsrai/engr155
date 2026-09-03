@@ -32,6 +32,9 @@ format:
     css: styles.css
     toc: true
     lang: en
+    html-math-method: mathjax
+    linestretch: 1.2
+
 
 execute:
   freeze: auto

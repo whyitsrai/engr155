@@ -10,10 +10,23 @@
 - Receive side of a chip is basically a capacitor
 - Programmable pull-up and pull-down switches
 
-$$ \frac{V_\text{dd} - V_\text{on}}{R_s + R_d $$
+$$ \frac{V_\text{dd} - V_\text{on}}{R_s} + R_d $$
 
 - Double-check pin current limit!!! (probably around 8mA)
 
-- Make sure to learn ideomatic system verilog
+- Make sure to learn idiomatic system verilog
 
 ## 2026-09-03
+- Career Capital: this is the foundation on which we can stand to be able to use AI effectively
+    - As HMC students we have often chosen the hard way, which makes us good
+    - There is a value to good old-fashioned expertise
+
+- Don't design asynchronous systems if you want to sleep
+    - huge [pita](https://xkcd.com/1671/) to debug
+
+- $V_{IH}$ is lowest input voltage logical 1
+- $V_{IL}$ is highest input voltage logical 0
+- $V_{OH}$ is lowest output voltage logical 1
+- $V_{OL}$ is highest output voltage logical 0
+- Source and sink limits per pin vary (are not symmetric)
+- `always_ff` makes errors (according to standard) when you don't imply a ff (which is not the case for `always`)
