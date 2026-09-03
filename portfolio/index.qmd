@@ -1,7 +1,37 @@
 ---
-title: "Engr-155-portfolio"
+title: "Rai's HMC Micro-Processor Design Class Portflio"
 ---
 
-This is a Quarto website.
+![The conductor called "all aboard" in the middle of me taking this photo](media/rai.jpeg)
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Rai Wandeler is a Junior Engineering major at Harvey Mudd College who has in their folly decided to
+delve into the deep world of ~~magic~~ electronics. This is where this website comes into play. As a
+part of the *Microprocessor Systems: Design & Applications* class, students progress and experience
+is to be documented in a personal blog. This will outline my progress in the various labs and any
+other stuff that I chose to write here over time.
+
+Outside of this class I enjoy [theatre and various engineering projects](https://www.linkedin.com/in/raiwandeler/details/projects/). I love [repairing machines](https://www.linkedin.com/feed/update/urn:li:activity:7471336971097939968/), photography, talking about larger topics, and making stuff.
+
+::: {.callout-note collapse="true"}
+## Did you know that…
+
+Did you know that horses are awesome? They have a wonderful way of mirroring your own body language
+and react readily to it. I love working with horses.
+
+![A friend of mine introduced me to Chuck… I miss him](media/chuck.jpeg)
+:::
+
+## This Site
+- [My Github repository for this class](https://github.com/whyitsrai/engr155/)
+
+### Links pertaining to Engr155
+- [Course Website](https://hmc-e155.github.io/)
+- [Course Github repository](https://github.com/HMC-E155/hmc-e155/)
+- [STM32L432KC Datasheet](https://hmc-e155.github.io/assets/doc/ds11451-stm32l432kc.pdf)
+- [STM32L432KC Reference Manual](https://hmc-e155.github.io/assets/doc/rm0394-stm32l41xxx42xxx43xxx44xxx45xxx46xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)
+- [STM32 Nucleo-32 User Manual](https://hmc-e155.github.io/assets/doc/um1956-stm32-nucleo32-boards-mb1180-stmicroelectronics.pdf)
+- [iCE40 UltraPlus Family Data Sheet](https://hmc-e155.github.io/assets/doc/FPGA-DS-02008-2-0-iCE40-UltraPlus-Family-Data-Sheet.pdf)
+- [iCE40 Oscillator Usage Guide](https://hmc-e155.github.io/assets/doc/FPGA-TN-02008-1-7-iCE40-Oscillator-Usage-Guide.pdf)
+- [iCE40 SPRAM Usage Guide](https://hmc-e155.github.io/assets/doc/FPGA-TN-02022-1-3-iCE40-SPRAM-Usage-Guide.pdf)
+- [UPduino Documentation](https://upduino.readthedocs.io/en/latest/index.html#)
+

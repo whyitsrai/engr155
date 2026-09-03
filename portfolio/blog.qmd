@@ -1,0 +1,8 @@
+---
+title: "Rai's Engr 155 Blog section"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: false
+---

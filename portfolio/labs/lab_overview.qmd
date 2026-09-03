@@ -1,0 +1,19 @@
+---
+title: Engr 155 Labs Overview
+---
+
+![](../media/thriving.webp){fig-align="center" width=50%}
+
+## Lab 1 - Board Assembly and Testing
+
+## Lab 2 - Multiplexed 7-Segment Display
+
+## Lab 3 - Keypad Scanner
+
+## Lab 4 - Digital Audio
+
+## Lab 5 - Interrupts
+
+## Lab 6 - The Internet of Things and Serial Peripheral Interface
+
+## Lab 7 - The Advanced Encryption Standard (AES)
