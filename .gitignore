@@ -23,3 +23,5 @@ impl*/
 **/Debug/
 *.emSession
 *.jlink
+
+local/
