@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://whyitsrai.github.io/engr155/blog.html</loc>
-    <lastmod>2026-09-03T05:49:57.705Z</lastmod>
+    <loc>https://whyitsrai.github.io/engr155/posts/hello_world.html</loc>
+    <lastmod>2026-09-03T05:52:03.520Z</lastmod>
   </url>
   <url>
     <loc>https://whyitsrai.github.io/engr155/labs/lab_overview.html</loc>
-    <lastmod>2026-09-03T05:49:57.706Z</lastmod>
+    <lastmod>2026-09-03T05:52:03.520Z</lastmod>
   </url>
   <url>
-    <loc>https://whyitsrai.github.io/engr155/posts/hello_world.html</loc>
-    <lastmod>2026-09-03T05:49:57.707Z</lastmod>
-  </url>
-  <url>
-    <loc>https://whyitsrai.github.io/engr155/labs/lab1.html</loc>
-    <lastmod>2026-09-03T05:49:57.705Z</lastmod>
+    <loc>https://whyitsrai.github.io/engr155/blog.html</loc>
+    <lastmod>2026-09-03T05:52:03.519Z</lastmod>
   </url>
   <url>
     <loc>https://whyitsrai.github.io/engr155/index.html</loc>
-    <lastmod>2026-09-03T05:49:57.705Z</lastmod>
+    <lastmod>2026-09-03T05:52:03.519Z</lastmod>
+  </url>
+  <url>
+    <loc>https://whyitsrai.github.io/engr155/labs/lab1.html</loc>
+    <lastmod>2026-09-03T05:52:03.519Z</lastmod>
   </url>
 </urlset>

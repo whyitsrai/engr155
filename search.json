@@ -1,10 +1,10 @@
 [
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Rai’s Engr 155 Blog section",
+    "objectID": "posts/hello_world.html",
+    "href": "posts/hello_world.html",
+    "title": "Hello World",
     "section": "",
-    "text": "Hello World\n\n\n\n\n\n\n\n\nRai Wandeler\n\n\n\n\n\nNo matching items"
+    "text": "___   _                        _   _           _\n|_ _| | |__   ___  _ __   ___  | |_| |__   __ _| |_\n | |  | '_ \\ / _ \\| '_ \\ / _ \\ | __| '_ \\ / _` | __|\n | |  | | | | (_) | |_) |  __/ | |_| | | | (_| | |_\n|___| |_| |_|\\___/| .__/ \\___|  \\__|_| |_|\\__,_|\\__|\n                  |_|\n _        _    _                         _                  ____\n| |_ __ _| | _(_)_ __   __ _   _ __ ___ (_) ___ _ __ ___   |  _ \\ ___\n| __/ _` | |/ / | '_ \\ / _` | | '_ ` _ \\| |/ __| '__/ _ \\  | |_) / __|\n| || (_| |   &lt;| | | | | (_| | | | | | | | | (__| | | (_) | |  __/\\__ \\\n \\__\\__,_|_|\\_\\_|_| |_|\\__, | |_| |_| |_|_|\\___|_|  \\___/  |_|   |___/\n                       |___/\n                                 _\n__      ____ _ ___   _ __   ___ | |_    __ _\n\\ \\ /\\ / / _` / __| | '_ \\ / _ \\| __|  / _` |\n \\ V  V / (_| \\__ \\ | | | | (_) | |_  | (_| |\n  \\_/\\_/ \\__,_|___/ |_| |_|\\___/ \\__|  \\__,_|\n\n           _     _        _\n _ __ ___ (_)___| |_ __ _| | _____\n| '_ ` _ \\| / __| __/ _` | |/ / _ \\\n| | | | | | \\__ \\ || (_| |   &lt;  __/\n|_| |_| |_|_|___/\\__\\__,_|_|\\_\\___|\n\nSome arbitrary text in this here funny post\n\n\n\n\n\n\nTipAs a wise one once said:\n\n\n\nThat’s all folks"
   },
   {
     "objectID": "labs/lab_overview.html#lab-1---board-assembly-and-testing",
@@ -56,18 +56,11 @@
     "text": "Lab 7 - The Advanced Encryption Standard (AES)"
   },
   {
-    "objectID": "posts/hello_world.html",
-    "href": "posts/hello_world.html",
-    "title": "Hello World",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Rai’s Engr 155 Blog section",
     "section": "",
-    "text": "___   _                        _   _           _\n|_ _| | |__   ___  _ __   ___  | |_| |__   __ _| |_\n | |  | '_ \\ / _ \\| '_ \\ / _ \\ | __| '_ \\ / _` | __|\n | |  | | | | (_) | |_) |  __/ | |_| | | | (_| | |_\n|___| |_| |_|\\___/| .__/ \\___|  \\__|_| |_|\\__,_|\\__|\n                  |_|\n _        _    _                         _                  ____\n| |_ __ _| | _(_)_ __   __ _   _ __ ___ (_) ___ _ __ ___   |  _ \\ ___\n| __/ _` | |/ / | '_ \\ / _` | | '_ ` _ \\| |/ __| '__/ _ \\  | |_) / __|\n| || (_| |   &lt;| | | | | (_| | | | | | | | | (__| | | (_) | |  __/\\__ \\\n \\__\\__,_|_|\\_\\_|_| |_|\\__, | |_| |_| |_|_|\\___|_|  \\___/  |_|   |___/\n                       |___/\n                                 _\n__      ____ _ ___   _ __   ___ | |_    __ _\n\\ \\ /\\ / / _` / __| | '_ \\ / _ \\| __|  / _` |\n \\ V  V / (_| \\__ \\ | | | | (_) | |_  | (_| |\n  \\_/\\_/ \\__,_|___/ |_| |_|\\___/ \\__|  \\__,_|\n\n           _     _        _\n _ __ ___ (_)___| |_ __ _| | _____\n| '_ ` _ \\| / __| __/ _` | |/ / _ \\\n| | | | | | \\__ \\ || (_| |   &lt;  __/\n|_| |_| |_|_|___/\\__\\__,_|_|\\_\\___|\n\nSome arbitrary text in this here funny post\n\n\n\n\n\n\nTipAs a wise one once said:\n\n\n\nThat’s all folks"
-  },
-  {
-    "objectID": "labs/lab1.html",
-    "href": "labs/lab1.html",
-    "title": "Lab1",
-    "section": "",
-    "text": "Warning\n\n\n\nUNDER CONSTRUCTION"
+    "text": "Hello World\n\n\n\n\n\n\n\n\nRai Wandeler\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -82,5 +75,12 @@
     "title": "Rai’s HMC Micro-Processor Design Class Portflio",
     "section": "This Site",
     "text": "This Site\n\nMy Github repository for this class\n\n\nLinks pertaining to Engr155\n\nCourse Website\nCourse Github repository\nSTM32L432KC Datasheet\nSTM32L432KC Reference Manual\nSTM32 Nucleo-32 User Manual\niCE40 UltraPlus Family Data Sheet\niCE40 Oscillator Usage Guide\niCE40 SPRAM Usage Guide\nUPduino Documentation"
+  },
+  {
+    "objectID": "labs/lab1.html",
+    "href": "labs/lab1.html",
+    "title": "Lab1",
+    "section": "",
+    "text": "Warning\n\n\n\nUNDER CONSTRUCTION"
   }
 ]
