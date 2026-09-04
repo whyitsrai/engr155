@@ -16,6 +16,7 @@ impl*/
 *.ccl
 *.srp
 *.dmp
+*.html
 ._Real_._Math_.vhd
 
 # Segger Embedded Studio
@@ -24,4 +25,10 @@ impl*/
 *.emSession
 *.jlink
 
+# Other synthesis files
+vsim.wlf
+work/
+
+# Local-only files
 local/
+
