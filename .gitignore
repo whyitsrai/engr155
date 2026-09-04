@@ -28,6 +28,14 @@ impl*/
 # Other synthesis files
 vsim.wlf
 work/
+transcript
+*.xml
+*.sty
+*.mti
+*.mpf
+*.rdf
+*.ini
+*.pfl
 
 # Local-only files
 local/
