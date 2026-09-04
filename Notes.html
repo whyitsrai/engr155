@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Engr 155 Labs Overview – Rai’s μP’s Portfolio</title>
+<title>notes – Rai's μP's Portfolio</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -29,27 +29,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-311dc12c3f9d351924e6a4ccc5112d4b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-8c5a6f3619947bda17ebd16977e96b14.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-311dc12c3f9d351924e6a4ccc5112d4b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-311dc12c3f9d351924e6a4ccc5112d4b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-8c5a6f3619947bda17ebd16977e96b14.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-311dc12c3f9d351924e6a4ccc5112d4b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -78,8 +78,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="../styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -251,7 +280,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Rai’s μP’s Portfolio</span>
     </a>
   </div>
@@ -262,11 +291,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../blog.html"> 
+    <a class="nav-link" href="./blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -275,11 +304,11 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-labs">    
         <li>
-    <a class="dropdown-item" href="../labs/lab_overview.html">
+    <a class="dropdown-item" href="./labs/lab_overview.html">
  <span class="dropdown-text">Overview</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../labs/lab1.html">
+    <a class="dropdown-item" href="./labs/lab1.html">
  <span class="dropdown-text">Lab1</span></a>
   </li>  
         <li class="dropdown-header">more to come</li>
@@ -318,64 +347,52 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lab-1---board-assembly-and-testing" id="toc-lab-1---board-assembly-and-testing" class="nav-link active" data-scroll-target="#lab-1---board-assembly-and-testing">Lab 1 - Board Assembly and Testing</a></li>
-  <li><a href="#lab-2---multiplexed-7-segment-display" id="toc-lab-2---multiplexed-7-segment-display" class="nav-link" data-scroll-target="#lab-2---multiplexed-7-segment-display">Lab 2 - Multiplexed 7-Segment Display</a></li>
-  <li><a href="#lab-3---keypad-scanner" id="toc-lab-3---keypad-scanner" class="nav-link" data-scroll-target="#lab-3---keypad-scanner">Lab 3 - Keypad Scanner</a></li>
-  <li><a href="#lab-4---digital-audio" id="toc-lab-4---digital-audio" class="nav-link" data-scroll-target="#lab-4---digital-audio">Lab 4 - Digital Audio</a></li>
-  <li><a href="#lab-5---interrupts" id="toc-lab-5---interrupts" class="nav-link" data-scroll-target="#lab-5---interrupts">Lab 5 - Interrupts</a></li>
-  <li><a href="#lab-6---the-internet-of-things-and-serial-peripheral-interface" id="toc-lab-6---the-internet-of-things-and-serial-peripheral-interface" class="nav-link" data-scroll-target="#lab-6---the-internet-of-things-and-serial-peripheral-interface">Lab 6 - The Internet of Things and Serial Peripheral Interface</a></li>
-  <li><a href="#lab-7---the-advanced-encryption-standard-aes" id="toc-lab-7---the-advanced-encryption-standard-aes" class="nav-link" data-scroll-target="#lab-7---the-advanced-encryption-standard-aes">Lab 7 - The Advanced Encryption Standard (AES)</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section">2026-09-01</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2026-09-03</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Engr 155 Labs Overview</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
 
 
-</header>
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../media/thriving.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
-</figure>
-</div>
-<section id="lab-1---board-assembly-and-testing" class="level2">
-<h2 class="anchored" data-anchor-id="lab-1---board-assembly-and-testing">Lab 1 - Board Assembly and Testing</h2>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section">2026-09-01</h2>
+<ul>
+<li><p>embedded systems collide with the real world</p></li>
+<li><p>Analog design for Digital</p></li>
+<li><p>square with x is the symbol for the pin</p></li>
+<li><p>Receive side of a chip is basically a capacitor</p></li>
+<li><p>Programmable pull-up and pull-down switches</p></li>
+</ul>
+<p><span class="math display">\[ \frac{V_\text{dd} - V_\text{on}}{R_s} + R_d \]</span></p>
+<ul>
+<li><p>Double-check pin current limit!!! (probably around 8mA)</p></li>
+<li><p>Make sure to learn idiomatic system verilog</p></li>
+</ul>
 </section>
-<section id="lab-2---multiplexed-7-segment-display" class="level2">
-<h2 class="anchored" data-anchor-id="lab-2---multiplexed-7-segment-display">Lab 2 - Multiplexed 7-Segment Display</h2>
-</section>
-<section id="lab-3---keypad-scanner" class="level2">
-<h2 class="anchored" data-anchor-id="lab-3---keypad-scanner">Lab 3 - Keypad Scanner</h2>
-</section>
-<section id="lab-4---digital-audio" class="level2">
-<h2 class="anchored" data-anchor-id="lab-4---digital-audio">Lab 4 - Digital Audio</h2>
-</section>
-<section id="lab-5---interrupts" class="level2">
-<h2 class="anchored" data-anchor-id="lab-5---interrupts">Lab 5 - Interrupts</h2>
-</section>
-<section id="lab-6---the-internet-of-things-and-serial-peripheral-interface" class="level2">
-<h2 class="anchored" data-anchor-id="lab-6---the-internet-of-things-and-serial-peripheral-interface">Lab 6 - The Internet of Things and Serial Peripheral Interface</h2>
-</section>
-<section id="lab-7---the-advanced-encryption-standard-aes" class="level2">
-<h2 class="anchored" data-anchor-id="lab-7---the-advanced-encryption-standard-aes">Lab 7 - The Advanced Encryption Standard (AES)</h2>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1">2026-09-03</h2>
+<ul>
+<li>Career Capital: this is the foundation on which we can stand to be able to use AI effectively
+<ul>
+<li>As HMC students we have often chosen the hard way, which makes us good</li>
+<li>There is a value to good old-fashioned expertise</li>
+</ul></li>
+<li>Don’t design asynchronous systems if you want to sleep
+<ul>
+<li>huge <a href="https://xkcd.com/1671/">pita</a> to debug</li>
+</ul></li>
+<li><span class="math inline">\(V_{IH}\)</span> is lowest input voltage logical 1</li>
+<li><span class="math inline">\(V_{IL}\)</span> is highest input voltage logical 0</li>
+<li><span class="math inline">\(V_{OH}\)</span> is lowest output voltage logical 1</li>
+<li><span class="math inline">\(V_{OL}\)</span> is highest output voltage logical 0</li>
+<li>Source and sink limits per pin vary (are not symmetric)</li>
+<li><code>always_ff</code> makes errors (according to standard) when you don’t imply a ff (which is not the case for <code>always</code>)</li>
+</ul>
 
 
 </section>

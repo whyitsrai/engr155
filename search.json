@@ -7,6 +7,34 @@
     "text": "___   _                        _   _           _\n|_ _| | |__   ___  _ __   ___  | |_| |__   __ _| |_\n | |  | '_ \\ / _ \\| '_ \\ / _ \\ | __| '_ \\ / _` | __|\n | |  | | | | (_) | |_) |  __/ | |_| | | | (_| | |_\n|___| |_| |_|\\___/| .__/ \\___|  \\__|_| |_|\\__,_|\\__|\n                  |_|\n _        _    _                         _                  ____\n| |_ __ _| | _(_)_ __   __ _   _ __ ___ (_) ___ _ __ ___   |  _ \\ ___\n| __/ _` | |/ / | '_ \\ / _` | | '_ ` _ \\| |/ __| '__/ _ \\  | |_) / __|\n| || (_| |   &lt;| | | | | (_| | | | | | | | | (__| | | (_) | |  __/\\__ \\\n \\__\\__,_|_|\\_\\_|_| |_|\\__, | |_| |_| |_|_|\\___|_|  \\___/  |_|   |___/\n                       |___/\n                                 _\n__      ____ _ ___   _ __   ___ | |_    __ _\n\\ \\ /\\ / / _` / __| | '_ \\ / _ \\| __|  / _` |\n \\ V  V / (_| \\__ \\ | | | | (_) | |_  | (_| |\n  \\_/\\_/ \\__,_|___/ |_| |_|\\___/ \\__|  \\__,_|\n\n           _     _        _\n _ __ ___ (_)___| |_ __ _| | _____\n| '_ ` _ \\| / __| __/ _` | |/ / _ \\\n| | | | | | \\__ \\ || (_| |   &lt;  __/\n|_| |_| |_|_|___/\\__\\__,_|_|\\_\\___|\n\nSome arbitrary text in this here funny post\n\n\n\n\n\n\nTipAs a wise one once said:\n\n\n\nThat’s all folks"
   },
   {
+    "objectID": "labs/lab1.html",
+    "href": "labs/lab1.html",
+    "title": "Lab1",
+    "section": "",
+    "text": "Warning\n\n\n\nUNDER CONSTRUCTION"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Rai’s HMC Micro-Processor Design Class Portflio",
+    "section": "",
+    "text": "The conductor called “all aboard” in the middle of me taking this photo\nRai Wandeler is a Junior Engineering major at Harvey Mudd College who has in their folly decided to delve into the deep world of magic electronics. This is where this website comes into play. As a part of the Microprocessor Systems: Design & Applications class, students progress and experience is to be documented in a personal blog. This will outline my progress in the various labs and any other stuff that I chose to write here over time.\nOutside of this class I enjoy theatre and various engineering projects. I love repairing machines, photography, talking about larger topics, and making stuff."
+  },
+  {
+    "objectID": "index.html#this-site",
+    "href": "index.html#this-site",
+    "title": "Rai’s HMC Micro-Processor Design Class Portflio",
+    "section": "This Site",
+    "text": "This Site\n\nMy Github repository for this class\n\n\nLinks pertaining to Engr155\n\nCourse Website\nCourse Github repository\nSTM32L432KC Datasheet\nSTM32L432KC Reference Manual\nSTM32 Nucleo-32 User Manual\niCE40 UltraPlus Family Data Sheet\niCE40 Oscillator Usage Guide\niCE40 SPRAM Usage Guide\nUPduino Documentation"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Rai’s Engr 155 Blog section",
+    "section": "",
+    "text": "Hello World\n\n\n\n\n\n\n\n\nRai Wandeler\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "labs/lab_overview.html#lab-1---board-assembly-and-testing",
     "href": "labs/lab_overview.html#lab-1---board-assembly-and-testing",
     "title": "Engr 155 Labs Overview",
@@ -56,31 +84,24 @@
     "text": "Lab 7 - The Advanced Encryption Standard (AES)"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Rai’s Engr 155 Blog section",
+    "objectID": "Notes.html",
+    "href": "Notes.html",
+    "title": "Rai's μP's Portfolio",
     "section": "",
-    "text": "Hello World\n\n\n\n\n\n\n\n\nRai Wandeler\n\n\n\n\n\nNo matching items"
+    "text": "embedded systems collide with the real world\nAnalog design for Digital\nsquare with x is the symbol for the pin\nReceive side of a chip is basically a capacitor\nProgrammable pull-up and pull-down switches\n\n\\[ \\frac{V_\\text{dd} - V_\\text{on}}{R_s} + R_d \\]\n\nDouble-check pin current limit!!! (probably around 8mA)\nMake sure to learn idiomatic system verilog"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Rai’s HMC Micro-Processor Design Class Portflio",
+    "objectID": "Notes.html#section",
+    "href": "Notes.html#section",
+    "title": "Rai's μP's Portfolio",
     "section": "",
-    "text": "The conductor called “all aboard” in the middle of me taking this photo\nRai Wandeler is a Junior Engineering major at Harvey Mudd College who has in their folly decided to delve into the deep world of magic electronics. This is where this website comes into play. As a part of the Microprocessor Systems: Design & Applications class, students progress and experience is to be documented in a personal blog. This will outline my progress in the various labs and any other stuff that I chose to write here over time.\nOutside of this class I enjoy theatre and various engineering projects. I love repairing machines, photography, talking about larger topics, and making stuff."
+    "text": "embedded systems collide with the real world\nAnalog design for Digital\nsquare with x is the symbol for the pin\nReceive side of a chip is basically a capacitor\nProgrammable pull-up and pull-down switches\n\n\\[ \\frac{V_\\text{dd} - V_\\text{on}}{R_s} + R_d \\]\n\nDouble-check pin current limit!!! (probably around 8mA)\nMake sure to learn idiomatic system verilog"
   },
   {
-    "objectID": "index.html#this-site",
-    "href": "index.html#this-site",
-    "title": "Rai’s HMC Micro-Processor Design Class Portflio",
-    "section": "This Site",
-    "text": "This Site\n\nMy Github repository for this class\n\n\nLinks pertaining to Engr155\n\nCourse Website\nCourse Github repository\nSTM32L432KC Datasheet\nSTM32L432KC Reference Manual\nSTM32 Nucleo-32 User Manual\niCE40 UltraPlus Family Data Sheet\niCE40 Oscillator Usage Guide\niCE40 SPRAM Usage Guide\nUPduino Documentation"
-  },
-  {
-    "objectID": "labs/lab1.html",
-    "href": "labs/lab1.html",
-    "title": "Lab1",
-    "section": "",
-    "text": "Warning\n\n\n\nUNDER CONSTRUCTION"
+    "objectID": "Notes.html#section-1",
+    "href": "Notes.html#section-1",
+    "title": "Rai's μP's Portfolio",
+    "section": "2026-09-03",
+    "text": "2026-09-03\n\nCareer Capital: this is the foundation on which we can stand to be able to use AI effectively\n\nAs HMC students we have often chosen the hard way, which makes us good\nThere is a value to good old-fashioned expertise\n\nDon’t design asynchronous systems if you want to sleep\n\nhuge pita to debug\n\n\\(V_{IH}\\) is lowest input voltage logical 1\n\\(V_{IL}\\) is highest input voltage logical 0\n\\(V_{OH}\\) is lowest output voltage logical 1\n\\(V_{OL}\\) is highest output voltage logical 0\nSource and sink limits per pin vary (are not symmetric)\nalways_ff makes errors (according to standard) when you don’t imply a ff (which is not the case for always)"
   }
 ]
