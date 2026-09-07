@@ -5,15 +5,15 @@ module lab1_rw(input logic reset,
 	// input switches are pull-up, hence extra NOT gates
     logic int_osc;
     logic [6:0] seg;
-    logic signed [24:0] counter_blink_led;
+    logic [24:0] counter_blink_led;
 
     sevensegment_hex display(~switches, seg);
     HSOSC hf_osc(.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
-    oscillator_vduty #(25,-25'd10000000,25'd9999999) blink_led(int_osc, ~reset, 1'b1, counter_blink_led);
+    counter_pos #(25,25'd20000000) blink_led(int_osc, ~reset, 1'b1, counter_blink_led);
 
     assign leds[0] = ~switches[0] ^ ~switches[1];
     assign leds[1] = ~switches[2] & ~switches[3];
-    assign leds[2] = ~counter_blink_led[24]; // sign bit controls LED
+    assign leds[2] = (counter_blink_led >= 10000000);
     assign segments = ~seg;
 
 endmodule
