@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Rai's μP's Portfolio"
+  favicon: media/favicon.jpg
   navbar:
     left:
       - href: index.qmd
