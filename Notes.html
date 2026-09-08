@@ -36,6 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./media/favicon.jpg" rel="icon" type="image/jpeg">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -349,6 +350,7 @@ window.Quarto = {
   <ul>
   <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section">2026-09-01</a></li>
   <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2026-09-03</a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">2026-09-08</a></li>
   </ul>
 </nav>
     </div>
@@ -392,6 +394,27 @@ window.Quarto = {
 <li><span class="math inline">\(V_{OL}\)</span> is highest output voltage logical 0</li>
 <li>Source and sink limits per pin vary (are not symmetric)</li>
 <li><code>always_ff</code> makes errors (according to standard) when you don’t imply a ff (which is not the case for <code>always</code>)</li>
+</ul>
+</section>
+<section id="section-2" class="level2">
+<h2 class="anchored" data-anchor-id="section-2">2026-09-08</h2>
+<ul>
+<li>Sorry about Radiant licensing</li>
+<li>Encourage us to not pressure us to be too detailed if we don’t want to
+<ul>
+<li>Don’t write too much for the lab report</li>
+<li>Prose is more for others, not for the checkoffs</li>
+</ul></li>
+<li>Finish hardware by Thursday night in order to get extra hardware if necessary
+<ul>
+<li>basically, ensure that everything is working</li>
+</ul></li>
+<li>Try writing the block diagram prior to writing the systemverilog</li>
+<li>Note to self: start building with synchronous reset if possible as it is cheaper</li>
+<li>Don’t do pre-assignment because it can violate idioms. Just use <code>else</code></li>
+<li>According to Prof.&nbsp;Spencer <code>casex</code> and <code>casez</code> will just make you unhappy: use <code>case</code></li>
+<li>always good practice to add <code>default</code> to <code>case</code> statement even if you cover every case, just in case something gets removed down the line or similar</li>
+<li>avoid race conditions when simulating (as there is no guarantee on the different simulators)</li>
 </ul>
 
 

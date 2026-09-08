@@ -145,5 +145,12 @@
     "title": "Rai's μP's Portfolio",
     "section": "2026-09-03",
     "text": "2026-09-03\n\nCareer Capital: this is the foundation on which we can stand to be able to use AI effectively\n\nAs HMC students we have often chosen the hard way, which makes us good\nThere is a value to good old-fashioned expertise\n\nDon’t design asynchronous systems if you want to sleep\n\nhuge pita to debug\n\n\\(V_{IH}\\) is lowest input voltage logical 1\n\\(V_{IL}\\) is highest input voltage logical 0\n\\(V_{OH}\\) is lowest output voltage logical 1\n\\(V_{OL}\\) is highest output voltage logical 0\nSource and sink limits per pin vary (are not symmetric)\nalways_ff makes errors (according to standard) when you don’t imply a ff (which is not the case for always)"
+  },
+  {
+    "objectID": "Notes.html#section-2",
+    "href": "Notes.html#section-2",
+    "title": "Rai's μP's Portfolio",
+    "section": "2026-09-08",
+    "text": "2026-09-08\n\nSorry about Radiant licensing\nEncourage us to not pressure us to be too detailed if we don’t want to\n\nDon’t write too much for the lab report\nProse is more for others, not for the checkoffs\n\nFinish hardware by Thursday night in order to get extra hardware if necessary\n\nbasically, ensure that everything is working\n\nTry writing the block diagram prior to writing the systemverilog\nNote to self: start building with synchronous reset if possible as it is cheaper\nDon’t do pre-assignment because it can violate idioms. Just use else\nAccording to Prof. Spencer casex and casez will just make you unhappy: use case\nalways good practice to add default to case statement even if you cover every case, just in case something gets removed down the line or similar\navoid race conditions when simulating (as there is no guarantee on the different simulators)"
   }
 ]
