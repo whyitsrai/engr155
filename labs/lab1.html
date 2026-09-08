@@ -456,7 +456,7 @@ window.Quarto = {
 <p>The counter was configured with a starting number of <code>-10000000</code> and a stopping number of <code>9999999</code>. This was done so that the most significant sign bit of the counter output could be used to control the state of the LED. These numbers would ensure that the most significant bit would be HIGH/LOW for 10,000,000 clock cycles. As seen in <a href="#eq-freq" class="quarto-xref">Equation&nbsp;1</a>, these total 20,000,000 clock cycles per full counter period result in our desired LED blink frequency of 2.4 Hz. One neat thing to note is that this counter can vary its duty cycle by having more/less of the count be positive.</p>
 <p><span id="eq-freq"><span class="math display">\[ \begin{aligned}
 f_\text{output} &amp;= f_\text{oscillator} \div n_{clk}\\
-f_\text{output} &amp;= 48 \text{MHz} \div 20 \cdot 10^6\\
+f_\text{output} &amp;= 48 \text{MHz} \div (20 \cdot 10^6)\\
 f_\text{output} &amp;= 2.4 \text{Hz}
 \end{aligned}  \tag{1}\]</span></span></p>
 </section>
