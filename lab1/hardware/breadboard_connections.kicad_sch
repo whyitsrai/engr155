@@ -542,7 +542,7 @@
 		)
 	)
 	(rectangle
-		(start 125.73 85.09)
+		(start 125.73 81.28)
 		(end 154.94 156.21)
 		(stroke
 			(width 0)
@@ -554,7 +554,7 @@
 		(uuid "5846b178-738f-44ad-84f7-1d7ad866d7c3")
 	)
 	(rectangle
-		(start 86.36 85.09)
+		(start 86.36 80.01)
 		(end 102.87 156.21)
 		(stroke
 			(width 0)
@@ -567,7 +567,7 @@
 	)
 	(text "HOSP-S11A"
 		(exclude_from_sim no)
-		(at 146.558 88.138 0)
+		(at 147.828 83.566 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -577,7 +577,7 @@
 	)
 	(text "UPduino v3.1"
 		(exclude_from_sim no)
-		(at 94.996 88.646 0)
+		(at 95.25 82.804 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -587,7 +587,7 @@
 	)
 	(text "    A\n  +---+\nF |   | B\n  +-G-+\nE |   | C\n  +---+\n    D\n"
 		(exclude_from_sim no)
-		(at 143.764 97.282 0)
+		(at 143.764 93.98 0)
 		(effects
 			(font
 				(face "Courier New")
@@ -634,16 +634,16 @@
 		(uuid "b4f79e40-bfcd-4051-9c84-2b0832447601")
 	)
 	(junction
+		(at 140.97 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bc103fcd-ac03-42f9-841a-661119c265c0")
+	)
+	(junction
 		(at 140.97 140.97)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ebb92695-56ac-4adb-a84c-d3a3de6286eb")
-	)
-	(junction
-		(at 140.97 109.22)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f169d329-9e81-4599-a4aa-f57ff4e57ce5")
 	)
 	(no_connect
 		(at 121.92 140.97)
@@ -715,6 +715,16 @@
 	)
 	(wire
 		(pts
+			(xy 140.97 88.9) (xy 140.97 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4c2c4fd4-2a17-40dc-abb2-f2f7e52d625e")
+	)
+	(wire
+		(pts
 			(xy 138.43 147.32) (xy 140.97 147.32)
 		)
 		(stroke
@@ -762,16 +772,6 @@
 			(type default)
 		)
 		(uuid "66186aa9-cb90-41bc-b822-dfbd56fd25bf")
-	)
-	(wire
-		(pts
-			(xy 99.06 109.22) (xy 140.97 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6a4b7948-81ae-4c58-a55c-4cd67e6d23fc")
 	)
 	(wire
 		(pts
@@ -875,7 +875,7 @@
 	)
 	(wire
 		(pts
-			(xy 140.97 115.57) (xy 140.97 109.22)
+			(xy 140.97 102.87) (xy 140.97 115.57)
 		)
 		(stroke
 			(width 0)
@@ -892,6 +892,16 @@
 			(type default)
 		)
 		(uuid "9fbc4afb-963b-40a5-81ad-9492c82fb8d6")
+	)
+	(wire
+		(pts
+			(xy 102.87 88.9) (xy 140.97 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2fd8e26-b33b-4586-8a74-c6bf4da3102d")
 	)
 	(wire
 		(pts
@@ -982,16 +992,6 @@
 			(type default)
 		)
 		(uuid "ee197444-7bab-481f-944d-8d26635bb302")
-	)
-	(wire
-		(pts
-			(xy 140.97 109.22) (xy 140.97 102.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f681daee-31f6-48be-bd86-d2140ab8d95b")
 	)
 	(label "P20"
 		(at 102.87 96.52 180)
@@ -2209,7 +2209,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 99.06 109.22 90)
+		(at 102.87 88.9 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2220,7 +2220,7 @@
 		(fields_autoplaced yes)
 		(uuid "dfbcbcce-6335-4651-8b42-d0399dcad6ca")
 		(property "Reference" "#PWR01"
-			(at 102.87 109.22 0)
+			(at 106.68 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2231,7 +2231,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 95.25 109.2199 90)
+			(at 99.06 88.8999 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2242,7 +2242,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 99.06 109.22 0)
+			(at 102.87 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2253,7 +2253,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 99.06 109.22 0)
+			(at 102.87 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2264,7 +2264,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 99.06 109.22 0)
+			(at 102.87 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
