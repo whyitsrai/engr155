@@ -46,7 +46,7 @@ counter can vary its duty cycle by having more/less of the count be positive.
 
 $$ \begin{aligned}
 f_\text{output} &= f_\text{oscillator} \div n_{clk}\\
-f_\text{output} &= 48 \text{MHz} \div 20 \cdot 10^6\\
+f_\text{output} &= 48 \text{MHz} \div (20 \cdot 10^6)\\
 f_\text{output} &= 2.4 \text{Hz}
 \end{aligned} $$ {#eq-freq}
 

@@ -554,7 +554,7 @@
 		(uuid "5846b178-738f-44ad-84f7-1d7ad866d7c3")
 	)
 	(rectangle
-		(start 86.36 80.01)
+		(start 83.82 80.01)
 		(end 102.87 156.21)
 		(stroke
 			(width 0)
@@ -564,6 +564,16 @@
 			(type none)
 		)
 		(uuid "9a81e79f-5cff-42f4-abfa-6f2a157ffd53")
+	)
+	(text "segments[4]"
+		(exclude_from_sim no)
+		(at 92.456 95.504 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "045f8f84-3e05-4479-8d71-c78f13842d9d")
 	)
 	(text "HOSP-S11A"
 		(exclude_from_sim no)
@@ -575,6 +585,16 @@
 		)
 		(uuid "31afa97e-9b30-4030-9ec3-f3c5c038e7f9")
 	)
+	(text "segments[0]"
+		(exclude_from_sim no)
+		(at 91.694 133.604 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "3863b034-fd39-4505-8118-dd709f12be3a")
+	)
 	(text "UPduino v3.1"
 		(exclude_from_sim no)
 		(at 95.25 82.804 0)
@@ -584,6 +604,56 @@
 			)
 		)
 		(uuid "804f7c58-43ed-4c29-b922-9c075aac85c9")
+	)
+	(text "segments[5]"
+		(exclude_from_sim no)
+		(at 92.202 146.304 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "952d1220-e7e2-4dff-8deb-1536804179f5")
+	)
+	(text "segments[1]"
+		(exclude_from_sim no)
+		(at 92.456 127.254 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "a20a4970-d8d1-4aa0-ae1f-1c913992f636")
+	)
+	(text "segments[2]"
+		(exclude_from_sim no)
+		(at 92.456 114.554 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "b3b97492-6260-447c-86b2-c53d3840daae")
+	)
+	(text "segments[6]"
+		(exclude_from_sim no)
+		(at 92.456 152.654 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "c05c8648-131f-438e-8115-516328439c82")
+	)
+	(text "segments[3]"
+		(exclude_from_sim no)
+		(at 92.202 101.854 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "cf2d14e8-01e5-4546-808a-4c652b5d524d")
 	)
 	(text "    A\n  +---+\nF |   | B\n  +-G-+\nE |   | C\n  +---+\n    D\n"
 		(exclude_from_sim no)
