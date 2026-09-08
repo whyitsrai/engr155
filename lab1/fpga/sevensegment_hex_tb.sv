@@ -7,7 +7,7 @@ module sevensegment_hex_tb();
     // apply stimuli and check outputs
     initial begin
         #1;
-        assert (segments == 7'b0000000) // 0
+        assert (segments == 7'b0000000)
             $display("PASSES! Unknown input results in all off");
         else
             $error("Failed! Unknown input does not result in all off. Output is: %b", segments);

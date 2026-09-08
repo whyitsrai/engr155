@@ -2,7 +2,7 @@ module lab1_rw(input logic reset,
                input logic [3:0] switches,
                output logic [2:0] leds,
                output logic [6:0] segments);
-	// input switches are pull-up, hence extra NOT gates
+    // input switches are pull-up, hence extra NOT gates
     logic int_osc;
     logic [6:0] seg;
     logic signed [24:0] counter_blink_led;
