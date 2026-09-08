@@ -30,3 +30,19 @@ $$ \frac{V_\text{dd} - V_\text{on}}{R_s} + R_d $$
 - $V_{OL}$ is highest output voltage logical 0
 - Source and sink limits per pin vary (are not symmetric)
 - `always_ff` makes errors (according to standard) when you don't imply a ff (which is not the case for `always`)
+
+## 2026-09-08
+- Sorry about Radiant licensing
+- Encourage us to not pressure us to be too detailed if we don't want to
+    - Don't write too much for the lab report
+    - Prose is more for others, not for the checkoffs
+- Finish hardware by Thursday night in order to get extra hardware if necessary
+    - basically, ensure that everything is working
+- Try writing the block diagram prior to writing the systemverilog
+- Note to self: start building with synchronous reset if possible as it is cheaper
+- Don't do pre-assignment because it can violate idioms. Just use `else`
+- According to Prof. Spencer `casex` and `casez` will just make you unhappy: use `case`
+- always good practice to add `default` to `case` statement even if you cover every case, just in
+  case something gets removed down the line or similar
+- avoid race conditions when simulating (as there is no guarantee on the different simulators)
+
