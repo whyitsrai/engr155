@@ -29,12 +29,10 @@ format:
     theme: 
       light: flatly
       dark: darkly
-    css: styles.css
+    css: styles.scss
     toc: true
     lang: en
     html-math-method: mathjax
-    linestretch: 1.2
-
 
 execute:
   freeze: auto
