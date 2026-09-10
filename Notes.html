@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -351,6 +386,7 @@ window.Quarto = {
   <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section">2026-09-01</a></li>
   <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2026-09-03</a></li>
   <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">2026-09-08</a></li>
+  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3">2026-09-10</a></li>
   </ul>
 </nav>
     </div>
@@ -415,6 +451,64 @@ window.Quarto = {
 <li>According to Prof.&nbsp;Spencer <code>casex</code> and <code>casez</code> will just make you unhappy: use <code>case</code></li>
 <li>always good practice to add <code>default</code> to <code>case</code> statement even if you cover every case, just in case something gets removed down the line or similar</li>
 <li>avoid race conditions when simulating (as there is no guarantee on the different simulators)</li>
+</ul>
+</section>
+<section id="section-3" class="level2">
+<h2 class="anchored" data-anchor-id="section-3">2026-09-10</h2>
+<ul>
+<li>Synchronous Design (we love it!)</li>
+<li>When do we use FSM’s versus not
+<ul>
+<li>Sometimes when you are not thinking, the result will not be optimized</li>
+</ul></li>
+<li>Good practice to not change signals at exactly the clock edge</li>
+<li>Every flop should be triggered on the same clock
+<ul>
+<li>this includes things that must not change every clock cycle</li>
+<li>fix this with an <code>enable</code> that is triggered at a special time</li>
+<li>so in this case, do weird shit with the scan frequency thing
+<ul>
+<li>check count to be a special number, which triggers the enable for the flop</li>
+</ul></li>
+</ul></li>
+<li>Don’t just pick a bit (from a counter) and map it as an input for the flop (as a clk signal)</li>
+<li>Synchronizers
+<ul>
+<li>if things go metastable (it eventually resolves, but could technically take infinitely long)</li>
+<li>never want to take async input and feed it into sync system (so lab 2 for example)
+<ul>
+<li>might make a decision to give it async input as it will be passed through to debounce</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Photon detector verilog</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode systemverilog code-with-copy"><code class="sourceCode systemverilog"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> photon_detector(<span class="kw">input</span> <span class="kw">logic</span> clk, reset, photon,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                       <span class="kw">output</span> <span class="kw">logic</span> photon_detected)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">typedef</span> <span class="kw">enum</span> <span class="kw">logic</span> [<span class="dv">1</span>:<span class="dv">0</span>] {no_photon, pulse, yes_photon} fsm_states;</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    fsm_states <span class="ot">state</span>;</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// next state logic</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">always_ff</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> (reset) <span class="ot">state</span> &lt;= no_photon;</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">else</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="kw">case</span> (<span class="ot">state</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                no_photon: <span class="kw">if</span> (photon=<span class="dv">1</span>)  <span class="ot">state</span> &lt;= pulse,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                yes_photon: <span class="kw">if</span> (photon=<span class="dv">0</span>) <span class="ot">state</span> &lt;= no_photon,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                pulse:                    <span class="ot">state</span> &lt;= yes_photon,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                <span class="kw">default</span>:                  <span class="ot">state</span> &lt;= <span class="ot">state</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="kw">endcase</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">always_comb</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> (<span class="ot">state</span> == pulse)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            photon_detected = <span class="bn">1'b1</span>;</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">else</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            photon_detected = <span class="bn">1'b0</span>;</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>note that the edge detector can be done much more easily with less logic</li>
+<li>also note that this code is also possible, but it might be nice to seperate the next state logic flip flop logic and the combinational logic that determines what the next state will be</li>
 </ul>
 
 
