@@ -46,3 +46,51 @@ $$ \frac{V_\text{dd} - V_\text{on}}{R_s} + R_d $$
   case something gets removed down the line or similar
 - avoid race conditions when simulating (as there is no guarantee on the different simulators)
 
+## 2026-09-10
+- Synchronous Design (we love it!)
+- When do we use FSM's versus not
+    - Sometimes when you are not thinking, the result will not be optimized
+- Good practice to not change signals at exactly the clock edge
+- Every flop should be triggered on the same clock
+    - this includes things that must not change every clock cycle
+    - fix this with an `enable` that is triggered at a special time
+    - so in this case, do weird shit with the scan frequency thing
+        - check count to be a special number, which triggers the enable for the flop
+- Don't just pick a bit (from a counter) and map it as an input for the flop (as a clk signal)
+- Synchronizers
+    - if things go metastable (it eventually resolves, but could technically take infinitely long)
+    - never want to take async input and feed it into sync system (so lab 2 for example)
+        - might make a decision to give it async input as it will be passed through to debounce
+
+
+Photon detector verilog
+```systemverilog
+module photon_detector(input logic clk, reset, photon,
+                       output logic photon_detected)
+
+    typedef enum logic [1:0] {no_photon, pulse, yes_photon} fsm_states;
+    fsm_states state;
+
+    // next state logic
+    always_ff @(posedge clk) begin
+        if (reset) state <= no_photon;
+        else
+            case (state)
+                no_photon: if (photon=1)  state <= pulse,
+                yes_photon: if (photon=0) state <= no_photon,
+                pulse:                    state <= yes_photon,
+                default:                  state <= state,
+            endcase
+    end
+
+    always_comb
+        if (state == pulse)
+            photon_detected = 1'b1;
+        else
+            photon_detected = 1'b0;
+    end
+```
+
+- note that the edge detector can be done much more easily with less logic
+- also note that this code is also possible, but it might be nice to seperate the next state logic
+  flip flop logic and the combinational logic that determines what the next state will be
