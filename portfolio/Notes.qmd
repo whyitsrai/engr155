@@ -94,3 +94,21 @@ module photon_detector(input logic clk, reset, photon,
 - note that the edge detector can be done much more easily with less logic
 - also note that this code is also possible, but it might be nice to seperate the next state logic
   flip flop logic and the combinational logic that determines what the next state will be
+
+# 2026-09-15
+- More FSM stuff
+    - our counter is technically a FSM
+- You cannot limit metastability, you can just make it less likely with synchronizers
+    - These syncs don't stop metastability, they just give it more of an opportunity to settle
+    - 1 clock cycle of latency
+- Recall mean time before failure from E85
+- More flop means more stable
+- Synchronizers are like clock domain crossers
+    - DRAM is on a different clock from CPU for example
+- You want a non-canonical FSM when you have like 1000000 states (like with a counter)
+- FSM's that communicate with other FSM's (counter does part of a cycle and other FSM's use that to
+  advance)
+
+- Prof. Brake got mad at Radiant and did something about it
+    - [verilogsim.aiprototypes.org](verilogsim.aiprototypes.org) which is like radiant on the web
+    - Radiant is so bad that the alpha is worth it for everyone
