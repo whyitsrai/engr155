@@ -18,7 +18,7 @@
 */
 
 module keypad_matrix_scan
-    #(parameter num_rows=4, scan_freq=2)
+    #(parameter num_rows=3, scan_freq=2)
     (input logic clk, reset, enable,
      output logic [num_rows-1:0] row);
 
@@ -28,7 +28,7 @@ module keypad_matrix_scan
     logic [count_bits-1:0] scan_count;
 
     counter #(count_bits, max_count) keypad_counter(clk, reset, enable, scan_count);
-    
+
     genvar i;
     generate
         // as the scan_count variable increases, a more significant bit is toggled on
@@ -38,4 +38,3 @@ module keypad_matrix_scan
     endgenerate
 
 endmodule
-

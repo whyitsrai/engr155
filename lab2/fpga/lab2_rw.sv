@@ -14,24 +14,18 @@ module lab2_rw(input logic reset,
 
     logic[3:0] sw_cur;
     logic[6:0] seg;
-    always_comb begin
-        if (seg_mux_count < 240000) begin
-            segment_sel = 2'b10;
-            sw_cur = sw1;
-        end else if (seg_mux_count < 480000) begin
-            segment_sel = 2'b01;
-            sw_cur = sw2;
-        end else begin
-            segment_sel = 2'b11;
-            sw_cur = sw1; // should not apply
-        end
-    end
+
+    // else statement should never trigger
+    assign segment_sel = (seg_mux_count < 240000) ? 2'b10 : (seg_mux_count < 480000) ? 2'b01 : 2'b11;
+    assign sw_cur = (seg_mux_count < 240000) ? sw1 : (seg_mux_count < 480000) ? sw2 : sw1;
 
     sevensegment_hex display(~sw_cur, seg);
 
-    assign segment_char = ~seg;
+    assign segment_char = ~seg; // pull down to be on
     assign leds = ~col; // pull down to be on
 
-    keypad_matrix_scan #(4,2) keypad(int_osc, ~reset, 1'b1, row);
+    logic [3:0] r;
+    keypad_matrix_scan #(4,2) keypad(int_osc, ~reset, 1'b1, r);
+    assign row = ~r; // pull down to be own
 
 endmodule
