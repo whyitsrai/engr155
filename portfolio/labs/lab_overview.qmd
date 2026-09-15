@@ -4,6 +4,11 @@ title: Engr 155 Labs Overview
 
 ![](../media/thriving.webp){fig-align="center" width=50%}
 
+::: {.callout-important}
+This particular page has not been updated in a while (as can be seen by the image above). Just click
+on the lab assignments using the hamburger menu in the top.
+:::
+
 ## Lab 1 - Board Assembly and Testing
 
 ## Lab 2 - Multiplexed 7-Segment Display
