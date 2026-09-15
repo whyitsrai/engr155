@@ -391,6 +391,7 @@ window.Quarto = {
   <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2026-09-03</a></li>
   <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">2026-09-08</a></li>
   <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3">2026-09-10</a></li>
+  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4">2026-09-15</a></li>
   </ul>
 </nav>
     </div>
@@ -513,6 +514,33 @@ window.Quarto = {
 <ul>
 <li>note that the edge detector can be done much more easily with less logic</li>
 <li>also note that this code is also possible, but it might be nice to seperate the next state logic flip flop logic and the combinational logic that determines what the next state will be</li>
+</ul>
+</section>
+<section id="section-4" class="level1">
+<h1>2026-09-15</h1>
+<ul>
+<li><p>More FSM stuff</p>
+<ul>
+<li>our counter is technically a FSM</li>
+</ul></li>
+<li><p>You cannot limit metastability, you can just make it less likely with synchronizers</p>
+<ul>
+<li>These syncs don’t stop metastability, they just give it more of an opportunity to settle</li>
+<li>1 clock cycle of latency</li>
+</ul></li>
+<li><p>Recall mean time before failure from E85</p></li>
+<li><p>More flop means more stable</p></li>
+<li><p>Synchronizers are like clock domain crossers</p>
+<ul>
+<li>DRAM is on a different clock from CPU for example</li>
+</ul></li>
+<li><p>You want a non-canonical FSM when you have like 1000000 states (like with a counter)</p></li>
+<li><p>FSM’s that communicate with other FSM’s (counter does part of a cycle and other FSM’s use that to advance)</p></li>
+<li><p>Prof.&nbsp;Brake got mad at Radiant and did something about it</p>
+<ul>
+<li><a href="verilogsim.aiprototypes.org">verilogsim.aiprototypes.org</a> which is like radiant on the web</li>
+<li>Radiant is so bad that the alpha is worth it for everyone</li>
+</ul></li>
 </ul>
 
 
