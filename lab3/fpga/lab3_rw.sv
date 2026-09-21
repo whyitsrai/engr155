@@ -9,7 +9,7 @@ module lab3_rw(input logic reset,
 
     // sevensegment mux/driving
     logic [18:0] seg_mux_count;
-    counter #(19,19'd479999) seg_mux(int_osc, ~reset, 1'b1, seg_mux_count);
+    counter #(19'd479999) seg_mux(int_osc, ~reset, 1'b1, seg_mux_count);
     logic[1:0][3:0] displayed_chars;
     logic [3:0] display_mux_char, next_displayed_char;
     logic[6:0] seg;

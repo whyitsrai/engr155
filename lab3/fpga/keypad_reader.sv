@@ -16,15 +16,14 @@ module keypad_reader
      input logic [NUM_COLS-1:0] col,
      output logic [NUM_ROWS-1:0] row,
      output logic [NUM_ROWS-1:0][NUM_COLS-1:0] key_status);
-     
-    localparam count_bits = $clog2(NUM_ROWS*65536 - 1);
-    logic [count_bits-1:0] scan_count;
-    counter #(count_bits, (NUM_ROWS+1)*COUNT_PER_ROW-1) keypad_counter(clk, reset, enable, scan_count);
+
+    logic [$clog2(NUM_ROWS*COUNT_PER_ROW+1)-1:0] scan_count;
+    counter #((NUM_ROWS+1)*COUNT_PER_ROW-1) keypad_counter(clk, reset, enable, scan_count);
 
     genvar i;
     generate
         for (i=0; i<NUM_ROWS; i=i+1) begin: keypad_row_select
-           assign row[i] = (scan_count >= i * COUNT_PER_ROW) && (scan_count < (i+1) * COUNT_PER_ROW);
+            assign row[i] = (scan_count >= i * COUNT_PER_ROW) && (scan_count < (i+1) * COUNT_PER_ROW);
 
             logic [3:0][DEBOUNCE_CYCLES-1:0] keypresses;
             always_ff @(posedge clk) begin

@@ -4,7 +4,7 @@ module counter_tb();
     logic clk, reset, enable; // system clock, etc
     logic [7:0] count; // count variable
 
-    counter #(8, 8'd23) dut(clk, reset, enable, count);
+    counter #(8'd23) dut(clk, reset, enable, count);
     // counts up by 1 unit every clock cycle from 0 to 24
 
     // generate clock
