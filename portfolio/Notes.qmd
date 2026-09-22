@@ -112,3 +112,10 @@ module photon_detector(input logic clk, reset, photon,
 - Prof. Brake got mad at Radiant and did something about it
     - [verilogsim.aiprototypes.org](verilogsim.aiprototypes.org) which is like radiant on the web
     - Radiant is so bad that the alpha is worth it for everyone
+
+# 2026-09-17
+- Cannonical FSM has the whole case statement for next state logic
+
+# 2026-09-22
+- Communicating FSM is also just a slightly different way of saying DONT STORE DATA IN AN FSM
+    - registers exist!
