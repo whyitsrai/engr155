@@ -91,9 +91,14 @@ The block diagram in @fig-block-top demonstrates the overall architecture of the
 
 ::: {.callout-note collapse="true"}
 ## Lower-level block diagrams
-![Seven segment decoder submodule](../media/lab3/block_diagram_sevensegment.jpg)
+
+![Keypad driver & decoder module](../media/lab3/block_diagram_keypress.jpg)
+
+![Debouncer submodule](../media/lab3/block_diagram_debouncer.jpg)
 
 ![Synchronizer sub-module](../media/lab3/block_diagram_synchronizer.jpg)
+
+![Seven segment decoder submodule](../media/lab3/block_diagram_sevensegment.jpg)
 :::
 
 Finally, the synthesis diagrams produced by Lattice Radiant are found below.
