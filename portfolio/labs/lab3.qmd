@@ -1,0 +1,1092 @@
+---
+title: Lab3
+author: Rai Wandeler
+date: 2026-09-22
+#date-modified: 2026-09-08
+---
+
+*I spent a total of around 20-30 hours on this lab. Most of this time was spent on the test benches, refactoring my code, and doing this forsaken lab report*
+
+## Introduction
+In this lab, the [circuit from lab 2](lab2.qmd) consisting of a multiplexed two digit seven segment
+display and a keypad, was slightly modified and was given some new functionality. This functionality
+came in the form of programming the [UPduino
+v3.1](https://github.com/tinyvision-ai-inc/upduino-v3.0) to read in key presses from the 4x4 keypad
+and record the corresponding hexadecimal numbers onto the seven segment display. This involved
+multiple different kinds of finite state machines, synchronizers, a debounce mechanism, and lots of
+testing. This was my first opportunity to tackle a more complex (has many intertwined parts) problem
+using an FPGA. Overall, it went well (though the testbench took very long).
+
+## Design and Testing Methodology
+
+### Main FSM
+
+This FSM has the following state transition diagram (assume outputs are 0 unless mentioned otherwise):
+
+![The main FSM's state transition diagram describes how this system reacts to keypresses](../media/lab3/state_transition_diagram.jpg){#fig-block-top}
+
+In table from, this would be:
+
++------------------------+-----------------------+------------------------+-------------------------+
+| Current state          | Event/inputs          | Next state             | Output(s)               |
++========================+=======================+========================+=========================+
+| `onekeypressed_disp`   | ALWAYS                | `onekeypressed_nodisp` | `display_next_char = 1` |
++------------------------+-----------------------+------------------------+-------------------------+
+| `onekeypressed_nodisp` | IF `~one_key_pressed` | `read_keypad`          | none                    |
++------------------------+-----------------------+------------------------+-------------------------+
+| `onekeypressed_nodisp` | ELSE (see above)      | `onekeypressed_nodisp` | none                    |
++------------------------+-----------------------+------------------------+-------------------------+
+| `read_keypad`          | IF `one_key_pressed`  | `onekeypressed_disp`   | none                    |
++------------------------+-----------------------+------------------------+-------------------------+
+| `read_keypad`          | ELSE (see above)      | `read_keypad`          | none                    |
++------------------------+-----------------------+------------------------+-------------------------+
+
+In the case of this table, `one_key_pressed` is a variable that is HIGH when only one slot in the
+stable (already synchronized and debounced) array of key statuses is HIGH (pressed). Else, it is
+low. The systemverilog snippet for that is:
+```systemverilog
+logic one_key_pressed; // 1 clock cycle delay for this logic to avoid FPGA timing constraint violations & increase legibility
+    always_ff @(posedge clk) begin
+        if (reset) one_key_pressed <= 'b0;
+        else one_key_pressed <= ((key_status != 0) && ((key_status & (key_status - 1)) == 0));
+    end
+```
+
+Though the code in this lab also *technically* contains other finite state machines, only this one
+is drawn as doing so for the others would obscure their meaning. The debouncer is technically an
+FSM, but it is also a simple shift-register, which is a more useful model. A similar thing applies
+to all of the counters, or the buffers, or the synchronizer. Thinking of those parts in terms of
+their function is more useful than thinking of those parts in terms of their behaviour given a
+certain input.
+
+### HDL Design
+The overarching design was structured in five modules (for more information see @sec-block). Every
+module is commented in such a way that its function is clear.
+
+### HDL Testing
+The HDL code was tested module-by-module. As a lot of the modules were refactored (and some even
+modified), most test-benches from previous labs needed to be updated. Some special features this
+time around include the use of `$past` statements instead of `force` and `release` whenever possible
+in order to assert if enable is properly functioning. Additionally, the tests at the top module were
+more sparse, in favor of comprehensive per-module testing. Every reasonable function that I could
+think of was tested. I was up all night writing and modifying these test benches.
+
+### Hardware Design
+The Hardware Design was almost identical to [that of lab 2](lab2.qmd), therefore the minutia will
+not be repeated here. The additional DIP switches were removed (or disabled), as were the LED's.
+The breadboard side of things was the same, except for the diodes being moved from the columns of
+the keypad matrix to the rows of the keyboard matrix (as rows and columns were flipped in lab 2).
+
+For more details see the schematic in @sec-schematic.
+
+## Technical Documentation:
+The source code for the project can be found in the associated [Github
+repository](https://github.com/whyitsrai/engr155/tree/main/lab3).
+
+### Block Diagram {#sec-block}
+
+![Top module block diagram](../media/lab3/block_diagram_top.jpg){#fig-block-top}
+
+The block diagram in @fig-block-top demonstrates the overall architecture of the design.
+
+::: {.callout-note collapse="true"}
+## Lower-level block diagrams
+![Seven segment decoder submodule](../media/lab3/block_diagram_sevensegment.jpg)
+
+![Synchronizer sub-module](../media/lab3/block_diagram_synchronizer.jpg)
+:::
+
+Finally, the synthesis diagrams produced by Lattice Radiant are found below.
+
+::: {.callout-note collapse="true"}
+## Images of the RTL diagrams as produced by Lattice Radiant
+
+![Top-level RTL Diagram](../media/lab3/rtl_top.png)
+
+![Module for reading in key presses](../media/lab3/rtl_keypad_reader.png)
+
+![All of the keypad pressing logic/flow](../media/lab3/rtl_main_fsm.png)
+
+![Module for saving and displaying 2 hexadecimal digits on a multiplexed seven segment display
+(mostly reused from [lab 3](lab3.qmd))](../media/lab3/rtl_two_digit_display.png)
+
+![Combinational logic to map a key on the keypad to a hexadecimal number](../media/lab3/rtl_onehot_to_bin.png)
+
+![Seven segment logic from [lab 1](lab1.qmd)](../media/lab3/rtl_sevensegment_hex.png)
+
+![Faster counter used for scanning keypad rows](../media/lab3/rtl_counter_fast.png)
+
+![Slower counter used for multiplexing the display](../media/lab3/rtl_counter_slow.png)
+
+![Bog standard synchronizer](../media/lab3/rtl_synchronizer.png)
+
+![Shift register based debouncer](../media/lab3/rtl_debounce.png)
+:::
+
+### Schematic {#sec-schematic}
+![Electrical schematic of the design. Full PDF with title and author block
+[here](https://github.com/whyitsrai/engr155/blob/main/lab3/hardware/breadboard_connections.pdf).](../media/lab3/breadboard_connections.svg){#fig-schematic}
+
+@fig-schematic shows the electrical layout of the design. The resistance calculations and rationales
+for the different components can be found in [lab 2](lab2.qmd#sec-schematic).
+
+## Results and Discussion
+
+I was able to accomplish all of the prescribed tasks. This time around I spent a very long time
+parametrizing the design, using generate blocks, generalizing everything, and refactoring it into
+easy-to-understand modules.
+
+Overall, the entire design worked perfectly both in testing and in hardware. Every function was
+tested, and the results are agreeable.
+
+### Testbench Simulation
+
+All tests pass successfully. Expand the blocks below to see more details.
+
+::: {.callout-note collapse="true"}
+## Automated testing of the debouncing module
+
+![](../media/lab3/testing_debounce.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Debouncing module waveforms
+
+![](../media/lab3/waves_debouncer.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Automated testing of the keypad reader module
+
+![](../media/lab3/testing_keypad_reader.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Keypad reader module waveforms
+
+![](../media/lab3/waves_keypad_reader_large.png)
+
+![](../media/lab3/waves_keypad_reader_muxing.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Automated testing of the main keypad control FSM module
+
+![](../media/lab3/testing_main_fsm.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Main keypad control FSM module waveforms
+
+![](../media/lab3/waves_main_fsm.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Automated testing of the key to binary encoding module
+
+![](../media/lab3/testing_onehot_to_bin.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Key to binary encoding control module waveforms
+
+![](../media/lab3/waves_onehot_to_bin.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Automated testing of the synchronizer module
+
+![](../media/lab3/testing_synchronizer.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Synchronizer module waveforms
+
+![](../media/lab3/waves_synchronizer.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Automated testing of the display driving/muxing module
+
+![](../media/lab3/testing_two_digit_display.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Display driving/muxing module waveforms
+
+![](../media/lab3/waves_two_digit_display.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Automated testing of the top module
+
+![](../media/lab3/testing_top.png)
+:::
+
+::: {.callout-note collapse="true"}
+## Top module waveforms
+
+![](../media/lab3/waves_top_muxing.png)
+
+![](../media/lab3/waves_top_rows.png)
+
+![](../media/lab3/waves_top_start.png)
+
+![](../media/lab3/waves_top_trans.png)
+:::
+
+## Conclusion
+I managed to successfully implement all of the functionality required by the [lab
+instructions](https://hmc-e155.github.io/lab/lab3/). I will note that the specifications were a bit
+unclear as to what the exact expected behaviour is under different multi-press/release situations.
+Therefore my design technically allows a key to be registered more than once despite only being
+pressed once. I would consider this to be a minor detail that is easily fixable by adding one
+additional state to the `main_fsm`.
+
+As mentioned at the top, I spent a total of around 20-30 hours on this lab. I was lucky on the whole
+logic/coding section but spent a very long time refactoring my code to be more legible, testing all
+of the new sub-modules, making the artifacts for this report, and helping others debug their (very
+different) approaches to the problem presented within this lab.
+
+### AI Prototype Summary
+I chose to prompt Google Gemini with the HMC education account. The initial prompt was was:
+
+> Target device: Lattice iCE40 UP5K FPGA with internal high-speed oscillator (~20 MHz).
+> 
+> Write synthesizable SystemVerilog to scan a 4x4 matrix keypad and display the last two hex keys
+> pressed on a dual 7‑segment display. Implement:
+> 
+> A clock divider that derives a scan clock on the order of 100–200 Hz from the internal oscillator.
+> A keypad scanning controller that iterates one active‑low column at a time and samples active‑low
+> rows, registering at most one key per press (debounce‑by‑design), ignoring additional presses
+> while any key is held, and allowing a new registration only after release. A top level that
+> updates two hex digits (older and most recent) when a new key is registered and drives a
+> time‑multiplexed two‑digit 7‑segment display without visible flicker and with balanced brightness.
+> Use idiomatic SystemVerilog (e.g., logic, always_ff, enumerated states for FSMs). Provide clean
+> module boundaries and keep all state synchronous. Include brief comments explaining the design
+> choices.
+>
+> Write SystemVerilog HDL to time multiplex a single seven segment decoder (that decodes from four
+> bits to a common anode seven segment display) to decode two sets of input bits and drive two sets
+> of seven output bits.
+
+
+::: {.callout-note collapse="true"}
+## Initial AI Response: Google Gemini Free (no thinking)
+
+Here is a complete, self-contained, synthesizable SystemVerilog implementation tailored for the
+Lattice iCE40 UltraPlus (UP5K).
+
+The design uses the Lattice `HSOSC` primitive, a synchronous FSM-based matrix scanner, and a
+time-multiplexed 7-segment display driver.
+
+### System Architecture
+```
++---------------------------------------------------------+
+                       | Keypad Controller Top                                   |
+                       |                                                         |
+  +---------------+    |  +---------------+    +---------------+    +---------+  |    +-------------------+
+  | Lattice HSOSC |    |  | Clock         |    | Keypad        |    | Display |  |    | Dual 7-Seg Display|
+  |  Primitive    |--->|->| Divider       |--->| Scanner FSM   |--->| Driver  |--|--->| (Anodes & Cathodes|
+  +---------------+    |  | (~200 Hz)     |    | (Active-Low)  |    | (Multiplex)|  |    +-------------------+
+                       |  +---------------+    +---------------+    +---------+  |
+                       +---------------------------------------------------------+
+                                 ^                    ^
+                                 |                    |
+                           keypad_row           keypad_col
+```
+
+### Keypad Scanner Module
+
+```systemverilog
+// Keypad Matrix Scanner FSM
+// Debounce-by-design: By running the FSM on a 200 Hz scan clock (5 ms per column / 20 ms per full matrix loop),
+// mechanical contact bounce (<10 ms) resolves naturally without needing dedicated debounce counters.
+module keypad_scanner (
+    input  logic       clk_scan,     // ~100-200 Hz clock derived from oscillator
+    input  logic       rst_n,        // Asynchronous reset (active-low)
+    input  logic [3:0] keypad_row,   // Matrix rows (active-low with pull-ups)
+    output logic [3:0] keypad_col,   // Matrix columns (active-low output)
+    output logic [3:0] key_code,     // Detected key Hex value (0x0 - 0xF)
+    output logic       key_valid     // 1-cycle pulse when a new key press is registered
+);
+
+    // Key map matrix lookup table:
+    // Keypad layout:
+    // [ '1'(0x1), '2'(0x2), '3'(0x3), 'A'(0xA) ]
+    // [ '4'(0x4), '5'(0x5), '6'(0x6), 'B'(0xB) ]
+    // [ '7'(0x7), '8'(0x8), '9'(0x9), 'C'(0xC) ]
+    // [ 'E'(0xE), '0'(0x0), 'F'(0xF), 'D'(0xD) ]  (E=* and F=# mapped to hex)
+
+    // FSM State Definition
+    typedef enum logic [1:0] {
+        SCAN      = 2'b00,
+        KEY_FOUND = 2'b01,
+        WAIT_RELEASE = 2'b10
+    } state_e;
+
+    state_e state;
+    logic [1:0] col_idx;
+    logic [3:0] registered_key;
+
+    // Drive active-low column scan signal
+    always_comb begin
+        keypad_col = 4'b1111;
+        keypad_col[col_idx] = 1'b0;
+    end
+
+    // FSM State and Scan Control Logic
+    always_ff @(posedge clk_scan or negedge rst_n) begin
+        if (!rst_n) begin
+            state          <= SCAN;
+            col_idx        <= 2'd0;
+            registered_key <= 4'h0;
+            key_code       <= 4'h0;
+            key_valid      <= 1'b0;
+        end else begin
+            key_valid <= 1'b0; // Default pulse auto-clear
+
+            case (state)
+                SCAN: begin
+                    // Check if any row is low (key pressed in current column)
+                    if (keypad_row != 4'b1111) begin
+                        state <= KEY_FOUND;
+                    end else begin
+                        col_idx <= col_idx + 1'b1; // Advance to next column
+                    end
+                end
+
+                KEY_FOUND: begin
+                    // Map active row/col to 4-bit hex value
+                    case ({col_idx, keypad_row})
+                        // Column 0
+                        6'b00_1110: registered_key <= 4'h1;
+                        6'b00_1101: registered_key <= 4'h4;
+                        6'b00_1011: registered_key <= 4'h7;
+                        6'b00_0111: registered_key <= 4'hE; // '*' key
+                        // Column 1
+                        6'b01_1110: registered_key <= 4'h2;
+                        6'b01_1101: registered_key <= 4'h5;
+                        6'b01_1011: registered_key <= 4'h8;
+                        6'b01_0111: registered_key <= 4'h0;
+                        // Column 2
+                        6'b10_1110: registered_key <= 4'h3;
+                        6'b10_1101: registered_key <= 4'h6;
+                        6'b10_1011: registered_key <= 4'h9;
+                        6'b10_0111: registered_key <= 4'hF; // '#' key
+                        // Column 3
+                        6'b11_1110: registered_key <= 4'hA;
+                        6'b11_1101: registered_key <= 4'hB;
+                        6'b11_1011: registered_key <= 4'hC;
+                        6'b11_0111: registered_key <= 4'hD;
+                        default:    registered_key <= 4'h0;
+                    endcase
+
+                    key_code  <= registered_key;
+                    key_valid <= 1'b1; // Emit single registration pulse
+                    state     <= WAIT_RELEASE;
+                end
+
+                WAIT_RELEASE: begin
+                    // Wait until ALL keys in ALL columns are fully released
+                    // Pull all columns LOW simultaneously to test for any row closure
+                    keypad_col <= 4'b0000;
+                    if (keypad_row == 4'b1111) begin
+                        state   <= SCAN;
+                        col_idx <= 2'd0;
+                    end
+                end
+
+                default: state <= SCAN;
+            endcase
+        end
+    end
+
+endmodule
+```
+
+### Dual 7-Segment Display Controller
+
+```systemverilog
+// Multiplexed Dual 7-Segment Display Controller
+module display_driver (
+    input  logic       clk_fast,    // Fast System Clock (~20 MHz)
+    input  logic       rst_n,       // Active-low reset
+    input  logic [3:0] digit_high,  // Older Hex digit
+    input  logic [3:0] digit_low,   // Most recent Hex digit
+    output logic [1:0] digit_anode, // Active-low digit selects [1]=Digit 1, [0]=Digit 0
+    output logic [6:0] seg_cathodes // Active-low cathodes [A, B, C, D, E, F, G]
+);
+
+    // Refresh rate control:
+    // ~20 MHz / 2^16 = ~305 Hz refresh rate per digit (~152 Hz per frame), well above flicker threshold (>60 Hz).
+    logic [16:0] refresh_counter;
+    logic        active_digit;
+    logic [3:0]  hex_to_decode;
+    logic [6:0]  decoded_segments;
+
+    always_ff @(posedge clk_fast or negedge rst_n) begin
+        if (!rst_n)
+            refresh_counter <= '0;
+        else
+            refresh_counter <= refresh_counter + 1'b1;
+    end
+
+    assign active_digit = refresh_counter[16];
+
+    // Select active hex nibble
+    assign hex_to_decode = active_digit ? digit_high : digit_low;
+
+    // Hex to 7-Segment Decoder (active-low segments: A, B, C, D, E, F, G)
+    always_comb begin
+        case (hex_to_decode)
+            4'h0: decoded_segments = 7'b000_0001; // 0
+            4'h1: decoded_segments = 7'b100_1111; // 1
+            4'h2: decoded_segments = 7'b001_0010; // 2
+            4'h3: decoded_segments = 7'b000_0110; // 3
+            4'h4: decoded_segments = 7'b100_1100; // 4
+            4'h5: decoded_segments = 7'b010_0100; // 5
+            4'h6: decoded_segments = 7'b010_0000; // 6
+            4'h7: decoded_segments = 7'b000_1101; // 7
+            4'h8: decoded_segments = 7'b000_0000; // 8
+            4'h9: decoded_segments = 7'b000_0100; // 9
+            4'hA: decoded_segments = 7'b000_1000; // A
+            4'hB: decoded_segments = 7'b110_0000; // b
+            4'hC: decoded_segments = 7'b011_0001; // C
+            4'hD: decoded_segments = 7'b100_0010; // d
+            4'hE: decoded_segments = 7'b011_0000; // E
+            4'hF: decoded_segments = 7'b011_1000; // F
+            default: decoded_segments = 7'b111_1111;
+        endcase
+    end
+
+    // Ghosting prevention / Equalized Brightness via brief blanking during multiplex transitions
+    logic blanking;
+    assign blanking = (refresh_counter[15:0] < 16'd500); // ~25 us guard-band window
+
+    always_comb begin
+        if (blanking) begin
+            digit_anode  = 2'b11;        // Disable both anodes
+            seg_cathodes = 7'b111_1111;  // Disable segments
+        end else begin
+            digit_anode  = active_digit ? 2'b10 : 2'b01;
+            seg_cathodes = decoded_segments;
+        end
+    end
+
+endmodule
+```
+
+### Top-Level Integration
+This module instantiates the `HSOSC` primitive, drives clock division, shifts new keypresses into
+the 2-digit history register, and ties together the scanner and display modules.
+
+```systemverilog
+// Top-Level Keypad and Display System
+module top_keypad_display (
+    input  logic       rst_n,        // Active-low asynchronous reset pin
+    input  logic [3:0] keypad_row,   // Input matrix rows (external weak pull-ups enabled)
+    output logic [3:0] keypad_col,   // Output matrix columns
+    output logic [1:0] digit_anode,  // Digit select anodes
+    output logic [6:0] seg_cathodes  // Segment cathodes
+);
+
+    // ------------------------------------------------------------------------
+    // 1. Lattice iCE40 UltraPlus Internal High-Speed Oscillator (HSOSC)
+    // ------------------------------------------------------------------------
+    logic sys_clk;
+
+    // HSOSC Primitive Configuration:
+    // CLKHF_DIV = "0b00" -> 48 MHz
+    // CLKHF_DIV = "0b01" -> 24 MHz
+    // CLKHF_DIV = "0b10" -> 12 MHz
+    // CLKHF_DIV = "0b11" -> 6 MHz
+    HSOSC #(
+        .CLKHF_DIV("0b01") // Configured for ~24 MHz / nominally ~20 MHz nominal operation
+    ) u_hsosc (
+        .CLKHFPU(1'b1),    // Power-up oscillator
+        .CLKHFEN(1'b1),    // Enable output
+        .CLKHF(sys_clk)    // Output clock signal
+    );
+
+    // ------------------------------------------------------------------------
+    // 2. Synchronous Clock Divider (~200 Hz scan clock)
+    // ------------------------------------------------------------------------
+    // 24 MHz / (2 * 60,000) = 200 Hz
+    localparam int CLK_DIV_LIMIT = 60000 - 1;
+
+    logic [15:0] clk_cnt;
+    logic        clk_scan;
+
+    always_ff @(posedge sys_clk or negedge rst_n) begin
+        if (!rst_n) begin
+            clk_cnt  <= '0;
+            clk_scan <= 1'b0;
+        end else begin
+            if (clk_cnt == CLK_DIV_LIMIT) begin
+                clk_cnt  <= '0;
+                clk_scan <= ~clk_scan; // Toggle scan clock
+            end else begin
+                clk_cnt  <= clk_cnt + 1'b1;
+            end
+        end
+    end
+
+    // ------------------------------------------------------------------------
+    // 3. Matrix Keypad Scanner Instantiation
+    // ------------------------------------------------------------------------
+    logic [3:0] current_key;
+    logic       key_valid;
+
+    keypad_scanner u_keypad_scanner (
+        .clk_scan   (clk_scan),
+        .rst_n      (rst_n),
+        .keypad_row (keypad_row),
+        .keypad_col (keypad_col),
+        .key_code   (current_key),
+        .key_valid  (key_valid)
+    );
+
+    // ------------------------------------------------------------------------
+    // 4. Shift Register for Key History
+    // ------------------------------------------------------------------------
+    logic [3:0] digit_high; // Older key
+    logic [3:0] digit_low;  // Most recent key
+
+    always_ff @(posedge sys_clk or negedge rst_n) begin
+        if (!rst_n) begin
+            digit_high <= 4'h0;
+            digit_low  <= 4'h0;
+        end else if (key_valid) begin
+            digit_high <= digit_low;    // Shift low digit to high digit
+            digit_low  <= current_key;  // Push new key into low digit
+        end
+    end
+
+    // ------------------------------------------------------------------------
+    // 5. Multiplexed Display Driver Instantiation
+    // ------------------------------------------------------------------------
+    display_driver u_display_driver (
+        .clk_fast     (sys_clk),
+        .rst_n        (rst_n),
+        .digit_high   (digit_high),
+        .digit_low    (digit_low),
+        .digit_anode  (digit_anode),
+        .seg_cathodes (seg_cathodes)
+    );
+
+endmodule
+```
+
+### Implementation Details & Design Choices
+1. Lattice iCE40 UP5K Oscillator (HSOSC):
+    - Uses the hard IP block to generate a system clock without requiring external crystal hardware. It
+      is set to 24 MHz nominal frequency via parameter CLKHF_DIV = "0b01".
+2. Debounce-by-Design FSM:
+    - Instead of using large counters, debouncing is inherent to the scan rate. Scanning columns at 200 Hz
+    means an entire 4x4 sweep takes 20 ms. Switch contact bounces (<10 ms) decay completely between
+    consecutive samples.
+3. Single Key & Roll-over Protection:
+    - When a valid key is sampled, the FSM enters `WAIT_RELEASE` and pulls all columns active-low
+      (`4'b0000`). It locks out additional key detections until all row inputs return high (`4'b1111`),
+      preventing double-registration when keys are held down.
+4. Anti-Ghosting Guard Band:
+    - A short dead-time (blanking) is asserted during digit switches in display_driver. This gives
+      the FPGA output buffers and driver transistors time to fully discharge parasitic capacitive
+      charges before turning on the next digit, eliminating ghosting artifacts.
+:::
+
+This first stab that the LLM took was a bit of a mess to be honest. A thing that I personally was
+very intentional about was keeping every sub-module active HIGH in order to be consistent and not
+end up confusing things as I connect multiple blocks together. This kind of discipline is not really
+present in this AI answer. Additionally, the keypad FSM is way too bulky. That all being said, the
+general logic that the LLM came up with for the FSM is the same thing that I initially thought of.
+
+Interestingly enough, this is the second time that the LLM outputs async code. Granted, it does this
+by diving down the clock and feeding that as a module input. BUT this is a dangerous habit to get
+into, especially because there (usually) won't be must of a problem when you do this.
+
+> Target device: Lattice iCE40 UP5K FPGA.
+> 
+> Overall Goal: Write SystemVerilog to scan a 4x4 matrix keypad and display the last two hex keys
+> pressed on a dual 7 segment display.
+> 
+> Current Goal: Write a synthesizable SystemVerilog module that produces a one‑shot registration
+> signal for the keypad system. Behavior:
+> 
+> When a key press is first detected, capture the current key code and assert a single‑cycle “new
+> key” pulse. While any key remains pressed, do not accept additional keys. Only after keys are
+> released should a subsequent press be recognized. This should handle debouncing of the keys.
+> Implement as a small synchronous FSM with enumerated states and glitch‑free outputs. Keep names
+> and interfaces reasonable; do not assume any hidden modules beyond what you define here.
+
+> Target device: Lattice iCE40 UP5K FPGA.
+> 
+> Write a synthesizable SystemVerilog module that cycles through keypad columns (active‑low, one at
+> a time) and samples rows (active‑low) to detect a single key at a time. Behavior:
+> 
+> Iterate columns at a suitable scan rate derived from the divided clock and sample rows. When a key
+> is detected, report a stable key code consistent with a standard 4x4 keypad layout and maintain it
+> while the key remains pressed. Provide a boolean signal indicating whether any key is currently
+> pressed. Use clean state encoding and synchronous logic; avoid combinational feedback and latches.
+
+> Target device: Lattice iCE40 UP5K FPGA with internal oscillator as the root clock source.
+> 
+> Write a top‑level SystemVerilog module that instantiates the scanner and one‑shot modules, shifts
+> the last two keys (older ← most recent; most recent ← new), and drives a multiplexed two‑digit
+> seven‑segment display. Requirements:
+> 
+> Update the displayed digits only when a new key is registered. Ensure equal apparent brightness
+> and no visible flicker. Keep all logic synthesizable and synchronous; use idiomatic SystemVerilog
+> constructs. Provide any small clock‑enable or divider logic you need. You can also assume that a
+> sevenSegment module exists that takes a 4 bit input and outputs the 7 segments.
+
+::: {.callout-note collapse="true"}
+## Second Prompt AI Responses: Google Gemini Free (no thinking)
+
+Here is the complete SystemVerilog module for key debouncing, edge detection, and release
+validation. It uses a synchronous state machine paired with a counter-based debouncer to ensure
+single-cycle, glitch-free key registration.
+
+```systemverilog
+module keypad_oneshot #(
+    parameter int CLK_FREQ_HZ = 12_000_000, // 12 MHz default for iCE40
+    parameter int DEBOUNCE_MS = 10          // 10 ms debounce time
+)(
+    input  logic       clk,
+    input  logic       rst_n,
+    input  logic       raw_key_valid, // 1 when any key is currently detected pressed
+    input  logic [3:0] raw_key_code,  // Active key code from scanner
+    output logic       new_key_strobe, // 1-cycle pulse when a new key is accepted
+    output logic [3:0] key_code        // Registered key code associated with strobe
+);
+
+    // Calculate count threshold for debouncing
+    localparam int DEBOUNCE_CYCLES = (CLK_FREQ_HZ / 1000) * DEBOUNCE_MS;
+    localparam int COUNTER_WIDTH  = $clog2(DEBOUNCE_CYCLES);
+
+    // FSM State Encoding
+    typedef enum logic [1:0] {
+        IDLE        = 2'b00, // Waiting for a stable key press
+        STROBE      = 2'b01, // Generating single-cycle output pulse
+        WAIT_RELEASE= 2'b10  // Lock out until keys are fully released
+    } state_e;
+
+    state_e state_reg, state_next;
+
+    // Debounce Counter & Stable Logic
+    logic [COUNTER_WIDTH-1:0] timer_reg;
+    logic timer_max;
+    logic raw_key_valid_sync1, raw_key_valid_sync;
+
+    // Double-flop synchronizer to prevent metastability on async keypad inputs
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            raw_key_valid_sync1 <= 1'b0;
+            raw_key_valid_sync  <= 1'b0;
+        end else begin
+            raw_key_valid_sync1 <= raw_key_valid;
+            raw_key_valid_sync  <= raw_key_valid_sync1;
+        end
+    end
+
+    // Debounce Timer Logic
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            timer_reg <= '0;
+        end else begin
+            // Reset timer whenever the key state transitions, otherwise count up to MAX
+            if ((state_reg == IDLE && !raw_key_valid_sync) || 
+                (state_reg == WAIT_RELEASE && raw_key_valid_sync)) begin
+                timer_reg <= '0;
+            end else if (!timer_max) begin
+                timer_reg <= timer_reg + 1'b1;
+            end
+        end
+    end
+
+    assign timer_max = (timer_reg >= DEBOUNCE_CYCLES - 1);
+
+    // FSM State Register & Output Registering (Glitch-Free)
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state_reg      <= IDLE;
+            new_key_strobe <= 1'b0;
+            key_code       <= 4'h0;
+        end else begin
+            state_reg <= state_next;
+
+            // Registered outputs derived strictly from state transitions
+            if (state_reg == IDLE && state_next == STROBE) begin
+                new_key_strobe <= 1'b1;
+                key_code       <= raw_key_code; // Sample key code on valid press
+            end else begin
+                new_key_strobe <= 1 me0; // Auto-clear after 1 cycle
+            end
+        end
+    end
+
+    // FSM Next-State Combinational Logic
+    always_comb begin
+        state_next = state_reg;
+
+        case (state_reg)
+            IDLE: begin
+                // Require key press to remain stable for DEBOUNCE_MS before moving on
+                if (raw_key_valid_sync && timer_max) begin
+                    state_next = STROBE;
+                end
+            end
+
+            STROBE: begin
+                // Transition immediately after 1 cycle
+                state_next = WAIT_RELEASE;
+            end
+
+            WAIT_RELEASE: begin
+                // Require key release to remain stable for DEBOUNCE_MS before returning to IDLE
+                if (!raw_key_valid_sync && timer_max) begin
+                    state_next = IDLE;
+                end
+            end
+
+            default: state_next = IDLE;
+        endcase
+    end
+
+endmodule
+```
+
+### Key Architectural Details
+- **Metastability Guard:** Keypad inputs originate from mechanical switches. A 2-stage synchronizer
+  (`raw_key_valid_sync`) guards the internal state logic against asynchronous setup/hold violations.
+- **Symmetrical Debouncing:** The `timer_reg` counter validates both initial key closures (press
+  debounce) and mechanical bounces upon opening (release debounce).
+- **Glitch-Free Registered Outputs:** Both `new_key_strobe` and `key_code` are assigned inside a
+  sequential (`always_ff`) block. `new_key_strobe` asserts for exactly one clock cycle as the FSM
+  moves from `IDLE` to `STROBE`.
+- **Single-Key Lockout:** The state machine transitions to `WAIT_RELEASE` immediately following the
+  strobe cycle and holds there until the keypad returns to an unpressed state (`raw_key_valid = 0`)
+  for the full debounce duration.
+
+*****
+
+Here is the complete SystemVerilog matrix scanner module designed for the Lattice iCE40 UP5K. It
+continuously drives active-low columns, samples active-low rows, decodes key presses into standard
+4x4 hex values, and pauses scanning while a key is held to maintain a stable output.
+
+```systemverilog
+module keypad_scanner #(
+    parameter int CLK_FREQ_HZ = 12_000_000, // 12 MHz default iCE40 clock
+    parameter int SCAN_FREQ_HZ = 1000       // 1 kHz scan rate per column
+)(
+    input  logic       clk,
+    input  logic       rst_n,
+    // Matrix physical pins (Active-Low)
+    input  logic [3:0] row_pins,            // Internal pull-ups enabled in PCF
+    output logic [3:0] col_pins,            // Driven active-low one at a time
+    // Decoded Outputs
+    output logic       raw_key_valid,       // High while any key is detected pressed
+    output logic [3:0] raw_key_code         // Active key code (0-F)
+);
+
+    // Clock divider for scanning period
+    localparam int CLK_DIV_CYCLES = CLK_FREQ_HZ / SCAN_FREQ_HZ;
+    localparam int CLK_DIV_WIDTH  = $clog2(CLK_DIV_CYCLES);
+
+    logic [CLK_DIV_WIDTH-1:0] scan_timer;
+    logic scan_tick;
+
+    // Synchronizers for asynchronous row inputs
+    logic [3:0] row_sync1, row_sync2;
+
+    // Scan state registers
+    logic [1:0] col_select;
+    logic [3:0] col_pins_reg;
+    logic       key_valid_reg;
+    logic [3:0] key_code_reg;
+
+    // ------------------------------------------------------------------------
+    // 1. Clock Divider for Column Scanning
+    // ------------------------------------------------------------------------
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            scan_timer <= '0;
+            scan_tick  <= 1'b0;
+        end else begin
+            if (scan_timer >= CLK_DIV_CYCLES - 1) begin
+                scan_timer <= '0;
+                scan_tick  <= 1'b1;
+            end else begin
+                scan_timer <= scan_timer + 1'b1;
+                scan_tick  <= 1'b0;
+            end
+        end
+    end
+
+    // ------------------------------------------------------------------------
+    // 2. Double-Flop Synchronizer for Async Row Inputs
+    // ------------------------------------------------------------------------
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            row_sync1 <= 4'b1111; // Default to unpressed (pull-ups high)
+            row_sync2 <= 4'b1111;
+        end else begin
+            row_sync1 <= row_pins;
+            row_sync2 <= row_sync1;
+        end
+    end
+
+    // ------------------------------------------------------------------------
+    // 3. Matrix Column Cycling & Key Capture Logic
+    // ------------------------------------------------------------------------
+    // Row detection logic: any active-low row bit zero indicates a key press
+    logic key_detected_current_col;
+    assign key_detected_current_col = (row_sync2 != 4'b1111);
+
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            col_select    <= 2 me0;
+            col_pins_reg  <= 4'b1110; // Col 0 active low
+            key_valid_reg <= 1'b0;
+            key_code_reg  <= 4'h0;
+        end else begin
+            // Sample rows and update scan position on each tick
+            if (scan_tick) begin
+                if (key_detected_current_col) begin
+                    // Key detected on active column: hold column active and output key code
+                    key_valid_reg <= 1'b1;
+                    
+                    case ({col_select, row_sync2})
+                        // Col 0 (Active-Low Column 0: 4'b1110)
+                        6'b00_1110: key_code_reg <= 4'h1; // Row 0 -> '1'
+                        6'b00_1101: key_code_reg <= 4'h4; // Row 1 -> '4'
+                        6'b00_1011: key_code_reg <= 4'h7; // Row 2 -> '7'
+                        6'b00_0111: key_code_reg <= 4'h0; // Row 3 -> '0'
+
+                        // Col 1 (Active-Low Column 1: 4'b1101)
+                        6'b01_1110: key_code_reg <= 4'h2; // Row 0 -> '2'
+                        6'b01_1101: key_code_reg <= 4'h5; // Row 1 -> '5'
+                        6'b01_1011: key_code_reg <= 4'h8; // Row 2 -> '8'
+                        6'b01_0111: key_code_reg <= 4'hF; // Row 3 -> 'F' / 'A'
+
+                        // Col 2 (Active-Low Column 2: 4'b1011)
+                        6'b10_1110: key_code_reg <= 4'h3; // Row 0 -> '3'
+                        6'b10_1101: key_code_reg <= 4'h6; // Row 1 -> '6'
+                        6'b10_1011: key_code_reg <= 4'h9; // Row 2 -> '9'
+                        6'b10_0111: key_code_reg <= 4'hE; // Row 3 -> 'E' / 'B'
+
+                        // Col 3 (Active-Low Column 3: 4'b0111)
+                        6'b11_1110: key_code_reg <= 4'hA; // Row 0 -> 'A' / 'C'
+                        6'b11_1101: key_code_reg <= 4'hB; // Row 1 -> 'B' / 'D'
+                        6'b11_1011: key_code_reg <= 4'hC; // Row 2 -> 'C' / '*'
+                        6'b11_0111: key_code_reg <= 4'hD; // Row 3 -> 'D' / '#'
+
+                        default:    key_code_reg <= key_code_reg;
+                    endcase
+
+                end else if (key_valid_reg) begin
+                    // Key was previously pressed on this column but has now been released
+                    key_valid_reg <= 1'b0;
+
+                end else begin
+                    // No key active: advance to next active-low column
+                    col_select   <= col_select + 1'b1;
+                    col_pins_reg <= ~(4'b0001 << (col_select + 1'b1));
+                end
+            end
+        end
+    end
+
+    // Drive output ports from registers
+    assign col_pins      = col_pins_reg;
+    assign raw_key_valid = key_valid_reg;
+    assign raw_key_code  = key_code_reg;
+
+endmodule
+```
+
+### Key Design Elements
+- **Standard Keypad Mapping:** Decodes standard 4x4 matrix layouts (0–9, A–F) based on active-low
+  row/column grid intersections.
+- **Scan Pause on Detection:** When a row activation is detected, scanning pauses on that active
+  column.
+  `raw_key_valid` stays high and `raw_key_code` holds stable as long as the key is pressed. 
+- **iCE40 Pin
+  Setup:** Rows require internal pull-up resistors, which can be specified in your Physical
+  Constraints File (`.pcf`) as `set_io -pullup yes row_pins[*]`. 
+- **Metastability Safety:** Mechanical contact bounces entering `row_pins` pass through a 2-stage
+  synchronizer (`row_sync1`, `row_sync2`) before evaluation.
+
+*****
+
+Here is the complete top-level SystemVerilog module targeting the Lattice iCE40 UP5K FPGA. It uses
+the iCE40 primitive `SB_HFOSC` to generate an internal clock, integrates the keypad scanner and
+one-shot modules, maintains a 2-digit shift register, and time-multiplexes a dual 7-segment display
+for flicker-free operation.
+
+```systemverilog
+module keypad_top (
+    // Matrix physical pins (active-low)
+    input  logic [3:0] row_pins,
+    output logic [3:0] col_pins,
+
+    // Dual 7-segment physical pins (active-low)
+    output logic [6:0] seg_pins,  // Segments A-G
+    output logic [1:0] digit_sel  // Digit select drivers (active-low)
+);
+
+    // =========================================================================
+    // 1. Clock Generation via iCE40 High-Frequency Internal Oscillator
+    // =========================================================================
+    logic clk;
+
+    // SB_HFOSC Primitive Configured for 12 MHz Output (CLKHF_DIV = "0b10")
+    SB_HFOSC #(
+        .CLKHF_DIV("0b10")
+    ) u_hfosc (
+        .CLKHFPU(1'b1), // Power up oscillator
+        .CLKHFEN(1 me1), // Enable oscillator output
+        .CLKHF(clk)     // ~12 MHz output clock
+    );
+
+    // Synchronous Reset Generator
+    logic [3:0] rst_cnt = 4'h0;
+    logic       rst_n;
+
+    always_ff @(posedge clk) begin
+        if (rst_cnt != 4'hF) begin
+            rst_cnt <= rst_cnt + 1'b1;
+            rst_n   <= 1'b0;
+        end else begin
+            rst_n   <= 1'b1;
+        end
+    end
+
+    // =========================================================================
+    // 2. Keypad Subsystem Instantiations
+    // =========================================================================
+    logic       raw_key_valid;
+    logic [3:0] raw_key_code;
+    logic       new_key_strobe;
+    logic [3:0] key_code;
+
+    // Continuous Matrix Scanner
+    keypad_scanner #(
+        .CLK_FREQ_HZ(12_000_000),
+        .SCAN_FREQ_HZ(1000)
+    ) u_scanner (
+        .clk          (clk),
+        .rst_n        (rst_n),
+        .row_pins     (row_pins),
+        .col_pins     (col_pins),
+        .raw_key_valid(raw_key_valid),
+        .raw_key_code (raw_key_code)
+    );
+
+    // Debouncer & One-Shot Registration
+    keypad_oneshot #(
+        .CLK_FREQ_HZ(12_000_000),
+        .DEBOUNCE_MS(10)
+    ) u_oneshot (
+        .clk           (clk),
+        .rst_n         (rst_n),
+        .raw_key_valid (raw_key_valid),
+        .raw_key_code  (raw_key_code),
+        .new_key_strobe(new_key_strobe),
+        .key_code      (key_code)
+    );
+
+    // =========================================================================
+    // 3. 2-Digit History Shift Register
+    // =========================================================================
+    logic [3:0] digit_recent;
+    logic [3:0] digit_older;
+
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            digit_recent <= 4'h0;
+            digit_older  <= 4'h0;
+        end else if (new_key_strobe) begin
+            digit_older  <= digit_recent; // Shift old digit
+            digit_recent <= key_code;    // Insert newest digit
+        end
+    end
+
+    // =========================================================================
+    // 4. Time-Multiplexed Display Driver (~200 Hz Refresh Rate)
+    // =========================================================================
+    // 12 MHz / 200 Hz / 2 digits = 30,000 cycles per digit state (~600 Hz toggle)
+    localparam int MUX_DIV_CYCLES = 30_000;
+    localparam int MUX_DIV_WIDTH  = $clog2(MUX_DIV_CYCLES);
+
+    logic [MUX_DIV_WIDTH-1:0] mux_timer;
+    logic                     mux_sel; // 0 = Digit 0 (older), 1 = Digit 1 (recent)
+
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            mux_timer <= '0;
+            mux_sel   <= 1'b0;
+        end else begin
+            if (mux_timer >= MUX_DIV_CYCLES - 1) begin
+                mux_timer <= '0;
+                mux_sel   <= ~mux_sel; // Swap active digit
+            end else begin
+                mux_timer <= mux_timer + 1'b1;
+            end
+        end
+    end
+
+    // Digit Selection & Active Hex Data Muxing
+    logic [3:0] current_hex;
+
+    always_comb begin
+        if (mux_sel) begin
+            digit_sel   = 2'b10;        // Select Digit 1 (active-low driver)
+            current_hex = digit_recent;
+        end else begin
+            digit_sel   = 2'b01;        // Select Digit 0 (active-low driver)
+            current_hex = digit_older;
+        end
+    end
+
+    // 7-Segment Decoder Conversion (Common Anode / Active-Low Segments)
+    sevenSegment u_decoder (
+        .hex_digit(current_hex),
+        .seg_out  (seg_pins)
+    );
+
+endmodule
+```
+
+### Module Architecture & Features
+1. Integrated `SB_HFOSC` Oscillator: Instantiates the built-in iCE40 oscillator primitive configured
+   for 12 MHz. An internal power-on reset generator (`rst_cnt`) safely releases the system from
+   reset after power-up.
+2. Key Code Shift Logic: When `new_key_strobe` fires for a single cycle, `digit_older` receives the
+   value of `digit_recent`, and `digit_recent` absorbs the new `key_code`. The display registers
+   remain untouched until a validated key press occurs.
+3. Flicker-Free Display Driver: Uses a 30,000-cycle timer to toggle digit enablement at 600 Hz (300
+   Hz per digit frame). This eliminates visible flicker and maintains uniform brightness across both
+   digits.
+4. Physical Pin Constraints (`.pcf`): Pin drivers assume active-low signals for the matrix keypad rows
+   (requiring internal pull-ups enabled in `.pcf`) and active-low digit/segment drives typical of
+   common-anode 7-segment displays.
+:::
+
+This output is a bit better, and borderline impressive. It seems like the LLM does really well with
+these medium-length context windows. That being said, the code still seems a bit obtuse for the
+conventions that we have been using in this course. The LLM appears to refuse to write modules
+unless explicitly asked to do so. All of my points on discipline still stand.
+
+Given more time, I want to give `opencode` and `qwen3.5` a try. Having the LLM repeatedly iterate on
+its output might be fruitful
+
+:::{.content-hidden}
+#### Full AI Chat Transcript {#sec-aitrans}
+
+::::: {.callout-note collapse="true"}
+## Full chat transcript: Qwen3:14b running through ollama on my Laptop
+
+:::::
+:::
