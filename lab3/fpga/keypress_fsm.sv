@@ -1,8 +1,16 @@
 /* Rai Wandeler rwandeler@hmc.edu 2026-09-21
 
-the fsm used to have this logic (no keys pressed), but it does not adhere to the spec:
-onekeypressed_nodisp: if ((|key_status) == 0)                                 state <= read_keypad;
-kept here for historical reasons
+ This module handles all of the Lab 3 general keypress logic. Given the status of a list of keys,
+ this module determines whether a new keypress has been registered and then sets the variable `display_next_char`
+ HIGH.
+ 
+ It ignores multiple keypresses until only one key is pressed, handles single keypresses as expected, and handles transitions
+ into multiple keypresses through roll-off (which technically allows for the same key to be registered twice).
+
+ This FSM used to return back to normal as soon as no keys were pressed:
+ ```(onekeypressed_nodisp: if ((|key_status) == 0) state <= read_keypad;)```
+ which effectively would ignore all multi-press conditions and only recognize single keypresses. This violated the Lab 3 specification
+ and was therefore removed.
 */
 
 module keypress_fsm 
@@ -11,7 +19,7 @@ module keypress_fsm
      input logic [WIDTH-1:0] key_status,
      output logic display_next_char);
 
-    logic one_key_pressed; // 1 clock cycle delay for this logic to avoid timing violations & increase legibility
+    logic one_key_pressed; // 1 clock cycle delay for this logic to avoid FPGA timing constraint violations & increase legibility
     always_ff @(posedge clk) begin
         if (reset) one_key_pressed <= 'b0;
         else one_key_pressed <= ((key_status != 0) && ((key_status & (key_status - 1)) == 0));

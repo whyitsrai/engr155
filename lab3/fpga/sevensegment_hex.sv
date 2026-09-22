@@ -12,9 +12,9 @@
       +---+
         D
 
-    where segments = {G, F, E, D, C, B, A}
+    where `segments` = {G, F, E, D, C, B, A}
 
-In this case, a HIGH ('b1) output means that a given segment is illuminated and vice versa
+In this case, a HIGH ('b1) output means that a given segment is supposed to be illuminated
 */
 
 module sevensegment_hex(input logic [3:0] digit,
@@ -43,4 +43,3 @@ module sevensegment_hex(input logic [3:0] digit,
     end
 
 endmodule
-

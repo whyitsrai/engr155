@@ -6,7 +6,10 @@ module keypad_reader_tb();
     logic [3:0] col;
     logic [3:0][3:0] key_status;
 
-    keypad_reader #(4, 4) dut (clk, reset, enable, col, row, key_status);
+    logic [19:0] internal_count_value; // here because extra counters all need to be forced together
+                                       // weird bullshit
+
+    keypad_reader #(4,4, 65536, 4) dut(clk, reset, enable, col, row, key_status);
 
     always begin
         clk = 0; #5;
@@ -123,88 +126,91 @@ module keypad_reader_tb();
             $display("PASSES! Keypad counter frozen when disabled at %0t", $time);
         else
             $error("FAILED! Keypad counter not frozen when disabled at %0t: value is %0d, 100 cycles ago count was", $time, dut.scan_count, $past(dut.scan_count, 10, 'b1, @(posedge clk)));
-
+        #5;
+        reset = 1;
+        #10;
+        reset = 0;
         // SINGLE/MULTIPLE KEYPRESS TESTING
+        force dut.single_row_processing[0].col_debouncer.count = internal_count_value;
+        force dut.single_row_processing[1].col_debouncer.count = internal_count_value;
+        force dut.single_row_processing[2].col_debouncer.count = internal_count_value;
+        force dut.single_row_processing[3].col_debouncer.count = internal_count_value;
+        force dut.scan_count = internal_count_value;
         enable = 1;
         col = 'b0001;
-        force dut.scan_count = 'd65535;
+
+        internal_count_value = 'd65535;
         #170;
         assert(key_status == 'b0000_0000_0000_0001)
             $display("PASSES! key row 0 col 0 pressed at %0t", $time);
         else
             $display("FAILED! key row 0 col 0 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
         col = 'b0000;
-        #80;
-        assert(key_status == 'b0000_0000_0000_0001)
-            $display("PASSES! key row 0 col 0 still pressed at %0t", $time);
-        else
-            $display("FAILED! key row 0 col 0 not still pressed at %0t. Key(s) pressed: %b", $time, key_status);
-        #90;
+        #150;
         assert(key_status == 'b0000_0000_0000_0000)
             $display("PASSES! key row 0 col 0 not pressed at %0t", $time);
         else
             $display("FAILED! key row 0 col 0 not not pressed at %0t. Key(s) pressed: %b", $time, key_status);
         col = 'b1111;
-        #80;
-        assert(key_status == 'b0000_0000_0000_0000)
-            $display("PASSES! key row 0 col 0 not pressed at %0t", $time);
-        else
-            $display("FAILED! key row 0 col 0 not not pressed at %0t. Key(s) pressed: %b", $time, key_status);
-        #90;
+        #150;
         assert(key_status == 'b0000_0000_0000_1111)
             $display("PASSES! key row 0 col 0..=3 pressed at %0t", $time);
         else
             $display("FAILED! key row 0 col 0..=3 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
         col = 'b1001;
-        force dut.scan_count = 'd65536; // expect nothing to happen
+        internal_count_value = 'd65536; // expect nothing to happen
         #98;
         assert(key_status == 'b0000_0000_0000_1111)
             $display("PASSES! key row 0 col 0..=3 pressed at %0t", $time);
         else
             $display("FAILED! key row 0 col 0..=3 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
-        force dut.scan_count = 'd262143;
+        internal_count_value = 'd262143;
         #170;
         assert(key_status == 'b1001_0000_0000_1111)
             $display("PASSES! key row 0,3 col 0..=3,0,3 pressed at %0t", $time);
         else
             $display("FAILED! key row 0,3 col 0..=3,0,3 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
         col = 'b1111;
-        #80;
-        assert(key_status == 'b1001_0000_0000_1111)
-            $display("PASSES! key row 0,3 col 0..=3,0,3 pressed at %0t", $time);
-        else
-            $display("FAILED! key row 0,3 col 0..=3,0,3 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
-        #90;
+        #170;
         assert(key_status == 'b1111_0000_0000_1111)
             $display("PASSES! key row 0,3 col 0..=3 pressed at %0t", $time);
         else
             $display("FAILED! key row 0,3 col 0..=3 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
-        force dut.scan_count = 'd131071;
+        internal_count_value = 'd131071;
         #170;
         assert(key_status == 'b1111_0000_1111_1111)
             $display("PASSES! key row 0,1,3 col 0..=3 pressed at %0t", $time);
         else
             $display("FAILED! key row 0,1,3 col 0..=3 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
-        force dut.scan_count = 'd196607;
+        internal_count_value = 'd196607;
         #170;
         assert(key_status == 'b1111_1111_1111_1111)
             $display("PASSES! key row 0..=3 col 0..=3 pressed at %0t", $time);
         else
             $display("FAILED! key row 0..=3 col 0..=3 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
         col = 'b0000;
-        force dut.scan_count = 'd0;
+        #50;
+        assert(key_status == 'b1111_1111_1111_1111)
+            $display("PASSES! key row 0..=3 col 0..=3 pressed at %0t (debounce/sync exists)", $time);
+        else
+            $display("FAILED! key row 0..=3 col 0..=3 not pressed at %0t (debounce/sync issue). Key(s) pressed: %b", $time, key_status);
+        internal_count_value = 'd0;
         #170;
         assert(key_status == 'b1111_1111_1111_1111)
             $display("PASSES! key row 0..=3 col 0..=3 pressed at %0t", $time);
         else
             $display("FAILED! key row 0..=3 col 0..=3 not pressed at %0t. Key(s) pressed: %b", $time, key_status);
         #170;
-        force dut.scan_count = 'd65535;
+        internal_count_value = 'd65535;
         #170;
-        force dut.scan_count = 'd131071;
+        internal_count_value = 'd131071;
         #170;
-        force dut.scan_count = 'd196607;
+        internal_count_value = 'd196607;
         #170;
+        release dut.single_row_processing[0].col_debouncer.count;
+        release dut.single_row_processing[1].col_debouncer.count;
+        release dut.single_row_processing[2].col_debouncer.count;
+        release dut.single_row_processing[3].col_debouncer.count;
         release dut.scan_count;
         assert(key_status == 'b1111_0000_0000_0000)
             $display("PASSES! key row 0..=2 col 0..=3 pressed at %0t", $time);
@@ -217,6 +223,127 @@ module keypad_reader_tb();
         else
             $error("FAILED! key status is not zero at %0t after reset", $time);
 
+        #10;
+        force dut.single_row_processing[0].col_debouncer.count = internal_count_value;
+        force dut.single_row_processing[1].col_debouncer.count = internal_count_value;
+        force dut.single_row_processing[2].col_debouncer.count = internal_count_value;
+        force dut.single_row_processing[3].col_debouncer.count = internal_count_value;
+        force dut.scan_count = internal_count_value;
+
+        internal_count_value = 0;
+        #10;
+        reset=1;
+        #10;
+        reset=0;
+        col = 'b0001; // pressing the key 1 (assuming row 1)
+        #10;
+        internal_count_value = 65534; // about to trigger debouncer enable
+        #10;
+        internal_count_value = 65535; // take snapshot
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535;
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535;
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 12767; 
+        #10;
+        col = 'b0000; // key released in middle of count
+        #10;
+        internal_count_value = 32767; // take snapshot
+        #200;
+        assert(key_status == 'b0000_0000_0000_0000) $display("PASSED! Switch bounced and therefore did not register");
+        else $error("FAILED! Switch bounced but keypresses were registered as %b", key_status);
+
+        internal_count_value = 0;
+        #10;
+        reset=1;
+        #10;
+        reset=0;
+        col = 'b0001; // pressing the key 1 (assuming row 1)
+        #10;
+        internal_count_value = 65534; // about to trigger debouncer enable
+        #10;
+        internal_count_value = 65535; // take snapshot
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535;
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535;
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535; // these keypresses appear right on the system clock
+        #200;
+        assert(key_status == 'b0000_0000_0000_0001) $display("PASSED! Switch did not bounce and therefore did register");
+        else $error("FAILED! Switch did not bounce but keypresses were registered as %b", key_status);
+
+        internal_count_value = 0;
+        #10;
+        reset=1;
+        #10;
+        reset=0;
+        col = 'b0001; // pressing the key 1 (assuming row 1)
+        #10;
+        internal_count_value = 65534; // about to trigger debouncer enable
+        #10;
+        internal_count_value = 65535; // take snapshot
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535;
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535;
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535; // these keypresses appear right on the system clock
+        #10;
+        col = 'b0000; // key released right at snapshot time
+        #10;
+        #200;
+        assert(key_status == 'b0000_0000_0000_0000) $display("PASSED! Switch bounced and therefore did not register");
+        else $error("FAILED! Switch bounced but keypresses were registered as %b", key_status);
+
+        internal_count_value = 0;
+        #10;
+        reset=1;
+        #10;
+        reset=0;
+        col = 'b0001; // pressing the key 1 (assuming row 1)
+        #10;
+        internal_count_value = 65534; // about to trigger debouncer enable
+        #10;
+        internal_count_value = 65535; // take snapshot
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535;
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535;
+        #10;
+        internal_count_value = 65534;
+        #10;
+        internal_count_value = 65535; // these keypresses appear right on the system clock
+        #10;
+        internal_count_value = 65538; // keypress still there during start of next row scan
+        #30;
+        col = 'b0000; // weird "phantom signal"
+        #100;
+        assert(key_status == 'b0000_0000_0000_0000) $display("PASSED! Phantom signal does not fuck things up");
+        else $error("FAILED! Phantom signal fucks thing sup as keypresses were registered as %b", key_status);
 
        $stop;
     end

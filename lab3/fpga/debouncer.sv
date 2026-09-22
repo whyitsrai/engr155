@@ -1,14 +1,16 @@
-// NO RESET
+/* Rai Wandeler rwandeler@hmc.edu 2026-09-22
 
-// get one debounced row at a time (through the generate block)
-//      this will make the code as neat and BEAUTIFUL as possible
-//
-// same thing for the synchronizer
-//
-//
-// the debouncer takes in a whole row of keys (array of keys)
-//
-// then it returns the status of those keys
+ This module debounces an input by sending it through a shift register of length `N_STAGES`.
+ The output is altered only when every bit of the shift register is the same (i.e. the last `N_STAGES` inputs all match);
+ in this case the output matches the value of the entire shift register (as every bit is the same). Else, the output retains its
+ old value.
+
+ The number of bits that are simultaneously debounced is set by the `N_BITS` parameter.
+ Lastly, `MAX_COUNT` and `TRIG_COUNT` control when and how often the shift register is advanced.
+ This can be useful to keep multiple debouncers synchronized while having them take snapshots at different times; this
+ would be necessary when an input needs to go down a different pathway at different times (is multiplexed). As an example, see
+ the Lab 3 code.
+*/
 
 module debouncer 
     #(parameter N_BITS, N_STAGES=16, MAX_COUNT, TRIG_COUNT)

@@ -22,7 +22,7 @@ module lab3_rw(input logic reset,
     // display driver
     logic[6:0] segchar;
     logic [1:0] segsel;
-    two_digit_display display(int_osc, ~reset, 'b1, display_next_char, {1'b1, next_displayed_char}, segsel, segchar);
+    two_digit_display display(int_osc, ~reset, display_next_char, {1'b1, next_displayed_char}, segsel, segchar);
     assign segment_char = ~segchar; // pull down to be on
     assign segment_sel = ~segsel; // pull down to be on
 

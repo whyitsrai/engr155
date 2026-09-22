@@ -1,5 +1,16 @@
+/* Rai Wandeler rwandeler@hmc.edu 2026-09-22
+
+ This module is specific to this lab (lab3) and is mostly comprised of functionality that was in the top module in lab 2.
+ It stores the two current characters displayed by the two-digit seven segment display in a shift register that is updated
+ whenever `update` is high.
+ This module additionally multiplexes the seven segment display at around 100Hz (by turning the common anodes/cathodes on/off
+ for the individual digits), minimizing the required number of pins for driving the display.
+ Lastly, this module allows for the individual digits to be "turned off". This is controlled by the MSB of the `next_display_data`
+ variable (and also gets propagated down). If the MSB is 1, the digit is on.
+*/
+
 module two_digit_display 
-    (input logic clk, reset, enable, update,
+    (input logic clk, reset, update,
      input logic [4:0] new_display_data,
      output logic [1:0] segment_sel,
      output logic [6:0] segment_char);

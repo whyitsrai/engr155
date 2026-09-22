@@ -1,9 +1,8 @@
 /* Rai Wandeler rwandeler@hmc.edu 2026-09-21
 
-This module counts from 0 to CMAX. When enable is HIGH, the counter counts up by 1 every clock cycle
-(positive edge). When enable is LOW, the current counter value is retained and continues to be
-output When reset is triggered, the counter resets to 0 at the next positive clock edge (synchronous)
-.
+This module counts from 0 to `CMAX`. When `enable` is HIGH, the counter counts up by 1 every clock cycle
+(positive edge). When `enable` is LOW, the current counter value is retained and continues to be
+output When `reset` is triggered, the counter resets to 0 at the next positive clock edge (synchronous).
 */
 
 module counter #(CMAX = 32'b1)

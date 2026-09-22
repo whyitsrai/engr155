@@ -1,16 +1,14 @@
 /* Rai Wandeler rwandeler@hmc.edu 2026-09-20
 
- This module takes in a 4-bit number and generated the required signals to display that 4-bit
- number as a digit on a 7-segment display. The outputs for the seven-segment display are ascribed as
- follows:
-
-
- This is designed with a bunch of if statements in order to reduce the hardware expense (with the drawback of invalid inputs having unknowable outputs)
+ This module is specific to this lab (lab3) and should be used with caution outside of this context.
+ The module takes in a keymap of every (row by row) singular key that is being pressed and outputs the
+ appropriate binary encoding of the hexadecimal number that this key represents on the keypad.
+ 
+ IMPORTANT: AN INPUT KEYMAP THAT DOES NOT HAVE A ONE-HOT ENCODING WILL RESULT IN UNDEFINED BEHAVIOUR!
+ This is designed with a bunch of if statements in order to reduce the hardware expense (with the drawback of invalid inputs having unknowable outputs).
 */
 
-// TODO parametrize this and make it generalized (maybe??)
-
-module onehot_to_bin(input logic [15:0] keymap, // use to be [3:0][3:0]
+module onehot_to_bin(input logic [15:0] keymap,
                      output logic [3:0] encoded); // binary encoding
 
     always_comb begin
@@ -35,5 +33,3 @@ module onehot_to_bin(input logic [15:0] keymap, // use to be [3:0][3:0]
     end
 
 endmodule
-
-// ensure that this style is borderline acceptable
