@@ -1,10 +1,24 @@
 [
   {
-    "objectID": "posts/hello_world.html",
-    "href": "posts/hello_world.html",
-    "title": "Hello World",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Rai’s Engr 155 Blog section",
     "section": "",
-    "text": "___   _                        _   _           _\n|_ _| | |__   ___  _ __   ___  | |_| |__   __ _| |_\n | |  | '_ \\ / _ \\| '_ \\ / _ \\ | __| '_ \\ / _` | __|\n | |  | | | | (_) | |_) |  __/ | |_| | | | (_| | |_\n|___| |_| |_|\\___/| .__/ \\___|  \\__|_| |_|\\__,_|\\__|\n                  |_|\n _        _    _                         _                  ____\n| |_ __ _| | _(_)_ __   __ _   _ __ ___ (_) ___ _ __ ___   |  _ \\ ___\n| __/ _` | |/ / | '_ \\ / _` | | '_ ` _ \\| |/ __| '__/ _ \\  | |_) / __|\n| || (_| |   &lt;| | | | | (_| | | | | | | | | (__| | | (_) | |  __/\\__ \\\n \\__\\__,_|_|\\_\\_|_| |_|\\__, | |_| |_| |_|_|\\___|_|  \\___/  |_|   |___/\n                       |___/\n                                 _\n__      ____ _ ___   _ __   ___ | |_    __ _\n\\ \\ /\\ / / _` / __| | '_ \\ / _ \\| __|  / _` |\n \\ V  V / (_| \\__ \\ | | | | (_) | |_  | (_| |\n  \\_/\\_/ \\__,_|___/ |_| |_|\\___/ \\__|  \\__,_|\n\n           _     _        _\n _ __ ___ (_)___| |_ __ _| | _____\n| '_ ` _ \\| / __| __/ _` | |/ / _ \\\n| | | | | | \\__ \\ || (_| |   &lt;  __/\n|_| |_| |_|_|___/\\__\\__,_|_|\\_\\___|\n\nSome arbitrary text in this here funny post\n\n\n\n\n\n\nTipAs a wise one once said:\n\n\n\nThat’s all folks"
+    "text": "Hello World\n\n\n\n\n\n\n\n\nRai Wandeler\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Rai’s HMC Micro-Processor Design Class Portflio",
+    "section": "",
+    "text": "The conductor called “all aboard” in the middle of me taking this photo\nRai Wandeler is a Junior Engineering major at Harvey Mudd College who has in their folly decided to delve into the deep world of magic electronics. This is where this website comes into play. As a part of the Microprocessor Systems: Design & Applications class, students progress and experience is to be documented in a personal blog. This will outline my progress in the various labs and any other stuff that I chose to write here over time.\nOutside of this class I enjoy theatre and various engineering projects. I love repairing machines, photography, talking about larger topics, and making stuff."
+  },
+  {
+    "objectID": "index.html#this-site",
+    "href": "index.html#this-site",
+    "title": "Rai’s HMC Micro-Processor Design Class Portflio",
+    "section": "This Site",
+    "text": "This Site\n\nMy Github repository for this class\n\n\nLinks pertaining to Engr155\n\nCourse Website\nCourse Github repository\nSTM32L432KC Datasheet\nSTM32L432KC Reference Manual\nSTM32 Nucleo-32 User Manual\niCE40 UltraPlus Family Data Sheet\niCE40 Oscillator Usage Guide\niCE40 SPRAM Usage Guide\nUPduino Documentation"
   },
   {
     "objectID": "labs/lab1.html",
@@ -56,74 +70,39 @@
     "text": "Footnotes\n\n\nThis was done on the rising and falling edge of the oscillator. Though this does technically test the functionality of the module, it might be better to trigger it on every simulation step by using an always block inside the test bench.↩︎\nI have a video of an oscilloscope measurement of the oscillator being a precise 2.4 Hz. I am not going to put this here. It is 3 AM and is not required material↩︎"
   },
   {
-    "objectID": "labs/lab_overview.html#lab-1---board-assembly-and-testing",
-    "href": "labs/lab_overview.html#lab-1---board-assembly-and-testing",
-    "title": "Engr 155 Labs Overview",
-    "section": "Lab 1 - Board Assembly and Testing",
-    "text": "Lab 1 - Board Assembly and Testing"
-  },
-  {
-    "objectID": "labs/lab_overview.html#lab-2---multiplexed-7-segment-display",
-    "href": "labs/lab_overview.html#lab-2---multiplexed-7-segment-display",
-    "title": "Engr 155 Labs Overview",
-    "section": "Lab 2 - Multiplexed 7-Segment Display",
-    "text": "Lab 2 - Multiplexed 7-Segment Display"
-  },
-  {
-    "objectID": "labs/lab_overview.html#lab-3---keypad-scanner",
-    "href": "labs/lab_overview.html#lab-3---keypad-scanner",
-    "title": "Engr 155 Labs Overview",
-    "section": "Lab 3 - Keypad Scanner",
-    "text": "Lab 3 - Keypad Scanner"
-  },
-  {
-    "objectID": "labs/lab_overview.html#lab-4---digital-audio",
-    "href": "labs/lab_overview.html#lab-4---digital-audio",
-    "title": "Engr 155 Labs Overview",
-    "section": "Lab 4 - Digital Audio",
-    "text": "Lab 4 - Digital Audio"
-  },
-  {
-    "objectID": "labs/lab_overview.html#lab-5---interrupts",
-    "href": "labs/lab_overview.html#lab-5---interrupts",
-    "title": "Engr 155 Labs Overview",
-    "section": "Lab 5 - Interrupts",
-    "text": "Lab 5 - Interrupts"
-  },
-  {
-    "objectID": "labs/lab_overview.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
-    "href": "labs/lab_overview.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
-    "title": "Engr 155 Labs Overview",
-    "section": "Lab 6 - The Internet of Things and Serial Peripheral Interface",
-    "text": "Lab 6 - The Internet of Things and Serial Peripheral Interface"
-  },
-  {
-    "objectID": "labs/lab_overview.html#lab-7---the-advanced-encryption-standard-aes",
-    "href": "labs/lab_overview.html#lab-7---the-advanced-encryption-standard-aes",
-    "title": "Engr 155 Labs Overview",
-    "section": "Lab 7 - The Advanced Encryption Standard (AES)",
-    "text": "Lab 7 - The Advanced Encryption Standard (AES)"
-  },
-  {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Rai’s Engr 155 Blog section",
+    "objectID": "Notes.html",
+    "href": "Notes.html",
+    "title": "2026-09-15",
     "section": "",
-    "text": "Hello World\n\n\n\n\n\n\n\n\nRai Wandeler\n\n\n\n\n\nNo matching items"
+    "text": "embedded systems collide with the real world\nAnalog design for Digital\nsquare with x is the symbol for the pin\nReceive side of a chip is basically a capacitor\nProgrammable pull-up and pull-down switches\n\n\\[ \\frac{V_\\text{dd} - V_\\text{on}}{R_s} + R_d \\]\n\nDouble-check pin current limit!!! (probably around 8mA)\nMake sure to learn idiomatic system verilog"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Rai’s HMC Micro-Processor Design Class Portflio",
+    "objectID": "Notes.html#section",
+    "href": "Notes.html#section",
+    "title": "2026-09-15",
     "section": "",
-    "text": "The conductor called “all aboard” in the middle of me taking this photo\nRai Wandeler is a Junior Engineering major at Harvey Mudd College who has in their folly decided to delve into the deep world of magic electronics. This is where this website comes into play. As a part of the Microprocessor Systems: Design & Applications class, students progress and experience is to be documented in a personal blog. This will outline my progress in the various labs and any other stuff that I chose to write here over time.\nOutside of this class I enjoy theatre and various engineering projects. I love repairing machines, photography, talking about larger topics, and making stuff."
+    "text": "embedded systems collide with the real world\nAnalog design for Digital\nsquare with x is the symbol for the pin\nReceive side of a chip is basically a capacitor\nProgrammable pull-up and pull-down switches\n\n\\[ \\frac{V_\\text{dd} - V_\\text{on}}{R_s} + R_d \\]\n\nDouble-check pin current limit!!! (probably around 8mA)\nMake sure to learn idiomatic system verilog"
   },
   {
-    "objectID": "index.html#this-site",
-    "href": "index.html#this-site",
-    "title": "Rai’s HMC Micro-Processor Design Class Portflio",
-    "section": "This Site",
-    "text": "This Site\n\nMy Github repository for this class\n\n\nLinks pertaining to Engr155\n\nCourse Website\nCourse Github repository\nSTM32L432KC Datasheet\nSTM32L432KC Reference Manual\nSTM32 Nucleo-32 User Manual\niCE40 UltraPlus Family Data Sheet\niCE40 Oscillator Usage Guide\niCE40 SPRAM Usage Guide\nUPduino Documentation"
+    "objectID": "Notes.html#section-1",
+    "href": "Notes.html#section-1",
+    "title": "2026-09-15",
+    "section": "2026-09-03",
+    "text": "2026-09-03\n\nCareer Capital: this is the foundation on which we can stand to be able to use AI effectively\n\nAs HMC students we have often chosen the hard way, which makes us good\nThere is a value to good old-fashioned expertise\n\nDon’t design asynchronous systems if you want to sleep\n\nhuge pita to debug\n\n\\(V_{IH}\\) is lowest input voltage logical 1\n\\(V_{IL}\\) is highest input voltage logical 0\n\\(V_{OH}\\) is lowest output voltage logical 1\n\\(V_{OL}\\) is highest output voltage logical 0\nSource and sink limits per pin vary (are not symmetric)\nalways_ff makes errors (according to standard) when you don’t imply a ff (which is not the case for always)"
+  },
+  {
+    "objectID": "Notes.html#section-2",
+    "href": "Notes.html#section-2",
+    "title": "2026-09-15",
+    "section": "2026-09-08",
+    "text": "2026-09-08\n\nSorry about Radiant licensing\nEncourage us to not pressure us to be too detailed if we don’t want to\n\nDon’t write too much for the lab report\nProse is more for others, not for the checkoffs\n\nFinish hardware by Thursday night in order to get extra hardware if necessary\n\nbasically, ensure that everything is working\n\nTry writing the block diagram prior to writing the systemverilog\nNote to self: start building with synchronous reset if possible as it is cheaper\nDon’t do pre-assignment because it can violate idioms. Just use else\nAccording to Prof. Spencer casex and casez will just make you unhappy: use case\nalways good practice to add default to case statement even if you cover every case, just in case something gets removed down the line or similar\navoid race conditions when simulating (as there is no guarantee on the different simulators)"
+  },
+  {
+    "objectID": "Notes.html#section-3",
+    "href": "Notes.html#section-3",
+    "title": "2026-09-15",
+    "section": "2026-09-10",
+    "text": "2026-09-10\n\nSynchronous Design (we love it!)\nWhen do we use FSM’s versus not\n\nSometimes when you are not thinking, the result will not be optimized\n\nGood practice to not change signals at exactly the clock edge\nEvery flop should be triggered on the same clock\n\nthis includes things that must not change every clock cycle\nfix this with an enable that is triggered at a special time\nso in this case, do weird shit with the scan frequency thing\n\ncheck count to be a special number, which triggers the enable for the flop\n\n\nDon’t just pick a bit (from a counter) and map it as an input for the flop (as a clk signal)\nSynchronizers\n\nif things go metastable (it eventually resolves, but could technically take infinitely long)\nnever want to take async input and feed it into sync system (so lab 2 for example)\n\nmight make a decision to give it async input as it will be passed through to debounce\n\n\n\nPhoton detector verilog\nmodule photon_detector(input logic clk, reset, photon,\n                       output logic photon_detected)\n\n    typedef enum logic [1:0] {no_photon, pulse, yes_photon} fsm_states;\n    fsm_states state;\n\n    // next state logic\n    always_ff @(posedge clk) begin\n        if (reset) state &lt;= no_photon;\n        else\n            case (state)\n                no_photon: if (photon=1)  state &lt;= pulse,\n                yes_photon: if (photon=0) state &lt;= no_photon,\n                pulse:                    state &lt;= yes_photon,\n                default:                  state &lt;= state,\n            endcase\n    end\n\n    always_comb\n        if (state == pulse)\n            photon_detected = 1'b1;\n        else\n            photon_detected = 1'b0;\n    end\n\nnote that the edge detector can be done much more easily with less logic\nalso note that this code is also possible, but it might be nice to seperate the next state logic flip flop logic and the combinational logic that determines what the next state will be"
   },
   {
     "objectID": "labs/lab2.html",
@@ -175,38 +154,59 @@
     "text": "Footnotes\n\n\nA PNP BJT turns on when the voltage at the base is below the voltage at the emitter. As this happens, more current is allowed to flow from the base/emitter to the collector (which is the load). This allowed current is on the order of \\(\\beta =\n100\\) times higher than the base current, but is not a precise value to rely on. For the sake of this lab, driving the BJT into it’s saturation (or completely on) region allows more than enough current to flow for our needs.↩︎\nNote that the BJT will not have any reasonable amount of current flowing into the base when the base is biased higher than 2.6 Volts as it will effectively be switched off.↩︎\nPlease don’t penalize me points-wise for using a for loop in my code. I know that the spec mentions that only assign statements are allowed, but I promise that the actual logic is also just handled by assign statements for me.↩︎"
   },
   {
-    "objectID": "Notes.html",
-    "href": "Notes.html",
-    "title": "2026-09-15",
+    "objectID": "labs/lab_overview.html#lab-1---board-assembly-and-testing",
+    "href": "labs/lab_overview.html#lab-1---board-assembly-and-testing",
+    "title": "Engr 155 Labs Overview",
+    "section": "Lab 1 - Board Assembly and Testing",
+    "text": "Lab 1 - Board Assembly and Testing"
+  },
+  {
+    "objectID": "labs/lab_overview.html#lab-2---multiplexed-7-segment-display",
+    "href": "labs/lab_overview.html#lab-2---multiplexed-7-segment-display",
+    "title": "Engr 155 Labs Overview",
+    "section": "Lab 2 - Multiplexed 7-Segment Display",
+    "text": "Lab 2 - Multiplexed 7-Segment Display"
+  },
+  {
+    "objectID": "labs/lab_overview.html#lab-3---keypad-scanner",
+    "href": "labs/lab_overview.html#lab-3---keypad-scanner",
+    "title": "Engr 155 Labs Overview",
+    "section": "Lab 3 - Keypad Scanner",
+    "text": "Lab 3 - Keypad Scanner"
+  },
+  {
+    "objectID": "labs/lab_overview.html#lab-4---digital-audio",
+    "href": "labs/lab_overview.html#lab-4---digital-audio",
+    "title": "Engr 155 Labs Overview",
+    "section": "Lab 4 - Digital Audio",
+    "text": "Lab 4 - Digital Audio"
+  },
+  {
+    "objectID": "labs/lab_overview.html#lab-5---interrupts",
+    "href": "labs/lab_overview.html#lab-5---interrupts",
+    "title": "Engr 155 Labs Overview",
+    "section": "Lab 5 - Interrupts",
+    "text": "Lab 5 - Interrupts"
+  },
+  {
+    "objectID": "labs/lab_overview.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
+    "href": "labs/lab_overview.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
+    "title": "Engr 155 Labs Overview",
+    "section": "Lab 6 - The Internet of Things and Serial Peripheral Interface",
+    "text": "Lab 6 - The Internet of Things and Serial Peripheral Interface"
+  },
+  {
+    "objectID": "labs/lab_overview.html#lab-7---the-advanced-encryption-standard-aes",
+    "href": "labs/lab_overview.html#lab-7---the-advanced-encryption-standard-aes",
+    "title": "Engr 155 Labs Overview",
+    "section": "Lab 7 - The Advanced Encryption Standard (AES)",
+    "text": "Lab 7 - The Advanced Encryption Standard (AES)"
+  },
+  {
+    "objectID": "posts/hello_world.html",
+    "href": "posts/hello_world.html",
+    "title": "Hello World",
     "section": "",
-    "text": "embedded systems collide with the real world\nAnalog design for Digital\nsquare with x is the symbol for the pin\nReceive side of a chip is basically a capacitor\nProgrammable pull-up and pull-down switches\n\n\\[ \\frac{V_\\text{dd} - V_\\text{on}}{R_s} + R_d \\]\n\nDouble-check pin current limit!!! (probably around 8mA)\nMake sure to learn idiomatic system verilog"
-  },
-  {
-    "objectID": "Notes.html#section",
-    "href": "Notes.html#section",
-    "title": "2026-09-15",
-    "section": "",
-    "text": "embedded systems collide with the real world\nAnalog design for Digital\nsquare with x is the symbol for the pin\nReceive side of a chip is basically a capacitor\nProgrammable pull-up and pull-down switches\n\n\\[ \\frac{V_\\text{dd} - V_\\text{on}}{R_s} + R_d \\]\n\nDouble-check pin current limit!!! (probably around 8mA)\nMake sure to learn idiomatic system verilog"
-  },
-  {
-    "objectID": "Notes.html#section-1",
-    "href": "Notes.html#section-1",
-    "title": "2026-09-15",
-    "section": "2026-09-03",
-    "text": "2026-09-03\n\nCareer Capital: this is the foundation on which we can stand to be able to use AI effectively\n\nAs HMC students we have often chosen the hard way, which makes us good\nThere is a value to good old-fashioned expertise\n\nDon’t design asynchronous systems if you want to sleep\n\nhuge pita to debug\n\n\\(V_{IH}\\) is lowest input voltage logical 1\n\\(V_{IL}\\) is highest input voltage logical 0\n\\(V_{OH}\\) is lowest output voltage logical 1\n\\(V_{OL}\\) is highest output voltage logical 0\nSource and sink limits per pin vary (are not symmetric)\nalways_ff makes errors (according to standard) when you don’t imply a ff (which is not the case for always)"
-  },
-  {
-    "objectID": "Notes.html#section-2",
-    "href": "Notes.html#section-2",
-    "title": "2026-09-15",
-    "section": "2026-09-08",
-    "text": "2026-09-08\n\nSorry about Radiant licensing\nEncourage us to not pressure us to be too detailed if we don’t want to\n\nDon’t write too much for the lab report\nProse is more for others, not for the checkoffs\n\nFinish hardware by Thursday night in order to get extra hardware if necessary\n\nbasically, ensure that everything is working\n\nTry writing the block diagram prior to writing the systemverilog\nNote to self: start building with synchronous reset if possible as it is cheaper\nDon’t do pre-assignment because it can violate idioms. Just use else\nAccording to Prof. Spencer casex and casez will just make you unhappy: use case\nalways good practice to add default to case statement even if you cover every case, just in case something gets removed down the line or similar\navoid race conditions when simulating (as there is no guarantee on the different simulators)"
-  },
-  {
-    "objectID": "Notes.html#section-3",
-    "href": "Notes.html#section-3",
-    "title": "2026-09-15",
-    "section": "2026-09-10",
-    "text": "2026-09-10\n\nSynchronous Design (we love it!)\nWhen do we use FSM’s versus not\n\nSometimes when you are not thinking, the result will not be optimized\n\nGood practice to not change signals at exactly the clock edge\nEvery flop should be triggered on the same clock\n\nthis includes things that must not change every clock cycle\nfix this with an enable that is triggered at a special time\nso in this case, do weird shit with the scan frequency thing\n\ncheck count to be a special number, which triggers the enable for the flop\n\n\nDon’t just pick a bit (from a counter) and map it as an input for the flop (as a clk signal)\nSynchronizers\n\nif things go metastable (it eventually resolves, but could technically take infinitely long)\nnever want to take async input and feed it into sync system (so lab 2 for example)\n\nmight make a decision to give it async input as it will be passed through to debounce\n\n\n\nPhoton detector verilog\nmodule photon_detector(input logic clk, reset, photon,\n                       output logic photon_detected)\n\n    typedef enum logic [1:0] {no_photon, pulse, yes_photon} fsm_states;\n    fsm_states state;\n\n    // next state logic\n    always_ff @(posedge clk) begin\n        if (reset) state &lt;= no_photon;\n        else\n            case (state)\n                no_photon: if (photon=1)  state &lt;= pulse,\n                yes_photon: if (photon=0) state &lt;= no_photon,\n                pulse:                    state &lt;= yes_photon,\n                default:                  state &lt;= state,\n            endcase\n    end\n\n    always_comb\n        if (state == pulse)\n            photon_detected = 1'b1;\n        else\n            photon_detected = 1'b0;\n    end\n\nnote that the edge detector can be done much more easily with less logic\nalso note that this code is also possible, but it might be nice to seperate the next state logic flip flop logic and the combinational logic that determines what the next state will be"
+    "text": "___   _                        _   _           _\n|_ _| | |__   ___  _ __   ___  | |_| |__   __ _| |_\n | |  | '_ \\ / _ \\| '_ \\ / _ \\ | __| '_ \\ / _` | __|\n | |  | | | | (_) | |_) |  __/ | |_| | | | (_| | |_\n|___| |_| |_|\\___/| .__/ \\___|  \\__|_| |_|\\__,_|\\__|\n                  |_|\n _        _    _                         _                  ____\n| |_ __ _| | _(_)_ __   __ _   _ __ ___ (_) ___ _ __ ___   |  _ \\ ___\n| __/ _` | |/ / | '_ \\ / _` | | '_ ` _ \\| |/ __| '__/ _ \\  | |_) / __|\n| || (_| |   &lt;| | | | | (_| | | | | | | | | (__| | | (_) | |  __/\\__ \\\n \\__\\__,_|_|\\_\\_|_| |_|\\__, | |_| |_| |_|_|\\___|_|  \\___/  |_|   |___/\n                       |___/\n                                 _\n__      ____ _ ___   _ __   ___ | |_    __ _\n\\ \\ /\\ / / _` / __| | '_ \\ / _ \\| __|  / _` |\n \\ V  V / (_| \\__ \\ | | | | (_) | |_  | (_| |\n  \\_/\\_/ \\__,_|___/ |_| |_|\\___/ \\__|  \\__,_|\n\n           _     _        _\n _ __ ___ (_)___| |_ __ _| | _____\n| '_ ` _ \\| / __| __/ _` | |/ / _ \\\n| | | | | | \\__ \\ || (_| |   &lt;  __/\n|_| |_| |_|_|___/\\__\\__,_|_|\\_\\___|\n\nSome arbitrary text in this here funny post\n\n\n\n\n\n\nTipAs a wise one once said:\n\n\n\nThat’s all folks"
   }
 ]
