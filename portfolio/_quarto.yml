@@ -16,6 +16,8 @@ website:
             href: labs/lab_overview.qmd
           - labs/lab1.qmd
           - labs/lab2.qmd
+          - labs/lab3.qmd
+          - labs/lab4.qmd
           - text: "more to come"
       - href: "https://hmc-e155.github.io/resources/"
         text: Class Resources

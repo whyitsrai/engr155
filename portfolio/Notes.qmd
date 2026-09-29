@@ -64,7 +64,7 @@ $$ \frac{V_\text{dd} - V_\text{on}}{R_s} + R_d $$
 
 
 Photon detector verilog
-```systemverilog
+````systemverilog
 module photon_detector(input logic clk, reset, photon,
                        output logic photon_detected)
 
@@ -89,7 +89,7 @@ module photon_detector(input logic clk, reset, photon,
         else
             photon_detected = 1'b0;
     end
-```
+````
 
 - note that the edge detector can be done much more easily with less logic
 - also note that this code is also possible, but it might be nice to seperate the next state logic
@@ -119,3 +119,24 @@ module photon_detector(input logic clk, reset, photon,
 # 2026-09-22
 - Communicating FSM is also just a slightly different way of saying DONT STORE DATA IN AN FSM
     - registers exist!
+
+# 2026-09-29
+- Phase comparator between output and input forms PLL
+    - Basically the phases need to be alligned
+    - fun feedback loop stuff
+    - might be fun to design with discrete components
+- The PLL's give us multiple different output frequencies at once
+    - more knobs to turn
+    - PLL needs to configured prior to being turned on
+    - input must be 4-16 MHz
+    - output cannot be above 80MHz
+    - VCO frequency must be between 64-344MHz
+- When making the core faster, it is possible to read from flash faster than you are allowed to
+    - Before switching clock frequency, must configure flash latency wait states (ART Accelerator)
+      - 0 Wait States (0 WS): Up to 16 MHz
+      - 1 Wait State (1 WS): More than 16 MHz up to 32 MHz
+      - 2 Wait States (2 WS): More than 32 MHz up to 48 MHz
+      - 3 Wait States (3 WS): More than 48 MHz up to 64 MHz
+      - 4 Wait States (4 WS): More than 64 MHz up to 80 MHz (Maximum for standard STM32L4)
+- in segger, do something something import dynamic folder or something
+    - maybe consider seeing if you can have segger generate the requisite make files and such
