@@ -351,6 +351,14 @@ window.Quarto = {
     <a class="dropdown-item" href="./labs/lab2.html">
  <span class="dropdown-text">Lab2</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./labs/lab3.html">
+ <span class="dropdown-text">Lab3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./labs/lab4.html">
+ <span class="dropdown-text">Lab4</span></a>
+  </li>  
         <li class="dropdown-header">more to come</li>
     </ul>
   </li>
@@ -394,6 +402,7 @@ window.Quarto = {
   <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4">2026-09-15</a></li>
   <li><a href="#section-5" id="toc-section-5" class="nav-link" data-scroll-target="#section-5">2026-09-17</a></li>
   <li><a href="#section-6" id="toc-section-6" class="nav-link" data-scroll-target="#section-6">2026-09-22</a></li>
+  <li><a href="#section-7" id="toc-section-7" class="nav-link" data-scroll-target="#section-7">2026-09-29</a></li>
   </ul>
 </nav>
     </div>
@@ -557,6 +566,40 @@ window.Quarto = {
 <li>Communicating FSM is also just a slightly different way of saying DONT STORE DATA IN AN FSM
 <ul>
 <li>registers exist!</li>
+</ul></li>
+</ul>
+</section>
+<section id="section-7" class="level1">
+<h1>2026-09-29</h1>
+<ul>
+<li>Phase comparator between output and input forms PLL
+<ul>
+<li>Basically the phases need to be alligned</li>
+<li>fun feedback loop stuff</li>
+<li>might be fun to design with discrete components</li>
+</ul></li>
+<li>The PLL’s give us multiple different output frequencies at once
+<ul>
+<li>more knobs to turn</li>
+<li>PLL needs to configured prior to being turned on</li>
+<li>input must be 4-16 MHz</li>
+<li>output cannot be above 80MHz</li>
+<li>VCO frequency must be between 64-344MHz</li>
+</ul></li>
+<li>When making the core faster, it is possible to read from flash faster than you are allowed to
+<ul>
+<li>Before switching clock frequency, must configure flash latency wait states (ART Accelerator)
+<ul>
+<li>0 Wait States (0 WS): Up to 16 MHz</li>
+<li>1 Wait State (1 WS): More than 16 MHz up to 32 MHz</li>
+<li>2 Wait States (2 WS): More than 32 MHz up to 48 MHz</li>
+<li>3 Wait States (3 WS): More than 48 MHz up to 64 MHz</li>
+<li>4 Wait States (4 WS): More than 64 MHz up to 80 MHz (Maximum for standard STM32L4)</li>
+</ul></li>
+</ul></li>
+<li>in segger, do something something import dynamic folder or something
+<ul>
+<li>maybe consider seeing if you can have segger generate the requisite make files and such</li>
 </ul></li>
 </ul>
 

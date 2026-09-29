@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Rai Wandeler">
+<meta name="dcterms.date" content="2026-09-28">
+
+<title>Lab4 – Rai’s μP’s Portfolio</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../media/favicon.jpg" rel="icon" type="image/jpeg">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7100700a5d4657facf49b32369185e6d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-90b0ccabdf50233fb893b00cd6e33405.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-7100700a5d4657facf49b32369185e6d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.scss">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Rai’s μP’s Portfolio</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-labs" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Labs</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-labs">    
+        <li>
+    <a class="dropdown-item" href="../labs/lab_overview.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../labs/lab1.html">
+ <span class="dropdown-text">Lab1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../labs/lab2.html">
+ <span class="dropdown-text">Lab2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../labs/lab3.html">
+ <span class="dropdown-text">Lab3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../labs/lab4.html">
+ <span class="dropdown-text">Lab4</span></a>
+  </li>  
+        <li class="dropdown-header">more to come</li>
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://hmc-e155.github.io/resources/"> 
+<span class="menu-text">Class Resources</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.linkedin.com/in/raiwandeler/" target="_blank"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text">Rai’s LinkedIn</span></a>
+  </li>  
+  <li class="nav-item">
+    <span class="nav-link">
+<span class="menu-text">    </span>
+    </span>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design" id="toc-design" class="nav-link" data-scroll-target="#design">Design</a>
+  <ul class="collapse">
+  <li><a href="#timer-selection" id="toc-timer-selection" class="nav-link" data-scroll-target="#timer-selection">Timer Selection</a></li>
+  <li><a href="#program-architecture" id="toc-program-architecture" class="nav-link" data-scroll-target="#program-architecture">Program Architecture</a></li>
+  </ul></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation:</a>
+  <ul class="collapse">
+  <li><a href="#sec-schematic" id="toc-sec-schematic" class="nav-link" data-scroll-target="#sec-schematic">Schematic</a></li>
+  </ul></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
+  <ul class="collapse">
+  <li><a href="#preliminary-testing" id="toc-preliminary-testing" class="nav-link" data-scroll-target="#preliminary-testing">Preliminary Testing</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab4</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Rai Wandeler </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 28, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><em>I spent a total of around 10 hours on this lab. I will admit that the data sheet hunting took quite a while, and made this lab quite challenging for some other folks.</em></p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In this lab, the <a href="https://hmc-e155.github.io/assets/doc/ds11451-stm32l432kc.pdf">STM32L432K</a> on our nucleo board was programmed to in c without any helper libraries to play Für Elise as well as an two other tunes on one of the GPIO pins by using one of the integrated timers.</p>
+<p>The overarching architecture made use of Systick (set at 1ms) for timing events and TIM2 for the GPIO frequency. Systick was polled in software, and the GPIO was toggled in hardware. The selected frequency was taken care of in software.</p>
+</section>
+<section id="design" class="level2">
+<h2 class="anchored" data-anchor-id="design">Design</h2>
+<section id="timer-selection" class="level3">
+<h3 class="anchored" data-anchor-id="timer-selection">Timer Selection</h3>
+<p>I chose to make use of TIM2 (the general-purpose timer with a 32 bit count register) to generate the frequency required for the desired note, with Systick acting as a timebase for the note duration. TIM2 was chosen as a good balance between the simplicity of the basic timers and the capability of the advanced timers (which might be better used for other purposes and are a tad overkill for our purposes). The thing that makes TIM2 special is the fact that it is able to control GPIO pins (output compare mode), and has a 32-bit counting register. The way that it is utilized in this project is toggling the GPIO pin associated with TIM2 every time that the counter overflows. Therefore, with a default STM32 clock frequency of 4MHz, we compute the period of one overflow (half half that of the output signal period) as <span class="math inline">\(T = n_\text{count} \div 4000000\)</span>. This yields a output signal period (2 overflows) of</p>
+<p><span class="math display">\[ T = 2 \cdot n_\text{count} \div 4000000 \]</span></p>
+<p>Our bounds for our counter value are <span class="math inline">\(n_\text{min} = 1\)</span> (as else the counter would not be counting) and <span class="math inline">\(n_\text{max} = 2^{32} -1\)</span>. Therefore</p>
+<p><span class="math display">\[ \begin{aligned}
+T_\text{min} &amp;= 2 \div 4000000 \text{s}\\
+T_\text{min} &amp;= 0.0000005 \text{s}\\
+\therefore \quad f_\text{max} &amp;= 2 \text{MHz}\\
+&amp;\text{and}\\
+T_\text{max} &amp;= 2\cdot(2^{32} - 1) \div 4000000 \text{s}\\
+T_\text{max} &amp;= 2147.484  \text{s}\\
+\therefore \quad f_\text{min} &amp;= 465.7 \mu\text{Hz}
+\end{aligned} \]</span></p>
+<p>This range of possible frequencies is more than enough to play any note that is in the audible range of 20Hz to 20kHz.</p>
+<p>When it comes to the duration of the different notes, as mentioned before, Systick was used. It was configured to overflow (trigger) every millisecond. The register that indicates that an overflow occurred is constantly polled by the MCU. Upon reading a trigger event, that register is automatically reset. On the program front, every trigger event (millisecond), a variable <code>currtick</code> is incremented by 1. This variable is reset to 0 at the start of every note or rest. As this variable is an unsigned 32 bit integer, it has a maximum value of 4,294,967,295. As the variable is incremented every millisecond, with our minimum count of 1 we get a minimum note/rest duration of <span class="math inline">\(1
+\text{ms}\)</span>; similarly we get a maximum note/rest duration of <span class="math inline">\(2^{32}-1 \text{ms}\)</span> which is equivalent to <span class="math inline">\(49.71 \,\text{days}\)</span>. Needless to say, this range is more than acceptable for any singular note/rest that we would reasonably want to play as a part of a song.</p>
+<section id="pitch-accuracy" class="level4">
+<h4 class="anchored" data-anchor-id="pitch-accuracy">Pitch Accuracy</h4>
+<p>Even though this is the range of playable notes, it is worth checking to see if reasonable notes can be accurately reproduced. The line of code that determines the ARR value (max count) for TIM2 is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>TIM2_reg<span class="op">-&gt;</span>ARR <span class="op">=</span> <span class="op">(</span><span class="dv">2000000</span><span class="op">/</span>tune<span class="op">[</span>i<span class="op">][</span><span class="dv">0</span><span class="op">])</span> <span class="op">-</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// max count per toggle (4MHz clk)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>As everything is an integer, any division rounds down. In this line, <code>tune[i][0]</code> is the frequency (in Hertz) of the note that is requested. This gets us</p>
+<p><span class="math display">\[ N(f_\text{req}) = \left\lfloor \frac{2000000 \text{Hz}}{f_\text{req}} \right\rfloor -1 \]</span></p>
+<p>The way that TIM2 operates, the count increases by 1 at a frequency of 4MHz. Every time that the count overflows (when it equals the value <span class="math inline">\(N(f)\)</span>), the output pin toggles. Therefore one full period is twice the number of the quantity counts+1 (as the count being 0 takes a clock cycle), multiplied by the clock:</p>
+<p><span class="math display">\[\begin{aligned}
+f_\text{actual}(N) &amp;= 4000000 \text{Hz} \div \left(2 N+2\right)\\
+f_\text{actual}(f_\text{req}) &amp;= 2000000 \text{Hz} \div \left\lfloor \frac{2000000 \text{Hz}}{f_\text{req}}\right\rfloor
+\end{aligned} \]</span></p>
+<p>We now plug in two test frequencies of 220Hz and 1000Hz: <span class="math display">\[\begin{aligned}
+f_\text{actual}(220\text{Hz}) &amp;= 2000000 \text{Hz} \div \left\lfloor \frac{2000000}{220} \right\rfloor\\
+f_\text{actual}(220\text{Hz}) &amp;= 2000000 \text{Hz} \div 9090\\
+f_\text{actual}(220\text{Hz}) &amp;= 220.022 \text{Hz}\\
+\text{and}\\
+f_\text{actual}(1000\text{Hz}) &amp;= 2000000 \text{Hz} \div \left\lfloor \frac{2000000}{1000} \right\rfloor\\
+f_\text{actual}(1000\text{Hz}) &amp;= 2000000 \text{Hz} \div 2000\\
+f_\text{actual}(1000\text{Hz}) &amp;= 1000.000 \text{Hz}
+\end{aligned}\]</span></p>
+<p>This yields us an error of around 0.01% for the 200Hz example and 0.0% for the 1000Hz example. In order to see if this error remains theoretically small for every note in Für Elise that was provided in the sample code, we use the following MATLAB code to check:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">freq_targets</span> <span class="op">=</span> [<span class="fl">659</span> <span class="fl">623</span> <span class="fl">494</span> <span class="fl">587</span> <span class="fl">523</span> <span class="fl">440</span> <span class="fl">262</span> <span class="fl">330</span> <span class="fl">416</span> <span class="fl">392</span> <span class="fl">699</span> <span class="fl">349</span> <span class="fl">1319</span>]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">tim2_counts</span> <span class="op">=</span> <span class="va">floor</span>((<span class="fl">2000000</span><span class="op">./</span><span class="va">freq_targets</span>)<span class="op">-</span><span class="fl">1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">freq_actuals</span> <span class="op">=</span> <span class="fl">1</span><span class="op">./</span>((<span class="fl">1</span><span class="op">./</span><span class="fl">4000000</span>)<span class="op">.*</span>(<span class="va">tim2_counts</span><span class="op">+</span><span class="fl">1</span>)<span class="op">.*</span><span class="fl">2</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">diff_perc</span> <span class="op">=</span> <span class="fl">100</span><span class="op">.*</span>(<span class="va">abs</span>(<span class="va">freq_actuals</span><span class="op">-</span><span class="va">freq_targets</span>))<span class="op">./</span>((<span class="va">freq_actuals</span><span class="op">+</span><span class="va">freq_targets</span>)<span class="op">./</span><span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We do this because one of the notes lies outside of our bounds of frequencies that we have tested. We also do this because of the quirks of integer division in c.&nbsp;As can be seen below though, there is no problem</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 20%">
+<col style="width: 28%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Target Frequency [Hz]</th>
+<th>TIM2 Count [#]</th>
+<th>Actual Frequency [Hz]</th>
+<th>Difference [%]</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>659</td>
+<td>3033</td>
+<td>659.196</td>
+<td>0.0297</td>
+</tr>
+<tr class="even">
+<td>623</td>
+<td>3209</td>
+<td>623.053</td>
+<td>0.0085</td>
+</tr>
+<tr class="odd">
+<td>494</td>
+<td>4047</td>
+<td>494.071</td>
+<td>0.0144</td>
+</tr>
+<tr class="even">
+<td>587</td>
+<td>3406</td>
+<td>587.027</td>
+<td>0.0046</td>
+</tr>
+<tr class="odd">
+<td>523</td>
+<td>3823</td>
+<td>523.013</td>
+<td>0.0024</td>
+</tr>
+<tr class="even">
+<td>440</td>
+<td>4544</td>
+<td>440.044</td>
+<td>0.0100</td>
+</tr>
+<tr class="odd">
+<td>262</td>
+<td>7632</td>
+<td>262.020</td>
+<td>0.0077</td>
+</tr>
+<tr class="even">
+<td>330</td>
+<td>6059</td>
+<td>330.033</td>
+<td>0.0100</td>
+</tr>
+<tr class="odd">
+<td>416</td>
+<td>4806</td>
+<td>416.060</td>
+<td>0.0144</td>
+</tr>
+<tr class="even">
+<td>392</td>
+<td>5101</td>
+<td>392.003</td>
+<td>0.0008</td>
+</tr>
+<tr class="odd">
+<td>699</td>
+<td>2860</td>
+<td>699.056</td>
+<td>0.0081</td>
+</tr>
+<tr class="even">
+<td>349</td>
+<td>5729</td>
+<td>349.040</td>
+<td>0.0115</td>
+</tr>
+<tr class="odd">
+<td>1319</td>
+<td>1515</td>
+<td>1319.261</td>
+<td>0.0198</td>
+</tr>
+</tbody>
+</table>
+<p>Needless to say, this is by far not the largest source of error given the fact that the frequencies that are requested are integers (and not the floating-point equal temperament frequencies), as well as due to the inherent clock error that is present even when compensated for by using the LSE Oscillator Crystal.</p>
+</section>
+</section>
+<section id="program-architecture" class="level3">
+<h3 class="anchored" data-anchor-id="program-architecture">Program Architecture</h3>
+<p>The program itself was simple. Setup commands were run in a new <code>setup()</code> function, there was a function called <code>play_tune</code> to actually play the song, and there was some debouncing switch logic to be able to cycle between the three integrated tunes using two push buttons. This main logic was done with switch statements, which was not super elegant, but was by no means wrong.</p>
+<p>Necessary registers and such were defined in a separate header file to keep the main file neat. Same thing goes for the notes of the song.</p>
+</section>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation:</h2>
+<p>The source code for the project can be found in the associated <a href="https://github.com/whyitsrai/engr155/tree/main/lab4">Github repository</a>.</p>
+<section id="sec-schematic" class="level3">
+<h3 class="anchored" data-anchor-id="sec-schematic">Schematic</h3>
+<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../media/lab4/breadboard_connections.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Electrical schematic of the design. PDF <a href="https://github.com/whyitsrai/engr155/blob/main/lab4/hardware/breadboard_connections.pdf">here</a>.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-schematic" class="quarto-xref">Figure&nbsp;1</a> shows the electrical layout of the design. Note that some references are omitted as they are a part of the <a href="https://hmc-e155.github.io/assets/doc/E155%20FA22%20Development%20Board%20Schematic.pdf">E155 Development Board</a>, which are visible at the linked location. The pin-out was chosen due to the on-board components, as well as the pins that supported an output from TIM2. The amplifier design was a slight modification of the provided 20-Gain reference design by the LM386 manufacturer. When recommended components were not available, the nearest alternative was chosen.</p>
+<p>Ultimately, I noticed that the potentiometer was not doing a good job at controlling the volume. Therefore I added an approximately 20:1 voltage divider prior to the trimmer to make this more of a unity-gain amplifier. Ultimately it now just serves as a speaker driver (as the MCU pins have a max current of 8mA) with some slight amplification ability.</p>
+</section>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+<p>I verified the output frequencies with an oscilloscope. Everything looks good. The square wave is not very square once the speaker is connected, but that is to be expected as the speaker presents an inductive load.</p>
+<section id="preliminary-testing" class="level3">
+<h3 class="anchored" data-anchor-id="preliminary-testing">Preliminary Testing</h3>
+<p>Before writing any of the code I tried to get a 1kHz square wave on PA5. This allowed me to verify that everything worked before debugging my program logic.</p>
+<p>Initially, the frequency was off by about 2% so I configured the LSE oscillator (crystal) to correct the MSI oscillator’s frequency. The final frequency accuracy was within around 0.1%.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>I managed to successfully implement all of the functionality required by the <a href="https://hmc-e155.github.io/lab/lab4/">lab instructions</a>. I also added the additional functionality of being able to navigate between the different songs by using the integrated push buttons, as well as some status LED’s.</p>
+<p>As mentioned at the top, I spent a total of around 10 hours on this lab.</p>
+<section id="ai-prototype-summary" class="level3">
+<h3 class="anchored">AI Prototype Summary</h3>
+<p>I chose to prompt both qwen3.5 and gemma4 via openwebui—all running on my laptop. The initial prompt was:</p>
+<blockquote class="blockquote">
+<p>What timers should I use on the STM32L432KC to generate frequencies ranging from 220Hz to 1kHz? What’s the best choice of timer if I want to easily connect it to a GPIO pin? What formulae are relevant, and what registers need to be set to configure them properly?</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Initial AI Response:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For generating frequencies in the 220 Hz to 1 kHz range on an STM32L432KC microcontroller, here is a detailed breakdown of suitable timers, recommended configurations, and relevant formulae and registers.</p>
+<hr>
+<section id="recommended-timer-tim2-tim3-or-tim5" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-timer-tim2-tim3-or-tim5">🔹 Recommended Timer: TIM2, TIM3, or TIM5</h3>
+<p>These are general-purpose 32-bit timers with up to four output channels (OC1–OC4) capable of direct PWM/pulse generation on GPIO pins. They’re simpler to configure than advanced timers like TIM1 and provide excellent flexibility for frequency synthesis via output compare modes.</p>
+<p><strong>Best choice:</strong> <strong>TIM2 or TIM3</strong> - Simple configuration via <code>SYSCFG</code> remapping (if needed) - Easy connection to GPIO with direct timer-to-GPIO routing - Suitable for a wide range of frequencies from 220 Hz to 1 kHz</p>
+<hr>
+</section>
+<section id="key-frequency-calculation-formulae" class="level3">
+<h3 class="anchored" data-anchor-id="key-frequency-calculation-formulae">🔹 Key Frequency Calculation Formulae</h3>
+<p>To generate a precise frequency using a timer, use:</p>
+<pre class="text"><code>f_out = f_timer_clk / ((PSC + 1) × (ARR + 1))</code></pre>
+<p>Where: - <code>f_timer_clk</code> = Timer clock input (typically equal to HCLK on STM32L432KC) - <code>PSC</code> = Prescaler register value - <code>ARR</code> = Auto-reload register value</p>
+<p>To generate a <strong>50% duty cycle PWM</strong>:</p>
+<pre class="text"><code>CCR = ARR / 2</code></pre>
+<hr>
+</section>
+<section id="example-configuration-for-1-khz-output" class="level3">
+<h3 class="anchored" data-anchor-id="example-configuration-for-1-khz-output">🔹 Example Configuration for 1 kHz Output</h3>
+<p>Assume: - HCLK (system clock) = 80 MHz - Timer = TIM2 (32-bit general-purpose) - Prescaler (PSC) = 799 → timer counter frequency = 80,000,000 / 800 = 100 kHz - ARR = 99 → total timer period = 100,000 / 100 = 1000 Hz</p>
+<p><strong>Calculation:</strong></p>
+<pre><code>f_timer_clk = 80 MHz
+PSC = 799 → f_counter = 100 kHz
+ARR = 99 → f_out = 100,000 / (99 + 1) = 1,000 Hz ✅
+CCR1 = ARR / 2 = 50 → 50% duty cycle</code></pre>
+<hr>
+</section>
+<section id="required-registers-to-configure" class="level3">
+<h3 class="anchored" data-anchor-id="required-registers-to-configure">🔹 Required Registers to Configure</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 56%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Register</th>
+<th>Description</th>
+<th>Typical Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>TIMx_CR1</code></td>
+<td>Timer Control Register 1</td>
+<td><code>CEN = 1</code>, <code>ARR_PRELOAD</code> enabled</td>
+</tr>
+<tr class="even">
+<td><code>TIMx_PSC</code></td>
+<td>Prescaler register</td>
+<td>e.g., <code>799</code></td>
+</tr>
+<tr class="odd">
+<td><code>TIMx_ARR</code></td>
+<td>Auto-reload register (period)</td>
+<td>e.g., <code>99</code></td>
+</tr>
+<tr class="even">
+<td><code>TIMx_CCMR1/2</code></td>
+<td>Capture/Compare Mode Register</td>
+<td>Configure output mode</td>
+</tr>
+<tr class="odd">
+<td><code>TIMx_CCER</code></td>
+<td>Capture/Compare Enable Register</td>
+<td><code>CCxNE = 1</code> (enable channel)</td>
+</tr>
+<tr class="even">
+<td><code>TIMx_CCR1-4</code></td>
+<td>Compare Register</td>
+<td>e.g., <code>50</code> for 50% duty cycle</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="gpio-configuration-steps" class="level3">
+<h3 class="anchored" data-anchor-id="gpio-configuration-steps">🔹 GPIO Configuration Steps</h3>
+<ol type="1">
+<li><p><strong>Enable Timer and GPIO Clocks:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>__HAL_RCC_TIM2_CLK_ENABLE<span class="op">();</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>__HAL_RCC_GPIOA_CLK_ENABLE<span class="op">();</span> <span class="co">// For TIM2_CH1 → PA0 or remapped</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>Configure GPIO as Alternate Function:</strong></p>
+<ul>
+<li>Use <code>AF1</code> for TIM2 channels (check datasheet or reference manual)</li>
+<li>Set pin to alternate function mode, push-pull output</li>
+</ul></li>
+<li><p><strong>Route Timer Channel to Pin:</strong></p>
+<ul>
+<li>Use STM32CubeMX or <code>SYSCFG</code> if remapping is needed</li>
+<li>Ensure channel-to-GPIO mapping matches your target frequency and duty cycle requirements</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+<section id="frequency-range-feasibility-check-using-tim2-psc-799" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-range-feasibility-check-using-tim2-psc-799">🔹 Frequency Range Feasibility Check (Using TIM2, PSC = 799)</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Target Freq</th>
+<th>ARR Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>220 Hz</td>
+<td>453</td>
+<td>Integer division OK</td>
+</tr>
+<tr class="even">
+<td>500 Hz</td>
+<td>199</td>
+<td>Simple, clean value</td>
+</tr>
+<tr class="odd">
+<td>1 kHz</td>
+<td>99</td>
+<td>Good resolution</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="alternative-timer-tim1-advanced-control" class="level3">
+<h3 class="anchored" data-anchor-id="alternative-timer-tim1-advanced-control">🔹 Alternative Timer: TIM1 (Advanced Control)</h3>
+<p>If you require additional features like dead-time insertion or multiple output phases: - Use <strong>TIM1</strong> for advanced PWM needs - More complex setup required due to higher-level control registers and configuration steps</p>
+<hr>
+</section>
+<section id="summary-recommendations" class="level3">
+<h3 class="anchored" data-anchor-id="summary-recommendations">✅ Summary Recommendations</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Timer to use</td>
+<td><strong>TIM2, TIM3 or TIM5</strong></td>
+</tr>
+<tr class="even">
+<td>Configuration mode</td>
+<td>PWM mode or One-Pulse</td>
+</tr>
+<tr class="odd">
+<td>GPIO pin selection</td>
+<td>Use remapping if needed</td>
+</tr>
+<tr class="even">
+<td>Clock source</td>
+<td>HCLK (typically 80 MHz)</td>
+</tr>
+<tr class="odd">
+<td>Formula for frequency</td>
+<td><code>f = f_clk / ((PSC+1)(ARR+1))</code></td>
+</tr>
+<tr class="even">
+<td>Duty cycle control</td>
+<td>Set <code>CCR = ARR/2</code> for 50%</td>
+</tr>
+<tr class="odd">
+<td>Registers to configure</td>
+<td>CR1, PSC, ARR, CCMRx, CCER, CCRx</td>
+</tr>
+</tbody>
+</table>
+<p>For the easiest setup and GPIO integration, go with <strong>TIM2 or TIM3</strong>, configure them in PWM mode, calculate your <code>PSC</code> and <code>ARR</code> values using the formula above, and connect the output to an appropriate GPIO pin mapped to one of the timer’s capture/compare channels.</p>
+</section>
+</div>
+</div>
+</div>
+<p>This response took quite a while to generate and unfortunately included some hallucinations. I assume that the LLM did not search the web enough. That all being said, it did suggest the reasonable timers. The caveat is that not all timers that it suggested exist on our specific STM32. When it comes to the actual programming, the formulas look reasonable (if anything, they are off by 1); that being said, I did not end up using a pre-scaler so the formulas are different from my approach. It ultimately suggested doing this all in PWM mode which is fine, but a bit more work than GPIO pin toggle mode. That being said, PWM mode might result in the output turning off when the timer is stopped (though I am not sure about that). I do wish that the response were a bit more accurate and also provided some more detail. This is something that can probably be tuned though.</p>
+<p>I attempted to get some more information from the LLM by giving it the huge reference guide, as well as the datasheet. After some coaxing: this was its final response (also after switching to gemma4 as it was faster)</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Final AI Response:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Based on the provided documentation for the STM32L432KC, here is the accurate technical guidance for your requirements:</p>
+<section id="recommended-timers" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-timers"><strong>Recommended Timers</strong></h3>
+<p>For generating frequencies in the 220Hz to 1kHz range, <strong>TIM2</strong> is the most suitable choice.</p>
+<ul>
+<li><strong>TIM2 (General-Purpose):</strong> It is a full-featured timer that includes a <strong>32-bit</strong> auto-reload up/downcounter and a <strong>32-bit</strong> prescaler [2]. This 32-bit capability is ideal for your low-frequency range, as it allows for much larger timer periods and higher resolution compared to 16-bit options [2].</li>
+<li><strong>Other Options:</strong> You could also use <strong>TIM15</strong> or <strong>TIM16</strong>, which are general-purpose timers with 16-bit auto-reload upcounters [2], or <strong>TIM6</strong> and <strong>TIM7</strong>, which are basic 16-bit timers [2].</li>
+</ul>
+</section>
+<section id="best-choice-for-gpio-connection" class="level3">
+<h3 class="anchored" data-anchor-id="best-choice-for-gpio-connection"><strong>Best Choice for GPIO Connection</strong></h3>
+<p><strong>TIM2</strong> is the best choice for easy GPIO integration because it features <strong>4 independent channels</strong> that can be used for PWM generation, input capture, or output compare [2]. For comparison, <strong>TIM15</strong> provides 2 channels [2], and <strong>TIM16</strong> provides 1 channel [2].</p>
+</section>
+<section id="relevant-registers" class="level3">
+<h3 class="anchored" data-anchor-id="relevant-registers"><strong>Relevant Registers</strong></h3>
+<p>To configure these timers, you will need to manipulate the following registers mentioned in the documentation: * <strong><code>TIMx_ARR</code></strong> (Auto-reload register) [1] * <strong><code>TIMx_PSC</code></strong> (Prescaler) [1, 2]</p>
+</section>
+<section id="frequency-formula" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-formula"><strong>Frequency Formula</strong></h3>
+<p>Please note that the specific mathematical formula for calculating the output frequency is <strong>not present in the provided context</strong>. However, using standard industry knowledge for STM32 timers, the formula is:</p>
+<p><span class="math display">\[f_{out} = \frac{f_{timer\_clock}}{(PSC + 1) \times (ARR + 1)}\]</span></p>
+<p><em>Where <span class="math inline">\(f_{timer\_clock}\)</span> is the frequency of the timer’s clock source.</em></p>
+</section>
+</div>
+</div>
+</div>
+<p>This final response only includes timers that are actually present on the STM32 that we have. This is definitely more promising. The ultimate formula is also the same, but it did not give the same level of detail as to the relevant registers. I wonder if I am choking the model with a small context window or anything. Maybe some RAG functionality might make this more useful. This was an example of the LLM taking a large amount of compute to do a somewhat mediocre job. That being said, its output probably would have saved me some time.</p>
+<p>As an aside, I am curious about what more computationally efficient models from deekseek would do in this case. This might be a thing that I will look into in subsequent labs.</p>
+<section id="sec-aitrans" class="level4">
+<h4 class="anchored">Full AI Chat Transcript</h4>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Full chat transcript: openwebui running through ollama on my Laptop
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<section id="user" class="level3">
+<h3 class="anchored" data-anchor-id="user">USER</h3>
+<p>What timers should I use on the STM32L432KC to generate frequencies ranging from 220Hz to 1kHz? What’s the best choice of timer if I want to easily connect it to a GPIO pin? What formulae are relevant, and what registers need to be set to configure them properly?</p>
+</section>
+<section id="assistant" class="level3">
+<h3 class="anchored" data-anchor-id="assistant">ASSISTANT</h3>
+<p>For generating frequencies in the 220 Hz to 1 kHz range on an STM32L432KC microcontroller, here is a detailed breakdown of suitable timers, recommended configurations, and relevant formulae and registers.</p>
+<hr>
+</section>
+<section id="recommended-timer-tim2-tim3-or-tim5-1" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-timer-tim2-tim3-or-tim5-1">🔹 Recommended Timer: TIM2, TIM3, or TIM5</h3>
+<p>These are general-purpose 32-bit timers with up to four output channels (OC1–OC4) capable of direct PWM/pulse generation on GPIO pins. They’re simpler to configure than advanced timers like TIM1 and provide excellent flexibility for frequency synthesis via output compare modes.</p>
+<p><strong>Best choice:</strong> <strong>TIM2 or TIM3</strong> - Simple configuration via <code>SYSCFG</code> remapping (if needed) - Easy connection to GPIO with direct timer-to-GPIO routing - Suitable for a wide range of frequencies from 220 Hz to 1 kHz</p>
+<hr>
+</section>
+<section id="key-frequency-calculation-formulae-1" class="level3">
+<h3 class="anchored" data-anchor-id="key-frequency-calculation-formulae-1">🔹 Key Frequency Calculation Formulae</h3>
+<p>To generate a precise frequency using a timer, use:</p>
+<pre class="text"><code>f_out = f_timer_clk / ((PSC + 1) × (ARR + 1))</code></pre>
+<p>Where: - <code>f_timer_clk</code> = Timer clock input (typically equal to HCLK on STM32L432KC) - <code>PSC</code> = Prescaler register value - <code>ARR</code> = Auto-reload register value</p>
+<p>To generate a <strong>50% duty cycle PWM</strong>:</p>
+<pre class="text"><code>CCR = ARR / 2</code></pre>
+<hr>
+</section>
+<section id="example-configuration-for-1-khz-output-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-configuration-for-1-khz-output-1">🔹 Example Configuration for 1 kHz Output</h3>
+<p>Assume: - HCLK (system clock) = 80 MHz - Timer = TIM2 (32-bit general-purpose) - Prescaler (PSC) = 799 → timer counter frequency = 80,000,000 / 800 = 100 kHz - ARR = 99 → total timer period = 100,000 / 100 = 1000 Hz</p>
+<p><strong>Calculation:</strong></p>
+<pre><code>f_timer_clk = 80 MHz
+PSC = 799 → f_counter = 100 kHz
+ARR = 99 → f_out = 100,000 / (99 + 1) = 1,000 Hz ✅
+CCR1 = ARR / 2 = 50 → 50% duty cycle</code></pre>
+<hr>
+</section>
+<section id="required-registers-to-configure-1" class="level3">
+<h3 class="anchored" data-anchor-id="required-registers-to-configure-1">🔹 Required Registers to Configure</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 56%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Register</th>
+<th>Description</th>
+<th>Typical Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>TIMx_CR1</code></td>
+<td>Timer Control Register 1</td>
+<td><code>CEN = 1</code>, <code>ARR_PRELOAD</code> enabled</td>
+</tr>
+<tr class="even">
+<td><code>TIMx_PSC</code></td>
+<td>Prescaler register</td>
+<td>e.g., <code>799</code></td>
+</tr>
+<tr class="odd">
+<td><code>TIMx_ARR</code></td>
+<td>Auto-reload register (period)</td>
+<td>e.g., <code>99</code></td>
+</tr>
+<tr class="even">
+<td><code>TIMx_CCMR1/2</code></td>
+<td>Capture/Compare Mode Register</td>
+<td>Configure output mode</td>
+</tr>
+<tr class="odd">
+<td><code>TIMx_CCER</code></td>
+<td>Capture/Compare Enable Register</td>
+<td><code>CCxNE = 1</code> (enable channel)</td>
+</tr>
+<tr class="even">
+<td><code>TIMx_CCR1-4</code></td>
+<td>Compare Register</td>
+<td>e.g., <code>50</code> for 50% duty cycle</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="gpio-configuration-steps-1" class="level3">
+<h3 class="anchored" data-anchor-id="gpio-configuration-steps-1">🔹 GPIO Configuration Steps</h3>
+<ol type="1">
+<li><p><strong>Enable Timer and GPIO Clocks:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>__HAL_RCC_TIM2_CLK_ENABLE<span class="op">();</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>__HAL_RCC_GPIOA_CLK_ENABLE<span class="op">();</span> <span class="co">// For TIM2_CH1 → PA0 or remapped</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>Configure GPIO as Alternate Function:</strong></p>
+<ul>
+<li>Use <code>AF1</code> for TIM2 channels (check datasheet or reference manual)</li>
+<li>Set pin to alternate function mode, push-pull output</li>
+</ul></li>
+<li><p><strong>Route Timer Channel to Pin:</strong></p>
+<ul>
+<li>Use STM32CubeMX or <code>SYSCFG</code> if remapping is needed</li>
+<li>Ensure channel-to-GPIO mapping matches your target frequency and duty cycle requirements</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+<section id="frequency-range-feasibility-check-using-tim2-psc-799-1" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-range-feasibility-check-using-tim2-psc-799-1">🔹 Frequency Range Feasibility Check (Using TIM2, PSC = 799)</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Target Freq</th>
+<th>ARR Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>220 Hz</td>
+<td>453</td>
+<td>Integer division OK</td>
+</tr>
+<tr class="even">
+<td>500 Hz</td>
+<td>199</td>
+<td>Simple, clean value</td>
+</tr>
+<tr class="odd">
+<td>1 kHz</td>
+<td>99</td>
+<td>Good resolution</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="alternative-timer-tim1-advanced-control-1" class="level3">
+<h3 class="anchored" data-anchor-id="alternative-timer-tim1-advanced-control-1">🔹 Alternative Timer: TIM1 (Advanced Control)</h3>
+<p>If you require additional features like dead-time insertion or multiple output phases: - Use <strong>TIM1</strong> for advanced PWM needs - More complex setup required due to higher-level control registers and configuration steps</p>
+<hr>
+</section>
+<section id="summary-recommendations-1" class="level3">
+<h3 class="anchored" data-anchor-id="summary-recommendations-1">✅ Summary Recommendations</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Timer to use</td>
+<td><strong>TIM2, TIM3 or TIM5</strong></td>
+</tr>
+<tr class="even">
+<td>Configuration mode</td>
+<td>PWM mode or One-Pulse</td>
+</tr>
+<tr class="odd">
+<td>GPIO pin selection</td>
+<td>Use remapping if needed</td>
+</tr>
+<tr class="even">
+<td>Clock source</td>
+<td>HCLK (typically 80 MHz)</td>
+</tr>
+<tr class="odd">
+<td>Formula for frequency</td>
+<td><code>f = f_clk / ((PSC+1)(ARR+1))</code></td>
+</tr>
+<tr class="even">
+<td>Duty cycle control</td>
+<td>Set <code>CCR = ARR/2</code> for 50%</td>
+</tr>
+<tr class="odd">
+<td>Registers to configure</td>
+<td>CR1, PSC, ARR, CCMRx, CCER, CCRx</td>
+</tr>
+</tbody>
+</table>
+<p>For the easiest setup and GPIO integration, go with <strong>TIM2 or TIM3</strong>, configure them in PWM mode, calculate your <code>PSC</code> and <code>ARR</code> values using the formula above, and connect the output to an appropriate GPIO pin mapped to one of the timer’s capture/compare channels.</p>
+</section>
+<section id="user-1" class="level3">
+<h3 class="anchored" data-anchor-id="user-1">USER</h3>
+<p>This is the 1600 page reference guide for the stm32 family (of which the one I am using is a part). Only search for the relevant items. Does this change any aspect of your answer?</p>
+</section>
+<section id="assistant-1" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-1">ASSISTANT</h3>
+<p>Thank you for providing that context about your STM32 reference guide. However, I need to be transparent about my current capabilities:</p>
+<p><strong>I cannot search through or access the full content of your PDF file.</strong> The tools I have available are for calendar management (creating, updating, deleting events), not document analysis or searching within attached files.</p>
+<p><strong>What this means:</strong> - Even though you’ve shared context snippets from RM0394, I cannot independently verify information or search specific sections of the 1600-page guide [1] - The context provided shows snippets about timers (TIM1, TIM2/TIM3, TIM6/TIM7), registers, and revision history, but I cannot retrieve more detailed information from the document</p>
+<p><strong>How I can help:</strong> - If you tell me what specific information you’re looking for in your STM32 reference guide, you could share the relevant pages/sections and I’ll help interpret them - I can provide general STM32 knowledge based on my training if needed (though always verify with your official documentation)</p>
+<p><strong>Please clarify:</strong> What specific question or task are you trying to accomplish with this reference guide? Once I know what you need, I can suggest the best way to help.</p>
+</section>
+<section id="user-2" class="level3">
+<h3 class="anchored" data-anchor-id="user-2">USER</h3>
+<p>I am asking the same question as above, and want your answer now that you have more context:</p>
+<p>“What timers should I use on the STM32L432KC to generate frequencies ranging from 220Hz to 1kHz? What’s the best choice of timer if I want to easily connect it to a GPIO pin? What formulae are relevant, and what registers need to be set to configure them properly?”</p>
+</section>
+<section id="assistant-2" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-2">ASSISTANT</h3>
+<p>Based on the provided context and my general knowledge of STM32 timers, here’s what I can tell you:</p>
+</section>
+<section id="available-timers-information-from-context" class="level2">
+<h2 class="anchored" data-anchor-id="available-timers-information-from-context">Available Timers Information from Context</h2>
+<p>The context primarily covers <strong>LPTIM (Low-power Timer)</strong> registers for STM32L4 series devices, including STM32L43xxx devices like your L432KC [1]. However, the available information is limited to specific LPTIM registers and doesn’t provide complete timer configuration guidance for frequency generation.</p>
+</section>
+<section id="limitations-of-provided-context" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-of-provided-context">Limitations of Provided Context</h2>
+<p>The context contains: - LPTIM option register (LPTIM2_OR) information for STM32L43xxx devices [1] - LPTIM configuration register 2 (LPTIM_CFGR2) - though this is only available on STM32L41xxx/L42xx, not L432KC [1] - LPTIM repetition register details [1]</p>
+<p><strong>This context does NOT provide:</strong> - Complete timer selection guidance for all available timers - PWM output configuration formulae - Standard general-purpose timer (TIM) information - GPIO connection procedures</p>
+</section>
+<section id="general-recommendations-based-on-my-knowledge" class="level2">
+<h2 class="anchored" data-anchor-id="general-recommendations-based-on-my-knowledge">General Recommendations (Based on My Knowledge)</h2>
+<p>Since the context doesn’t contain comprehensive timer selection data, here’s what I recommend based on standard STM32L4 knowledge:</p>
+<section id="best-timers-for-220hz---1khz-range" class="level3">
+<h3 class="anchored" data-anchor-id="best-timers-for-220hz---1khz-range">Best Timers for 220Hz - 1kHz Range:</h3>
+<ol type="1">
+<li><strong>General Purpose Timers (TIM2-TIM5)</strong> - Best choice for this frequency range</li>
+<li><strong>Advanced Control Timer (TIM1)</strong> - If you need more features like DMA</li>
+<li><strong>LPTIM</strong> - Only if ultra-low power is critical, but less flexible</li>
+</ol>
+</section>
+<section id="why-general-purpose-timers" class="level3">
+<h3 class="anchored" data-anchor-id="why-general-purpose-timers">Why General Purpose Timers?</h3>
+<ul>
+<li>Better resolution than LPTIM at these frequencies</li>
+<li>Easier GPIO output configuration</li>
+<li>More PWM channels available</li>
+<li>Standard peripherals supported across all STM32L4 devices</li>
+</ul>
+</section>
+<section id="basic-formula-for-frequency-generation" class="level3">
+<h3 class="anchored" data-anchor-id="basic-formula-for-frequency-generation">Basic Formula for Frequency Generation:</h3>
+<pre><code>FOUT = FCLK / (PSC + 1) × (ARR + 1)</code></pre>
+<p>Where: - FCLK = Timer clock frequency - PSC = Prescaler value - ARR = Auto-reload register value</p>
+</section>
+<section id="key-configuration-registers-needed" class="level3">
+<h3 class="anchored" data-anchor-id="key-configuration-registers-needed">Key Configuration Registers Needed:</h3>
+<ul>
+<li>TIMx_CR1 (Control Register 1) - Enable timer, mode settings</li>
+<li>TIMx_PSC (Prescaler) - Clock division</li>
+<li>TIMx_ARR (Auto-reload) - Period/Frequency setting</li>
+<li>TIMx_CCMR/CCER (Channel Control) - PWM mode, output enable</li>
+</ul>
+<p><strong>Note:</strong> The specific register addresses and bit configurations are not fully detailed in the provided context [1]. For complete configuration procedures, I recommend consulting the full STM32L432KC Reference Manual.</p>
+</section>
+<section id="user-3" class="level3">
+<h3 class="anchored" data-anchor-id="user-3">USER</h3>
+<p>What say you, gemma? Is there more than you can add to this chat?</p>
+</section>
+<section id="assistant-3" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-3">ASSISTANT</h3>
+<p>Based on the provided reference guide, here are the recommendations for your STM32L432KC:</p>
+</section>
+<section id="recommended-timers-tim2-or-tim3" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-timers-tim2-or-tim3">🔹 Recommended Timers: TIM2 or TIM3</h3>
+<p>For your requirement of generating frequencies between 220Hz and 1kHz, the <strong>TIM2 or TIM3</strong> series are highly suitable as they are classified as <strong>General Purpose Timers</strong> [1].</p>
+<p><strong>Why they are the best choice:</strong> * <strong>Ease of Connection:</strong> As general-purpose timers, they are designed for standard tasks like PWM generation, making them straightforward to route to a GPIO pin. * <strong>Advanced Capabilities:</strong> They support a <strong>Combined PWM mode</strong>, which allows you to generate two edge or center-aligned PWM signals with programmable delay and phase shift between pulses [1].</p>
+</section>
+<section id="relevant-registers-and-formulae" class="level3">
+<h3 class="anchored" data-anchor-id="relevant-registers-and-formulae">🔹 Relevant Registers and Formulae</h3>
+<p>To configure these timers, you must manipulate several registers. According to the documentation: * <strong>Frequency Control:</strong> The output frequency is determined by the value in the <strong><code>TIMx_ARR</code></strong> (Auto-reload register) [1]. * <strong>Duty Cycle Control:</strong> The duty cycle (and delay in combined mode) is determined by the <strong><code>TIMx_CCRx</code></strong> (Capture/Compare) registers [1].</p>
+<p><strong>Frequency Formula:</strong> While the specific mathematical formula for the relationship between the clock and the registers is not explicitly detailed in the provided text, it is a standard industry formula used for these timers:</p>
+<p><span class="math display">\[f_{out} = \frac{f_{timer\_clock}}{(PSC + 1) \times (ARR + 1)}\]</span></p>
+<p><em>Where <strong>PSC</strong> is the value in the Prescaler register (<code>TIMx_PSC</code>). You use the prescaler to slow down the clock so that your <code>ARR</code> value remains high enough to maintain good resolution.</em></p>
+</section>
+<section id="important-note-on-lptim" class="level3">
+<h3 class="anchored" data-anchor-id="important-note-on-lptim">🔹 Important Note on LPTIM</h3>
+<p>While the documentation also covers the <strong>LPTIM (Low-power timer)</strong> [1], please be aware that some specific features (such as the repetition counter and timer counter reset) are noted as being available only on STM32L41xxx and STM32L42xxx devices [1]. Since you are using the <strong>L432KC</strong>, you should verify if those specific LPTIM features are available to you or if you should stick to the General Purpose TIM2/TIM3.</p>
+</section>
+<section id="user-4" class="level3">
+<h3 class="anchored" data-anchor-id="user-4">USER</h3>
+<p>Here is the datasheet. Verify your answer and check to ensure that it is accurate and does not hallucinate timers or anything</p>
+</section>
+<section id="assistant-4" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-4">ASSISTANT</h3>
+<p>Based on the provided documentation for the STM32L432KC, here are the recommendations for your timer configuration:</p>
+</section>
+<section id="recommended-timers-1" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-timers-1"><strong>Recommended Timers</strong></h3>
+<p>For generating frequencies in the 220Hz to 1kHz range, <strong>TIM2</strong> is the most suitable choice.</p>
+<ul>
+<li><strong>TIM2 (General-Purpose):</strong> This is a full-featured timer that includes a <strong>32-bit</strong> auto-reload up/downcounter and a <strong>32-bit</strong> prescaler [2]. The 32-bit architecture is highly beneficial for your low-frequency requirements (220Hz–1kHz) as it provides significantly higher resolution and a much larger range for the timer period compared to 16-bit timers [2].</li>
+<li><strong>TIM1 (Advanced-Control):</strong> This timer can also be used for PWM generation (edge or center-aligned modes) [2].</li>
+<li><strong>TIM15/TIM16 (General-Purpose):</strong> These are mid-range options with 16-bit auto-reload upcounters [2].</li>
+</ul>
+</section>
+<section id="best-choice-for-gpio-connection-1" class="level3">
+<h3 class="anchored" data-anchor-id="best-choice-for-gpio-connection-1"><strong>Best Choice for GPIO Connection</strong></h3>
+<p><strong>TIM2</strong> is a strong choice for easy GPIO integration because it features <strong>4 independent channels</strong> that can be used for PWM output [2].</p>
+</section>
+<section id="relevant-registers-and-formulae-1" class="level3">
+<h3 class="anchored" data-anchor-id="relevant-registers-and-formulae-1"><strong>Relevant Registers and Formulae</strong></h3>
+<p>To configure the timer, you will need to manipulate the following registers:</p>
+<ul>
+<li><strong><code>TIMx_ARR</code> (Auto-reload register):</strong> This register determines the frequency of the generated signal [1].</li>
+<li><strong><code>TIMx_CCRx</code> (Capture/Compare registers):</strong> These registers determine the duty cycle of the signal [1].</li>
+<li><strong><code>TIMx_PSC</code> (Prescaler):</strong> This is used to divide the timer clock frequency [2].</li>
+</ul>
+<p><strong>Frequency Formula:</strong> While the specific mathematical relationship is not explicitly written in the provided text, based on my own knowledge of STM32 timer architecture, the frequency (<span class="math inline">\(f_{out}\)</span>) is calculated as:</p>
+<p><span class="math display">\[f_{out} = \frac{f_{timer\_clock}}{(PSC + 1) \times (ARR + 1)}\]</span></p>
+<p><em>Where <span class="math inline">\(f_{timer\_clock}\)</span> is the frequency of the clock signal provided to the timer.</em></p>
+<hr>
+<p><strong>Note on LPTIM:</strong> While the documentation mentions the Low-power timer (LPTIM), please note that the <code>LPTIM_CFGR2</code> register is only available for STM32L41xxx and STM32L42xxx devices, meaning it may not be available for your L432KC [1].</p>
+</section>
+<section id="user-5" class="level3">
+<h3 class="anchored" data-anchor-id="user-5">USER</h3>
+<p>Now correct every previous message and error that was made in this chat history.</p>
+</section>
+<section id="assistant-5" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-5">ASSISTANT</h3>
+<p>Based on the provided documentation for the STM32L432KC, here is the accurate technical guidance for your requirements:</p>
+</section>
+<section id="recommended-timers-2" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-timers-2"><strong>Recommended Timers</strong></h3>
+<p>For generating frequencies in the 220Hz to 1kHz range, <strong>TIM2</strong> is the most suitable choice.</p>
+<ul>
+<li><strong>TIM2 (General-Purpose):</strong> It is a full-featured timer that includes a <strong>32-bit</strong> auto-reload up/downcounter and a <strong>32-bit</strong> prescaler [2]. This 32-bit capability is ideal for your low-frequency range, as it allows for much larger timer periods and higher resolution compared to 16-bit options [2].</li>
+<li><strong>Other Options:</strong> You could also use <strong>TIM15</strong> or <strong>TIM16</strong>, which are general-purpose timers with 16-bit auto-reload upcounters [2], or <strong>TIM6</strong> and <strong>TIM7</strong>, which are basic 16-bit timers [2].</li>
+</ul>
+</section>
+<section id="best-choice-for-gpio-connection-2" class="level3">
+<h3 class="anchored" data-anchor-id="best-choice-for-gpio-connection-2"><strong>Best Choice for GPIO Connection</strong></h3>
+<p><strong>TIM2</strong> is the best choice for easy GPIO integration because it features <strong>4 independent channels</strong> that can be used for PWM generation, input capture, or output compare [2]. For comparison, <strong>TIM15</strong> provides 2 channels [2], and <strong>TIM16</strong> provides 1 channel [2].</p>
+</section>
+<section id="relevant-registers-1" class="level3">
+<h3 class="anchored" data-anchor-id="relevant-registers-1"><strong>Relevant Registers</strong></h3>
+<p>To configure these timers, you will need to manipulate the following registers mentioned in the documentation: * <strong><code>TIMx_ARR</code></strong> (Auto-reload register) [1] * <strong><code>TIMx_PSC</code></strong> (Prescaler) [1, 2]</p>
+</section>
+<section id="frequency-formula-1" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-formula-1"><strong>Frequency Formula</strong></h3>
+<p>Please note that the specific mathematical formula for calculating the output frequency is <strong>not present in the provided context</strong>. However, using standard industry knowledge for STM32 timers, the formula is:</p>
+<p><span class="math display">\[f_{out} = \frac{f_{timer\_clock}}{(PSC + 1) \times (ARR + 1)}\]</span></p>
+<p><em>Where <span class="math inline">\(f_{timer\_clock}\)</span> is the frequency of the timer’s clock source.</em></p>
+</section>
+<section id="user-6" class="level3">
+<h3 class="anchored" data-anchor-id="user-6">USER</h3>
+<p>Don’t answer the previous questions, assess their correctness.</p>
+</section>
+<section id="assistant-6" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-6">ASSISTANT</h3>
+</section>
+<section id="user-7" class="level3">
+<h3 class="anchored" data-anchor-id="user-7">USER</h3>
+<p>Don’t answer the previous questions, assess the correctness of the responses that were provided.</p>
+</section>
+<section id="assistant-7" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-7">ASSISTANT</h3>
+<p>The evolution of the responses in this chat shows a progression from general STM32 knowledge to highly specific, datasheet-validated technical guidance. Here is the assessment of the correctness of the previous messages:</p>
+</section>
+<section id="assessment-of-the-generic-responses-early-chat" class="level3">
+<h3 class="anchored" data-anchor-id="assessment-of-the-generic-responses-early-chat">1. Assessment of the “Generic” Responses (Early Chat)</h3>
+<p>The early responses provided general information regarding STM32 timers. While the logic was sound for the STM32 architecture in general, they were <strong>incomplete and potentially inaccurate</strong> for your specific chip because: * <strong>Lack of Specificity:</strong> They did not account for the critical distinction between the 32-bit architecture of <strong>TIM2</strong> and the 16-bit architecture of <strong>TIM15/16</strong> [2]. This distinction is vital for your low-frequency requirements. * <strong>Potential Hallucination:</strong> One previous response mentioned a “Combined PWM mode.” This feature was not explicitly documented in the provided context [1], making that statement an unverified addition.</p>
+</section>
+<section id="assessment-of-the-datasheet-based-responses-final-chat" class="level3">
+<h3 class="anchored" data-anchor-id="assessment-of-the-datasheet-based-responses-final-chat">2. Assessment of the “Datasheet-Based” Responses (Final Chat)</h3>
+<p>The final responses, which utilized the <code>stm32l432kc.pdf</code> documentation, are <strong>highly accurate</strong> and correct the previous errors. The correctness is verified by the following points from the documentation:</p>
+<ul>
+<li><strong>Timer Bit-Width Accuracy:</strong> The responses correctly identified that <strong>TIM2 is a 32-bit timer</strong> (including the prescaler) [2], whereas <strong>TIM15 and TIM16 are 16-bit timers</strong> [2]. This is the most important technical detail for your 220Hz–1kHz range.</li>
+<li><strong>Channel Count Accuracy:</strong> The final responses accurately specified the available output channels: <strong>TIM2 has 4 channels</strong>, <strong>TIM15 has 2 channels</strong>, and <strong>TIM16 has 1 channel</strong> [2].</li>
+<li><strong>Register Identification:</strong> The identification of <strong><code>TIMx_ARR</code></strong> (auto-reload register) [1, 2] and <strong><code>TIMx_PSC</code></strong> (prescaler) [2] as the primary registers for frequency control is correct and consistent with the provided sources.</li>
+<li><strong>Formula Integrity:</strong> The final response correctly notes that the frequency formula is not explicitly written in the provided text but is a standard technical application of the register functions described [1, 2].</li>
+</ul>
+</section>
+<section id="summary-of-corrections-made" class="level3">
+<h3 class="anchored" data-anchor-id="summary-of-corrections-made">Summary of Corrections Made</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Previous (Generic) Answer</th>
+<th style="text-align: left;">Corrected (Datasheet-Validated) Answer</th>
+<th style="text-align: left;">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>TIM2 Bit-Width</strong></td>
+<td style="text-align: left;">Implied standard resolution</td>
+<td style="text-align: left;"><strong>32-bit</strong> (High resolution for low freq)</td>
+<td style="text-align: left;">[2]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>TIM15/16 Bit-Width</strong></td>
+<td style="text-align: left;">Implied standard resolution</td>
+<td style="text-align: left;"><strong>16-bit</strong></td>
+<td style="text-align: left;">[2]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Channel Mapping</strong></td>
+<td style="text-align: left;">General “Output”</td>
+<td style="text-align: left;"><strong>TIM2: 4 channels; TIM15: 2 channels; TIM16: 1 channel</strong></td>
+<td style="text-align: left;">[2]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Mode Names</strong></td>
+<td style="text-align: left;">Mentioned “Combined PWM” (unverified)</td>
+<td style="text-align: left;"><strong>Input capture, output compare, PWM, or one-pulse</strong></td>
+<td style="text-align: left;">[2]</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/whyitsrai\.github\.io\/engr155\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
