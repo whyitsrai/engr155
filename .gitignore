@@ -24,6 +24,22 @@ impl*/
 **/Debug/
 *.emSession
 *.jlink
+*.bkt
+*.dep
+*.hsc
+*Spec.xml
+*.su
+*.o
+*.d
+*.obj
+*.lst
+*.map
+*.hex
+*.bin
+*.elf
+*.out
+*.user
+*.session
 
 # Other synthesis files
 vsim.wlf
