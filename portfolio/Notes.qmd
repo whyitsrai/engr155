@@ -140,3 +140,24 @@ module photon_detector(input logic clk, reset, photon,
       - 4 Wait States (4 WS): More than 64 MHz up to 80 MHz (Maximum for standard STM32L4)
 - in segger, do something something import dynamic folder or something
     - maybe consider seeing if you can have segger generate the requisite make files and such
+
+# 2026-10-01
+- PA6 and PA8 are 5-volt tolerant
+- The USB UART is USART2
+- P230 the definitive guide to arm corex-m3 and cortex-m4 processors
+    - interrups figure and how it works
+    - vector table is table of addresses to functions at 00
+
+# 2026-10-06
+- Serial stuff, starting with SPI
+- **SPI is shared shift register**
+    - Prof. Brake made us repeat after him so this is probably important
+    - This is the right metal model
+- You can never write data without reading it
+    - rather, you need to write data to read data because of shifts
+    - SDO to SDI etc
+    - MOSI/MISO shall not be used any longer
+    - COPI CIPO
+    - POCI PICO
+- Something SSOE control bit something
+- Chip select edges determine when a packet is getting sent (so errr sad)
