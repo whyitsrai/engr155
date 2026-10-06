@@ -407,6 +407,8 @@ window.Quarto = {
   <li><a href="#section-5" id="toc-section-5" class="nav-link" data-scroll-target="#section-5">2026-09-17</a></li>
   <li><a href="#section-6" id="toc-section-6" class="nav-link" data-scroll-target="#section-6">2026-09-22</a></li>
   <li><a href="#section-7" id="toc-section-7" class="nav-link" data-scroll-target="#section-7">2026-09-29</a></li>
+  <li><a href="#section-8" id="toc-section-8" class="nav-link" data-scroll-target="#section-8">2026-10-01</a></li>
+  <li><a href="#section-9" id="toc-section-9" class="nav-link" data-scroll-target="#section-9">2026-10-06</a></li>
   </ul>
 </nav>
     </div>
@@ -605,6 +607,39 @@ window.Quarto = {
 <ul>
 <li>maybe consider seeing if you can have segger generate the requisite make files and such</li>
 </ul></li>
+</ul>
+</section>
+<section id="section-8" class="level1">
+<h1>2026-10-01</h1>
+<ul>
+<li>PA6 and PA8 are 5-volt tolerant</li>
+<li>The USB UART is USART2</li>
+<li>P230 the definitive guide to arm corex-m3 and cortex-m4 processors
+<ul>
+<li>interrups figure and how it works</li>
+<li>vector table is table of addresses to functions at 00</li>
+</ul></li>
+</ul>
+</section>
+<section id="section-9" class="level1">
+<h1>2026-10-06</h1>
+<ul>
+<li>Serial stuff, starting with SPI</li>
+<li><strong>SPI is shared shift register</strong>
+<ul>
+<li>Prof.&nbsp;Brake made us repeat after him so this is probably important</li>
+<li>This is the right metal model</li>
+</ul></li>
+<li>You can never write data without reading it
+<ul>
+<li>rather, you need to write data to read data because of shifts</li>
+<li>SDO to SDI etc</li>
+<li>MOSI/MISO shall not be used any longer</li>
+<li>COPI CIPO</li>
+<li>POCI PICO</li>
+</ul></li>
+<li>Something SSOE control bit something</li>
+<li>Chip select edges determine when a packet is getting sent (so errr sad)</li>
 </ul>
 
 

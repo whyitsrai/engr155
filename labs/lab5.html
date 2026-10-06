@@ -487,13 +487,11 @@ Figure&nbsp;1: Sketch of the kind of signal given by the quadrature encoder
 \end{aligned} \]</span></p>
 <p>Putting in our numbers: <span class="math display">\[ \text{Rotational-Speed} = \frac{\text{Edges}}{4 \cdot \text{pulses-per-rotation} \cdot T} \]</span> where <span class="math inline">\(T\)</span> is the sampling period. In the case of this program, <span class="math inline">\(0.25\)</span> seconds. As a final check, our units are as expected.</p>
 <p>As for the direction calculation, notice the detailed conditions in the image above. Whenever the conditions correspond to clockwise rotation, we can simply increment our edge counter. If the conditions correspond to counter-clockwise rotation, we can decrement it. As the edge counter is reset to <span class="math inline">\(0\)</span> at the start of every period, a negative edge number results in a negative (counter-clockwise) rotation and vice versa.</p>
-<section id="accuracyresolution-estimate" class="level4">
-<h4 class="anchored" data-anchor-id="accuracyresolution-estimate">Accuracy/Resolution Estimate</h4>
-<ul>
-<li>Non-accurate time base</li>
-<li>+- one whole set of pulses (little to no difference)</li>
-<li>Resolution technically 1 edge (over time)</li>
-</ul>
+<section id="update-rateaccuracyresolution-estimate" class="level4">
+<h4 class="anchored" data-anchor-id="update-rateaccuracyresolution-estimate">Update Rate/Accuracy/Resolution Estimate</h4>
+<p>The update rate is the easiest to explain. As the motor speed calculation is only done every 250ms (it is hard-coded to do this), the update rate is 4Hz.</p>
+<p>As for resolution, it depends on the motor. The smallest event that is possible for the MCU to recognize is a single edge. This single additional edge can happen every 1/4 second. This gives us a resolution increment 0.25 edges per second. This is now easy to convert. In the case of the 120 pulses per rotation (480 edges per rotation) motor that would be a resolution increment of 0.000521 rotations per second. That is <code>(edges/second)/(edges/rotation) = (rotation/second)</code>. The results for the other motor have the same order of magnitude. The biggest controller of resolution in this case is the fact that I decided to do fixed-point calculations with 4 decimal places (with some rounding down due to integer math).</p>
+<p>Lastly, in terms of accuracy you could make an argument that only measuring across the 1/4 second window introduces a lot of error, but I would argue that it is negligible. The more important factor would be the accuracy of the time base. As I am using Systick (driven by the MSI) as a time base, it inherits the inaccuracies of that. Luckily, I am compensating for the drift in MSI frequency using the LSE oscillator, my measured clock error is around 0.3%. We can expect this error to propagate to the measured speed. Again though, the motors are not super accurate, so there is again error propagation there.</p>
 </section>
 </section>
 <section id="interrupts-vs-polling-for-this-application" class="level3">
@@ -570,7 +568,8 @@ Figure&nbsp;3: Electrical schematic of the design. PDF <a href="https://github.c
 <blockquote class="blockquote">
 <p>Write me interrupt handlers to interface with a quadrature encoder. I’m using the STM32L432KC, what pins should I connect the encoder to in order to allow it to easily trigger the interrupts?</p>
 </blockquote>
-<div class="callout callout-style-default callout-note callout-empty-content callout-titled">
+<p>The initial response was quite interesting. I initially assumed that it was this because of the system prompt, but I cross-referenced the answer with gemini free and copilot free (both using my HMC account0. All three models gave the same general answer: use the timer peripheral. That being said, I find the answer from gemma to be more useful to myself as an engineer. The brevity was easy to parse and also still forced me to think. In short, it did not give me the full answer and therefore does not let me be lazy.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -581,24 +580,6 @@ Figure&nbsp;3: Electrical schematic of the design. PDF <a href="https://github.c
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-</div>
-<section id="sec-aitrans" class="level4">
-<h4 class="anchored">Full AI Chat Transcript</h4>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Full chat transcript: openwebui running through ollama on my Laptop
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <section id="user" class="level3">
 <h3 class="anchored" data-anchor-id="user">USER</h3>
@@ -636,125 +617,35 @@ Figure&nbsp;3: Electrical schematic of the design. PDF <a href="https://github.c
 <li><strong>Advantage:</strong> Zero CPU overhead for edge tracking; direction is handled automatically.</li>
 </ul>
 </section>
+</div>
+</div>
+</div>
+<p>That being said, it assumed that I was using the HAL. I also wanted to see if it could answer my question directly, so I prompted it again. This time around it hallucinated some of the pins (the specific nucleo that we have does not use <code>PA3</code> for UART2), even though its implementation technically should work (as we are only transmitting over UART, not receiving). It seems to also have forgotten it’s system prompt because it generated a bunch of code and was more verbose than necessary:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Final AI Response:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <section id="user-1" class="level3">
 <h3 class="anchored" data-anchor-id="user-1">USER</h3>
 <p>How about doing this on the nucleo version with less exposed pins? Setting up the right USART for sending it over USB, etc. Search the web to be sure. This is all done on bare metal without the HAL</p>
-</section>
-<section id="assistant-1" class="level3">
-<h3 class="anchored" data-anchor-id="assistant-1">ASSISTANT</h3>
-</section>
-<section id="pin-mapping-nucleo-32-l432kc" class="level3">
-<h3 class="anchored" data-anchor-id="pin-mapping-nucleo-32-l432kc">Pin Mapping (Nucleo-32 / L432KC)</h3>
-<p>Because the Nucleo-32 (UFQFPN32) has limited GPIO availability, use these specific pins which are routed to the ST-LINK Virtual COM Port (VCP) for USB communication:</p>
-<ul>
-<li><strong>Encoder (Hardware Timer 2):</strong>
-<ul>
-<li><strong>PA0</strong>: TIM2_CH1</li>
-<li><strong>PA1</strong>: TIM2_CH2</li>
-</ul></li>
-<li><strong>USB/Serial (USART2):</strong>
-<ul>
-<li><strong>PA2</strong>: USART2_TX (Connect to PC via USB)</li>
-<li><strong>-PA3</strong>: USART2_RX (Not required for sending, but standard)</li>
-</ul></li>
-</ul>
-</section>
-<section id="technical-note-on-interrupts" class="level3">
-<h3 class="anchored" data-anchor-id="technical-note-on-interrupts">Technical Note on Interrupts</h3>
-<p>Do <strong>not</strong> use GPIO/EXTI interrupts for the encoder pulses. It is a waste of CPU cycles. The hardware <strong>Timer Encoder Mode</strong> tracks the edges in the silicon. Instead, use a periodic interrupt (like <strong>SysTick</strong>) to “interface” by reading the counter and sending the value via USART.</p>
-</section>
-<section id="bare-metal-implementation-c" class="level3">
-<h3 class="anchored" data-anchor-id="bare-metal-implementation-c">Bare Metal Implementation (C)</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">"stm32l432xx.h"</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Prototypes</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">);</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SysTick_Handler<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> <span class="dt">int</span> last_count <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> current_count <span class="op">=</span> <span class="op">(</span><span class="dt">int16_t</span><span class="op">)</span>TIM2<span class="op">-&gt;</span>CNT<span class="op">;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Only send if the position has changed</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>current_count <span class="op">!=</span> last_count<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Simplified integer to string conversion for demonstration</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">// In real use, use sprintf or a custom fast itoa</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">char</span> buf<span class="op">[</span><span class="dv">16</span><span class="op">];</span> </span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">// (Logic to format 'current_count' into 'buf' goes here)</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">// uart_send_string(buf);</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        last_count <span class="op">=</span> current_count<span class="op">;</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. Setup Hardware</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    usart2_init<span class="op">();</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    tim2_encoder_init<span class="op">();</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. Setup SysTick for 100ms reporting (assuming 80MHz clock)</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    SysTick_Config<span class="op">(</span><span class="dv">8000000</span><span class="op">);</span> <span class="co">// 100ms delay</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Main loop can stay empty or perform other tasks</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Enable Clocks</span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_USART2EN<span class="op">;</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Configure PA2 as Alternate Function (USART2_TX)</span></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span> <span class="co">// Clear</span></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span>  <span class="co">// AF mode</span></span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">7</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span> <span class="co">// AF7 for USART2</span></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">// USART2 Configuration</span></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>BRR <span class="op">=</span> <span class="dv">80000000</span> <span class="op">/</span> <span class="dv">115200</span><span class="op">;</span> <span class="co">// Baud rate calculation (80MHz / 115200)</span></span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> USART_CR1_TE <span class="op">|</span> USART_CR1_UE<span class="op">;</span> <span class="co">// Enable TX and USART</span></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Enable Clocks</span></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_TIM2EN<span class="op">;</span></span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Configure PA0/PA1 as Alternate Function (TIM2_CH1/CH2)</span></span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~((</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">)));</span></span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">4</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">4</span><span class="op">));</span> <span class="co">// AF1 for TIM2</span></span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Timer 2 Encoder Mode Setup</span></span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CNT <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    <span class="co">// CC2S: Encoder mode 3 (CH1 and CH2)</span></span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">);</span> </span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> TIM_CR1_CEN<span class="op">;</span> <span class="co">// Counter Enable</span></span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(*</span>str<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(!(</span>USART2<span class="op">-&gt;</span>ISR <span class="op">&amp;</span> USART_ISR_TXE<span class="op">));</span></span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>        USART2<span class="op">-&gt;</span>TDR <span class="op">=</span> <span class="op">*</span>str<span class="op">++;</span></span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="key-register-details" class="level3">
-<h3 class="anchored" data-anchor-id="key-register-details">Key Register Details</h3>
-<ol type="1">
-<li><strong>RCC</strong>: You must enable the clock for GPIOA, USART2, and TIM2 before touching their registers.</li>
-<li><strong>GPIO MODER</strong>: Set to <code>0x02</code> (Alternate Function mode).</li>
-<li><strong>GPIO AFR</strong>: Set to <code>0x01</code> for Timer and <code>0x07</code> for USART2.</li>
-<li><strong>TIM2-&gt;CR1</strong>: The bit <code>CC2S</code> (Capture/Compare 2 Selection) determines the encoder mode. <code>3</code> selects both inputs.</li>
-<li><strong>USART2-&gt;BRR</strong>: This is the divider. For 80MHz, <code>80,000,000 / 115,200 = 694</code>.</li>
-</ol>
+<hr>
+<p>response to the prompt above omitted here. not fully correct.</p>
+<hr>
 </section>
 <section id="user-2" class="level3">
 <h3 class="anchored" data-anchor-id="user-2">USER</h3>
 <p>Check to ensure (searching the web) that every pin is actually correctly assigned and available for the nucleo. Also ensure that you are not running into any timing issues or constraints with raising the clock speed</p>
 </section>
-<section id="assistant-2" class="level3">
-<h3 class="anchored" data-anchor-id="assistant-2">ASSISTANT</h3>
+<section id="assistant-1" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-1">ASSISTANT</h3>
 </section>
 <section id="pin-assignment-verification" class="level3">
 <h3 class="anchored" data-anchor-id="pin-assignment-verification">1. Pin Assignment Verification</h3>
@@ -806,94 +697,406 @@ Figure&nbsp;3: Electrical schematic of the design. PDF <a href="https://github.c
 </section>
 <section id="corrected-bare-metal-implementation" class="level3">
 <h3 class="anchored" data-anchor-id="corrected-bare-metal-implementation">3. Corrected Bare Metal Implementation</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">"stm32l432xx.h"</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SystemClock_Config<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">);</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. CRITICAL: Setup Clock first!</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    SystemClock_Config<span class="op">();</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. Setup Peripherals</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    usart2_init<span class="op">();</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    tim2_encoder_init<span class="op">();</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 3. Setup SysTick for 100ms (80MHz / 100,000 = 800)</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    SysTick_Config<span class="op">(</span><span class="dv">80000</span><span class="op">);</span> <span class="co">// 100ms @ 80MHz</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Application loop</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SystemClock_Config<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. Enable HSI</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// Ensure no interference</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CR <span class="op">|=</span> RCC_CR_HSION<span class="op">;</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!(</span>RCC<span class="op">-&gt;</span>CR <span class="op">&amp;</span> RCC_CR_HSIREADY<span class="op">));</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. Configure Flash Latency (Crucial for 80MHz)</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">// For 80MHz, we need 2 Wait States (WS)</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">// FLASH-&gt;ACR = (2 &lt;&lt; 0); // Simplified logic</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    FLASH<span class="op">-&gt;</span>ACR <span class="op">|=</span> FLASH_ACR_LATENCY_2WS<span class="op">;</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 3. Configure PLL: Source=HSI (16MHz), Multiplier=x5 -&gt; 80MHz</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PLLCFG: PLLSRC=HSI, PLLMUL=5</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>PLLCFGR <span class="op">=</span> <span class="op">(</span><span class="dv">0</span> <span class="op">&lt;&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="dv">4</span> <span class="op">&lt;&lt;</span> <span class="dv">6</span><span class="op">);</span> <span class="co">// 0 for HSI, 4 for 5x multiplier (0001=2x, 0010=3x, 0011=4x, 0100=5x)</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// s_PLLON</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CR <span class="op">|=</span> RCC_CR_PLLON<span class="op">;</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!(</span>RCC<span class="op">-&gt;</span>CR <span class="op">&amp;</span> RCC_CR_PLLRDY<span class="op">));</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 4. Switch System Clock to PLL</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CFGR <span class="op">|=</span> RCC_CFGR_SW_PLL<span class="op">;</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">((</span>RCC<span class="op">-&gt;</span>CFGR <span class="op">&amp;</span> RCC_CFGR_SWS<span class="op">)</span> <span class="op">!=</span> RCC_CFGR_PLL<span class="op">);</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_USART2EN<span class="op">;</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PA2: AF7 (USART2_TX)</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span> </span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">7</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 80MHz / 115200 = 694</span></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>BRR <span class="op">=</span> <span class="dv">694</span><span class="op">;</span> </span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> USART_CR1_TE <span class="op">|</span> USART_CR1_UE<span class="op">;</span></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_TIM2EN<span class="op">;</span></span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PA0/PA1: AF1 (TIM2)</span></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~((</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">)));</span></span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">4</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">4</span><span class="op">));</span></span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CNT <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>    <span class="co">// CC2S: Set to 3 (Encoder mode: both inputs)</span></span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">);</span> </span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> TIM_CR1_CEN<span class="op">;</span></span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(*</span>str<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(!(</span>USART2<span class="op">-&gt;</span>ISR <span class="op">&amp;</span> USART_ISR_TXE<span class="op">));</span></span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>        USART2<span class="op">-&gt;</span>TDR <span class="op">=</span> <span class="op">*</span>str<span class="op">++;</span></span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SysTick_Handler<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Example: Read and transmit count</span></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int16_t</span> count <span class="op">=</span> <span class="op">(</span><span class="dt">int16_t</span><span class="op">)</span>TIM2<span class="op">-&gt;</span>CNT<span class="op">;</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>    <span class="co">// (Add your string conversion logic here)</span></span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">"stm32l432xx.h"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SystemClock_Config<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">);</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. CRITICAL: Setup Clock first!</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    SystemClock_Config<span class="op">();</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. Setup Peripherals</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    usart2_init<span class="op">();</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    tim2_encoder_init<span class="op">();</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 3. Setup SysTick for 100ms (80MHz / 100,000 = 800)</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    SysTick_Config<span class="op">(</span><span class="dv">80000</span><span class="op">);</span> <span class="co">// 100ms @ 80MHz</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Application loop</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SystemClock_Config<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. Enable HSI</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// Ensure no interference</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CR <span class="op">|=</span> RCC_CR_HSION<span class="op">;</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!(</span>RCC<span class="op">-&gt;</span>CR <span class="op">&amp;</span> RCC_CR_HSIREADY<span class="op">));</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. Configure Flash Latency (Crucial for 80MHz)</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">// For 80MHz, we need 2 Wait States (WS)</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">// FLASH-&gt;ACR = (2 &lt;&lt; 0); // Simplified logic</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    FLASH<span class="op">-&gt;</span>ACR <span class="op">|=</span> FLASH_ACR_LATENCY_2WS<span class="op">;</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 3. Configure PLL: Source=HSI (16MHz), Multiplier=x5 -&gt; 80MHz</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PLLCFG: PLLSRC=HSI, PLLMUL=5</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>PLLCFGR <span class="op">=</span> <span class="op">(</span><span class="dv">0</span> <span class="op">&lt;&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="dv">4</span> <span class="op">&lt;&lt;</span> <span class="dv">6</span><span class="op">);</span> <span class="co">// 0 for HSI, 4 for 5x multiplier (0001=2x, 0010=3x, 0011=4x, 0100=5x)</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// s_PLLON</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CR <span class="op">|=</span> RCC_CR_PLLON<span class="op">;</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!(</span>RCC<span class="op">-&gt;</span>CR <span class="op">&amp;</span> RCC_CR_PLLRDY<span class="op">));</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 4. Switch System Clock to PLL</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CFGR <span class="op">|=</span> RCC_CFGR_SW_PLL<span class="op">;</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">((</span>RCC<span class="op">-&gt;</span>CFGR <span class="op">&amp;</span> RCC_CFGR_SWS<span class="op">)</span> <span class="op">!=</span> RCC_CFGR_PLL<span class="op">);</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_USART2EN<span class="op">;</span></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PA2: AF7 (USART2_TX)</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span> </span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">7</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 80MHz / 115200 = 694</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>BRR <span class="op">=</span> <span class="dv">694</span><span class="op">;</span> </span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> USART_CR1_TE <span class="op">|</span> USART_CR1_UE<span class="op">;</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_TIM2EN<span class="op">;</span></span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PA0/PA1: AF1 (TIM2)</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~((</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">)));</span></span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">4</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">4</span><span class="op">));</span></span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CNT <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>    <span class="co">// CC2S: Set to 3 (Encoder mode: both inputs)</span></span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">);</span> </span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> TIM_CR1_CEN<span class="op">;</span></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(*</span>str<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(!(</span>USART2<span class="op">-&gt;</span>ISR <span class="op">&amp;</span> USART_ISR_TXE<span class="op">));</span></span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>        USART2<span class="op">-&gt;</span>TDR <span class="op">=</span> <span class="op">*</span>str<span class="op">++;</span></span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SysTick_Handler<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Example: Read and transmit count</span></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int16_t</span> count <span class="op">=</span> <span class="op">(</span><span class="dt">int16_t</span><span class="op">)</span>TIM2<span class="op">-&gt;</span>CNT<span class="op">;</span></span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>    <span class="co">// (Add your string conversion logic here)</span></span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</div>
+</div>
+</div>
+<section id="sec-aitrans" class="level4">
+<h4 class="anchored">Full AI Chat Transcript</h4>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Full chat transcript: openwebui running through ollama on my Laptop
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<section id="user-3" class="level3">
+<h3 class="anchored" data-anchor-id="user-3">USER</h3>
+<p>Write me interrupt handlers to interface with a quadrature encoder. I’m using the STM32L432KC, what pins should I connect the encoder to in order to allow it to easily trigger the interrupts?</p>
+</section>
+<section id="assistant-2" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-2">ASSISTANT</h3>
+</section>
+<section id="recommended-configuration-1" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-configuration-1">Recommended Configuration</h3>
+<p><strong>Pins:</strong> - <strong>PA0</strong> (TIM2_CH1) - <strong>PA1</strong> (TIM2_CH2)</p>
+<p><strong>Method:</strong> Do <strong>not</strong> use GPIO interrupts (EXTI) for quadrature. It is inefficient and will miss pulses at high speeds. Use the STM32’s hardware <strong>Timer Encoder Mode</strong>. The timer has a built-in state machine that handles edge detection and direction automatically in hardware.</p>
+</section>
+<section id="implementation-hal-1" class="level3">
+<h3 class="anchored" data-anchor-id="implementation-hal-1">Implementation (HAL)</h3>
+<p><strong>1. Initialization &amp; Start</strong> Configure Timer 2 in <code>Encoder Mode</code> via CubeMX or manual register setup, then call:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Start the encoder mode */</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>HAL_TIM_Encoder_Start<span class="op">(&amp;</span>htim2<span class="op">,</span> TIM_CHANNEL_ALL<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>2. Reading Position</strong> The position is stored in the timer’s counter register. You don’t need a handler for every pulse; just read the count whenever you need it.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Get current position (TIM2 is 32-bit on L432KC) */</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int32_t</span> encoder_count <span class="op">=</span> <span class="op">(</span><span class="dt">int32_t</span><span class="op">)</span>__HAL_TIM_GET_COUNTER<span class="op">(&amp;</span>htim2<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Handling Events (Optional)</strong> If you need to trigger a specific action (like a task update) when the encoder moves or reaches a certain value, use the <strong>Update Interrupt</strong> or <strong>Compare Interrupt</strong>, not the raw edge interrupts.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Only use this if you need to act on an event (e.g., overflow or threshold) */</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> HAL_TIM_PeriodElapsedCallback<span class="op">(</span>TIM_HandleTypeDef <span class="op">*</span>htim<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>htim<span class="op">-&gt;</span>Instance <span class="op">==</span> TIM2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Your logic here</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="summary-1" class="level3">
+<h3 class="anchored" data-anchor-id="summary-1">Summary</h3>
+<ul>
+<li><strong>Pins:</strong> PA0, PA1.</li>
+<li><strong>Hardware:</strong> Timer 2 (Encoder Mode).</li>
+<li><strong>Advantage:</strong> Zero CPU overhead for edge tracking; direction is handled automatically.</li>
+</ul>
+</section>
+<section id="user-4" class="level3">
+<h3 class="anchored" data-anchor-id="user-4">USER</h3>
+<p>How about doing this on the nucleo version with less exposed pins? Setting up the right USART for sending it over USB, etc. Search the web to be sure. This is all done on bare metal without the HAL</p>
+</section>
+<section id="assistant-3" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-3">ASSISTANT</h3>
+</section>
+<section id="pin-mapping-nucleo-32-l432kc" class="level3">
+<h3 class="anchored" data-anchor-id="pin-mapping-nucleo-32-l432kc">Pin Mapping (Nucleo-32 / L432KC)</h3>
+<p>Because the Nucleo-32 (UFQFPN32) has limited GPIO availability, use these specific pins which are routed to the ST-LINK Virtual COM Port (VCP) for USB communication:</p>
+<ul>
+<li><strong>Encoder (Hardware Timer 2):</strong>
+<ul>
+<li><strong>PA0</strong>: TIM2_CH1</li>
+<li><strong>PA1</strong>: TIM2_CH2</li>
+</ul></li>
+<li><strong>USB/Serial (USART2):</strong>
+<ul>
+<li><strong>PA2</strong>: USART2_TX (Connect to PC via USB)</li>
+<li><strong>-PA3</strong>: USART2_RX (Not required for sending, but standard)</li>
+</ul></li>
+</ul>
+</section>
+<section id="technical-note-on-interrupts" class="level3">
+<h3 class="anchored" data-anchor-id="technical-note-on-interrupts">Technical Note on Interrupts</h3>
+<p>Do <strong>not</strong> use GPIO/EXTI interrupts for the encoder pulses. It is a waste of CPU cycles. The hardware <strong>Timer Encoder Mode</strong> tracks the edges in the silicon. Instead, use a periodic interrupt (like <strong>SysTick</strong>) to “interface” by reading the counter and sending the value via USART.</p>
+</section>
+<section id="bare-metal-implementation-c" class="level3">
+<h3 class="anchored" data-anchor-id="bare-metal-implementation-c">Bare Metal Implementation (C)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">"stm32l432xx.h"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Prototypes</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">);</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SysTick_Handler<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> <span class="dt">int</span> last_count <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> current_count <span class="op">=</span> <span class="op">(</span><span class="dt">int16_t</span><span class="op">)</span>TIM2<span class="op">-&gt;</span>CNT<span class="op">;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Only send if the position has changed</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>current_count <span class="op">!=</span> last_count<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Simplified integer to string conversion for demonstration</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">// In real use, use sprintf or a custom fast itoa</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">char</span> buf<span class="op">[</span><span class="dv">16</span><span class="op">];</span> </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">// (Logic to format 'current_count' into 'buf' goes here)</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">// uart_send_string(buf);</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        last_count <span class="op">=</span> current_count<span class="op">;</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. Setup Hardware</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    usart2_init<span class="op">();</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    tim2_encoder_init<span class="op">();</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. Setup SysTick for 100ms reporting (assuming 80MHz clock)</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    SysTick_Config<span class="op">(</span><span class="dv">8000000</span><span class="op">);</span> <span class="co">// 100ms delay</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Main loop can stay empty or perform other tasks</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Enable Clocks</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_USART2EN<span class="op">;</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Configure PA2 as Alternate Function (USART2_TX)</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span> <span class="co">// Clear</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span>  <span class="co">// AF mode</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">7</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span> <span class="co">// AF7 for USART2</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">// USART2 Configuration</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>BRR <span class="op">=</span> <span class="dv">80000000</span> <span class="op">/</span> <span class="dv">115200</span><span class="op">;</span> <span class="co">// Baud rate calculation (80MHz / 115200)</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> USART_CR1_TE <span class="op">|</span> USART_CR1_UE<span class="op">;</span> <span class="co">// Enable TX and USART</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Enable Clocks</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_TIM2EN<span class="op">;</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Configure PA0/PA1 as Alternate Function (TIM2_CH1/CH2)</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~((</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">)));</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">4</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">4</span><span class="op">));</span> <span class="co">// AF1 for TIM2</span></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Timer 2 Encoder Mode Setup</span></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CNT <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>    <span class="co">// CC2S: Encoder mode 3 (CH1 and CH2)</span></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">);</span> </span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> TIM_CR1_CEN<span class="op">;</span> <span class="co">// Counter Enable</span></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(*</span>str<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(!(</span>USART2<span class="op">-&gt;</span>ISR <span class="op">&amp;</span> USART_ISR_TXE<span class="op">));</span></span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>        USART2<span class="op">-&gt;</span>TDR <span class="op">=</span> <span class="op">*</span>str<span class="op">++;</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="key-register-details" class="level3">
+<h3 class="anchored" data-anchor-id="key-register-details">Key Register Details</h3>
+<ol type="1">
+<li><strong>RCC</strong>: You must enable the clock for GPIOA, USART2, and TIM2 before touching their registers.</li>
+<li><strong>GPIO MODER</strong>: Set to <code>0x02</code> (Alternate Function mode).</li>
+<li><strong>GPIO AFR</strong>: Set to <code>0x01</code> for Timer and <code>0x07</code> for USART2.</li>
+<li><strong>TIM2-&gt;CR1</strong>: The bit <code>CC2S</code> (Capture/Compare 2 Selection) determines the encoder mode. <code>3</code> selects both inputs.</li>
+<li><strong>USART2-&gt;BRR</strong>: This is the divider. For 80MHz, <code>80,000,000 / 115,200 = 694</code>.</li>
+</ol>
+</section>
+<section id="user-5" class="level3">
+<h3 class="anchored" data-anchor-id="user-5">USER</h3>
+<p>Check to ensure (searching the web) that every pin is actually correctly assigned and available for the nucleo. Also ensure that you are not running into any timing issues or constraints with raising the clock speed</p>
+</section>
+<section id="assistant-4" class="level3">
+<h3 class="anchored" data-anchor-id="assistant-4">ASSISTANT</h3>
+</section>
+<section id="pin-assignment-verification-1" class="level3">
+<h3 class="anchored" data-anchor-id="pin-assignment-verification-1">1. Pin Assignment Verification</h3>
+<p>The mappings are correct for the <strong>STM32L432KC</strong> (Nucleo-32) and the <strong>Nucleo-32 (UFQFPN32)</strong> package:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Pin</th>
+<th style="text-align: left;">Role</th>
+<th style="text-align: left;">Alternate Function (AF)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Encoder CH1</strong></td>
+<td style="text-align: left;"><strong>PA0</strong></td>
+<td style="text-align: left;">TIM2_CH1</td>
+<td style="text-align: left;">AF1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Encoder CH2</strong></td>
+<td style="text-align: left;"><strong>PA1</strong></td>
+<td style="text-align: left;">TIM2_CH2</td>
+<td style="text-align: left;">AF1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>USART2 TX</strong></td>
+<td style="text-align: left;"><strong>PA2</strong></td>
+<td style="text-align: left;">USART2_TX</td>
+<td style="text-align: left;">AF7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>USART2 RX</strong></td>
+<td style="text-align: left;"><strong>PA3</strong></td>
+<td style="text-align: left;">USART2_RX</td>
+<td style="text-align: left;">AF7</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: Even on the smaller Nucleo-32, these pins are part of the standard header mapping.</em></p>
+<hr>
+</section>
+<section id="critical-timing-clock-constraint-1" class="level3">
+<h3 class="anchored" data-anchor-id="critical-timing-clock-constraint-1">2. Critical Timing &amp; Clock Constraint</h3>
+<p><strong>The Danger:</strong> You cannot simply assume the clock is 80MHz. By default, the STM32 starts using the <strong>HSI (Internal High-Speed)</strong> oscillator, which runs at <strong>16MHz</strong>.</p>
+<p>If you use the previous code’s math (<code>80,000,000 / 115,200</code>) while the chip is actually running at 16MHz, your <strong>USART baud rate will be wrong</strong> (it will be 4x slower than expected) and your <strong>Timer counts will be incorrect</strong>.</p>
+<p>To run at 80MHz, you must: 1. Configure the <strong>PLL</strong> (Phase-Locked Loop) to multiply the 16MHz HSI to 80MHz. 2. Set <strong>Flash Latency</strong> (Wait States). At 80MHz, the CPU is faster than the Flash memory; without wait states, the chip will crash immediately.</p>
+</section>
+<section id="corrected-bare-metal-implementation-1" class="level3">
+<h3 class="anchored" data-anchor-id="corrected-bare-metal-implementation-1">3. Corrected Bare Metal Implementation</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">"stm32l432xx.h"</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SystemClock_Config<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">);</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. CRITICAL: Setup Clock first!</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    SystemClock_Config<span class="op">();</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. Setup Peripherals</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    usart2_init<span class="op">();</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    tim2_encoder_init<span class="op">();</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 3. Setup SysTick for 100ms (80MHz / 100,000 = 800)</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    SysTick_Config<span class="op">(</span><span class="dv">80000</span><span class="op">);</span> <span class="co">// 100ms @ 80MHz</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Application loop</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SystemClock_Config<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. Enable HSI</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// Ensure no interference</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CR <span class="op">|=</span> RCC_CR_HSION<span class="op">;</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!(</span>RCC<span class="op">-&gt;</span>CR <span class="op">&amp;</span> RCC_CR_HSIREADY<span class="op">));</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. Configure Flash Latency (Crucial for 80MHz)</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">// For 80MHz, we need 2 Wait States (WS)</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">// FLASH-&gt;ACR = (2 &lt;&lt; 0); // Simplified logic</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    FLASH<span class="op">-&gt;</span>ACR <span class="op">|=</span> FLASH_ACR_LATENCY_2WS<span class="op">;</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 3. Configure PLL: Source=HSI (16MHz), Multiplier=x5 -&gt; 80MHz</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PLLCFG: PLLSRC=HSI, PLLMUL=5</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>PLLCFGR <span class="op">=</span> <span class="op">(</span><span class="dv">0</span> <span class="op">&lt;&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="dv">4</span> <span class="op">&lt;&lt;</span> <span class="dv">6</span><span class="op">);</span> <span class="co">// 0 for HSI, 4 for 5x multiplier (0001=2x, 0010=3x, 0011=4x, 0100=5x)</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// s_PLLON</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CR <span class="op">|=</span> RCC_CR_PLLON<span class="op">;</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!(</span>RCC<span class="op">-&gt;</span>CR <span class="op">&amp;</span> RCC_CR_PLLRDY<span class="op">));</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 4. Switch System Clock to PLL</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>CFGR <span class="op">|=</span> RCC_CFGR_SW_PLL<span class="op">;</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">((</span>RCC<span class="op">-&gt;</span>CFGR <span class="op">&amp;</span> RCC_CFGR_SWS<span class="op">)</span> <span class="op">!=</span> RCC_CFGR_PLL<span class="op">);</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> usart2_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_USART2EN<span class="op">;</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PA2: AF7 (USART2_TX)</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span> </span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">7</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 80MHz / 115200 = 694</span></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>BRR <span class="op">=</span> <span class="dv">694</span><span class="op">;</span> </span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    USART2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> USART_CR1_TE <span class="op">|</span> USART_CR1_UE<span class="op">;</span></span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tim2_encoder_init<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>AHB2ENR <span class="op">|=</span> RCC_AHB2ENR_GPIOAEN<span class="op">;</span></span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    RCC<span class="op">-&gt;</span>APB1ENR <span class="op">|=</span> RCC_APB1ENR_TIM2EN<span class="op">;</span></span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>    <span class="co">// PA0/PA1: AF1 (TIM2)</span></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">&amp;=</span> <span class="op">~((</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">)));</span></span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>MODER <span class="op">|=</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">2</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">2</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">2</span><span class="op">));</span></span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>    GPIOA<span class="op">-&gt;</span>AFR<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">|=</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">0</span> <span class="op">*</span> <span class="dv">4</span><span class="op">))</span> <span class="op">|</span> <span class="op">(</span><span class="dv">1</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="dv">1</span> <span class="op">*</span> <span class="dv">4</span><span class="op">));</span></span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CNT <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>    <span class="co">// CC2S: Set to 3 (Encoder mode: both inputs)</span></span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> <span class="op">(</span><span class="dv">3</span><span class="bu">U</span> <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">);</span> </span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>    TIM2<span class="op">-&gt;</span>CR1 <span class="op">|=</span> TIM_CR1_CEN<span class="op">;</span></span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> uart_send_string<span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(*</span>str<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(!(</span>USART2<span class="op">-&gt;</span>ISR <span class="op">&amp;</span> USART_ISR_TXE<span class="op">));</span></span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a>        USART2<span class="op">-&gt;</span>TDR <span class="op">=</span> <span class="op">*</span>str<span class="op">++;</span></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SysTick_Handler<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Example: Read and transmit count</span></span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int16_t</span> count <span class="op">=</span> <span class="op">(</span><span class="dt">int16_t</span><span class="op">)</span>TIM2<span class="op">-&gt;</span>CNT<span class="op">;</span></span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>    <span class="co">// (Add your string conversion logic here)</span></span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </div>
 </div>
