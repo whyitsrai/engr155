@@ -18,6 +18,7 @@ impl*/
 *.dmp
 *.html
 ._Real_._Math_.vhd
+*/fpga/*.xml
 
 # Segger Embedded Studio
 **/Output/
@@ -45,7 +46,6 @@ impl*/
 vsim.wlf
 work/
 transcript
-*.xml
 *.sty
 *.mti
 *.mpf
