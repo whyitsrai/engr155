@@ -5,7 +5,7 @@
 #define STM32L4_USART_H
 
 #include <stdint.h>
-#include <stm32l432xx.h>
+#include "STM32L4xx/Device/include/stm32l432xx.h"  // CMSIS device library include
 
 // Defines for USART case statements
 #define USART1_ID   1

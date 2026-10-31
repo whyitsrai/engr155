@@ -5,7 +5,7 @@
 #define STM32L4_FLASH_H
 
 #include <stdint.h>
-#include <stm32l432xx.h>
+#include "STM32L4xx/Device/include/stm32l432xx.h"  // CMSIS device library include
 
 ///////////////////////////////////////////////////////////////////////////////
 // Function prototypes

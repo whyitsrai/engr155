@@ -88,6 +88,81 @@ void pinMode(int gpio_pin, int function) {
 	}
 }
 
+void pinAlternateFunction(int gpio_pin, int setting) {
+	// Get pointer to base address of the corresponding GPIO pin and pin offset
+	GPIO_TypeDef * GPIO_PORT_PTR = gpioPinToBase(gpio_pin);
+	int pin_offset = gpioPinOffset(gpio_pin);
+	int i=0; // low/high register, default is low register
+	if(pin_offset >= 8) {
+		i = 1;
+	}
+
+	switch(setting) {
+		case AF0:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			break;
+		case AF1:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b0001 << 4*pin_offset);
+			break;
+		case AF2:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b0010 << 4*pin_offset);
+			break;
+		case AF3:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b0011 << 4*pin_offset);
+			break;
+		case AF4:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b0100 << 4*pin_offset);
+			break;
+		case AF5:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b0101 << 4*pin_offset);
+			break;
+		case AF6:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b0110 << 4*pin_offset);
+			break;
+		case AF7:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b0111 << 4*pin_offset);
+			break;
+		case AF8:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b1000 << 4*pin_offset);
+			break;
+		case AF9:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b1001 << 4*pin_offset);
+			break;
+		case AF10:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b1010 << 4*pin_offset);
+			break;
+		case AF11:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b1011 << 4*pin_offset);
+			break;
+		case AF12:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b1100 << 4*pin_offset);
+			break;
+		case AF13:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b1101 << 4*pin_offset);
+			break;
+		case AF14:
+			GPIO_PORT_PTR->AFR[i] &= ~(0b1111 << 4*pin_offset);
+			GPIO_PORT_PTR->AFR[i] |= (0b1110 << 4*pin_offset);
+			break;
+		case AF15:
+			GPIO_PORT_PTR->AFR[i] |= (0b1111 << 4*pin_offset);
+			break;
+	}
+}
+
 int digitalRead(int gpio_pin) {
 	// Get pointer to base address of the corresponding GPIO pin and pin offset
 	GPIO_TypeDef * GPIO_PORT_PTR = gpioPinToBase(gpio_pin);
