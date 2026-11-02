@@ -3,6 +3,8 @@
     @file main.h
     @author Josh Brake
     @version 1.0 10/7/2020
+
+    version 2: Rai Wandeler edited some pin definitions
 */
 
 #ifndef MAIN_H
@@ -10,7 +12,7 @@
 
 #include "../lib/STM32L432KC.h"
 
-#define LED_PIN PA6 // LED pin for blinking on Port B pin 3
+#define LED_PIN PA6 // E155 Board built-in LED pin for blinking
 #define PICO_PIN PB5
 #define POCI_PIN PB4
 #define SCK_PIN PB3

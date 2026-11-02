@@ -1,8 +1,11 @@
-// STM32L432KC_SPI.h
-// TODO: <YOUR NAME>
-// TODO: <YOUR EMAIL>
-// TODO: <DATE>
-// TODO: <SHORT DESCRIPTION OF WHAT THIS FILE DOES>
+// File: STM32L432KC_SPI.h
+// Author: Rai Wandeler
+// Email: rwandeler@hmc.edu
+// Date: 2026-11-01
+// 
+// Functionality to send/receive a character (byte) over SPI and initialize the SPI peripheral as a
+// controller with software control of the CS Pin, an MSB-first 8-bit frame, and a configurable baud
+// rate, CPOL, and CPHA
 
 #ifndef STM32L4_SPI_H
 #define STM32L4_SPI_H
@@ -24,7 +27,11 @@ void initSPI(int br, int cpol, int cpha);
 
 /* Transmits a character (1 byte) over SPI and returns the received character.
  *    -- send: the character to send over SPI
- *    -- return: the character received over SPI */
-char spiSendReceive(char send);
+ *    -- cs_pin: pin number to drive HIGH to enable the SPI device
+ *    -- return: the character received over SPI 
+ *
+ *    NOTE: this function does not set CS low after returning in order to allow multi-byte transactions
+*/
+char spiSendReceive(char send, int cs_pin);
 
 #endif
