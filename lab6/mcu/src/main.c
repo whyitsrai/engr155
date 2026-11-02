@@ -8,7 +8,6 @@ Code modified from: https://github.com/HMC-E155/hmc-e155/blob/main/lab/lab06/src
 */
 
 #include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include "main.h"
 
@@ -62,7 +61,7 @@ int temperature_bits = 9;
 void updateTempBits(char request[]) {
     if (inString(request, "8bit") && temperature_bits != 8) {
     spiSendReceive(0b10000000, DS1722_CS_PIN); // write to configuration register
-    spiSendReceive(0b11100000);
+    spiSendReceive(0b11100000, DS1722_CS_PIN);
     digitalWrite(DS1722_CS_PIN, PIO_LOW); // end SPI transaction
     temperature_bits = 8;
   } else if (inString(request, "9bit") && temperature_bits != 9) {

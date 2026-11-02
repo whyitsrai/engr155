@@ -67,8 +67,6 @@
     </folder>
     <folder Name="Library Files">
       <configuration Name="Common" filter="c;cpp;cxx;cc;h;s;asm;inc" />
-      <file file_name="lib/DS1722.c" />
-      <file file_name="lib/DS1722.h" />
       <file file_name="lib/STM32L432KC_FLASH.c" />
       <file file_name="lib/STM32L432KC_FLASH.h" />
       <file file_name="lib/STM32L432KC_GPIO.c" />
