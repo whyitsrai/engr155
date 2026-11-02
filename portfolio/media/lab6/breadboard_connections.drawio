@@ -1,0 +1,232 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="4pdbE_Ee0XysNW7AZEhT">
+    <mxGraphModel dx="995" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="opAyRclEg1-gguK_loMC-53" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="DS1722" vertex="1">
+          <mxGeometry height="170" width="110" x="610" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-54" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="1" vertex="1">
+          <mxGeometry height="10" width="20" x="610" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-55" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="2" vertex="1">
+          <mxGeometry height="10" width="20" x="610" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-56" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="3" vertex="1">
+          <mxGeometry height="10" width="20" x="610" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-57" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="4" vertex="1">
+          <mxGeometry height="10" width="20" x="610" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-58" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="5" vertex="1">
+          <mxGeometry height="10" width="20" x="610" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-59" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="6" vertex="1">
+          <mxGeometry height="10" width="20" x="610" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-60" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="7" vertex="1">
+          <mxGeometry height="10" width="20" x="610" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-61" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="8" vertex="1">
+          <mxGeometry height="10" width="20" x="610" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-62" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="STM32 Nucleo-32&lt;div&gt;(STM32L432KC)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="180" x="190" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-63" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Vin" vertex="1">
+          <mxGeometry height="10" width="20" x="190" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-65" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="PB4" vertex="1">
+          <mxGeometry height="10" width="20" x="190" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-66" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="PB0" vertex="1">
+          <mxGeometry height="10" width="20" x="350" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-67" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="PA12" vertex="1">
+          <mxGeometry height="10" width="20" x="350" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-70" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="GND" vertex="1">
+          <mxGeometry height="10" width="20" x="190" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-71" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="PA6" vertex="1">
+          <mxGeometry height="10" width="20" x="350" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-72" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="PB5" vertex="1">
+          <mxGeometry height="10" width="20" x="350" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-73" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="PB3" vertex="1">
+          <mxGeometry height="10" width="20" x="350" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-76" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="644.5" as="sourcePoint" />
+            <mxPoint x="400" y="644.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-77" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="564.5" as="sourcePoint" />
+            <mxPoint x="390" y="564.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-78" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="LED D4" vertex="1">
+          <mxGeometry height="10" width="50" x="400" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-79" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;i&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;LED omitted, as internal to E155 PCB&lt;/font&gt;&lt;/i&gt;" vertex="1">
+          <mxGeometry height="10" width="110" x="380" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-81" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="PICO" vertex="1">
+          <mxGeometry height="10" width="50" x="400" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-84" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=-0.015;entryY=0.451;entryDx=0;entryDy=0;entryPerimeter=0;" target="opAyRclEg1-gguK_loMC-81" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="584.5" as="sourcePoint" />
+            <mxPoint x="390" y="584.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-86" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="SCK" vertex="1">
+          <mxGeometry height="10" width="50" x="400" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-87" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=-0.015;entryY=0.451;entryDx=0;entryDy=0;entryPerimeter=0;" target="opAyRclEg1-gguK_loMC-86" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="604.5" as="sourcePoint" />
+            <mxPoint x="390" y="604.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-88" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="CE" vertex="1">
+          <mxGeometry height="10" width="50" x="400" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-89" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=-0.015;entryY=0.451;entryDx=0;entryDy=0;entryPerimeter=0;" target="opAyRclEg1-gguK_loMC-88" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="624.5" as="sourcePoint" />
+            <mxPoint x="390" y="624.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-90" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="PICO" vertex="1">
+          <mxGeometry height="10" width="50" x="110" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-92" edge="1" parent="1" source="opAyRclEg1-gguK_loMC-90" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=-0.015;entryY=0.451;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="87.97843665768194" y="585" as="sourcePoint" />
+            <mxPoint x="190" y="585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-93" parent="1" style="pointerEvents=1;verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;shape=mxgraph.electrical.signal_sources.signal_ground;labelPerimeter=1;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="130" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-94" parent="1" style="verticalLabelPosition=top;verticalAlign=bottom;shape=mxgraph.electrical.signal_sources.vdd;shadow=0;dashed=0;align=center;strokeWidth=1;fontSize=24;html=1;flipV=1;labelPerimeter=1;legacyAnchorPoints=0;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;+5V&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="40" x="120" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-98" edge="1" parent="1" source="opAyRclEg1-gguK_loMC-93" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" target="opAyRclEg1-gguK_loMC-70" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="685" />
+            </Array>
+            <mxPoint x="220" y="680" as="sourcePoint" />
+            <mxPoint x="270" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-99" edge="1" parent="1" source="opAyRclEg1-gguK_loMC-94" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="opAyRclEg1-gguK_loMC-63" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="545" />
+            </Array>
+            <mxPoint x="260" y="660" as="sourcePoint" />
+            <mxPoint x="310" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-100" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="RST" vertex="1">
+          <mxGeometry height="10" width="50" x="400" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-102" parent="1" style="verticalLabelPosition=top;verticalAlign=bottom;shape=mxgraph.electrical.signal_sources.vdd;shadow=0;dashed=0;align=center;strokeWidth=1;fontSize=24;html=1;flipV=1;labelPerimeter=1;legacyAnchorPoints=0;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;+3V3&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="40" x="540" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-103" edge="1" parent="1" source="opAyRclEg1-gguK_loMC-102" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="545" />
+            </Array>
+            <mxPoint x="680" y="660" as="sourcePoint" />
+            <mxPoint x="610" y="545" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-106" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="opAyRclEg1-gguK_loMC-61" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="685" />
+            </Array>
+            <mxPoint x="560" y="540" as="sourcePoint" />
+            <mxPoint x="560" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-107" edge="1" parent="1" source="opAyRclEg1-gguK_loMC-60" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="630" y="630" as="sourcePoint" />
+            <mxPoint x="560" y="665" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-108" parent="1" style="pointerEvents=1;verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;shape=mxgraph.electrical.signal_sources.signal_ground;labelPerimeter=1;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="570" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-109" edge="1" parent="1" source="opAyRclEg1-gguK_loMC-108" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="opAyRclEg1-gguK_loMC-57" value="">
+          <mxGeometry height="50" relative="1" width="50" x="-0.1172" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="605" />
+            </Array>
+            <mxPoint x="660" y="645" as="sourcePoint" />
+            <mxPoint x="610" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-110" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="CE" vertex="1">
+          <mxGeometry height="10" width="50" x="490" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-111" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="SCK" vertex="1">
+          <mxGeometry height="10" width="50" x="490" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-112" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="PICO" vertex="1">
+          <mxGeometry height="10" width="50" x="490" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-113" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;" value="PICO" vertex="1">
+          <mxGeometry height="10" width="50" x="490" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-115" edge="1" parent="1" source="opAyRclEg1-gguK_loMC-110" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="opAyRclEg1-gguK_loMC-55" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="480" y="660" as="sourcePoint" />
+            <mxPoint x="530" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-116" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="540" y="584.5" as="sourcePoint" />
+            <mxPoint x="610" y="584.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-117" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="540" y="624.5" as="sourcePoint" />
+            <mxPoint x="610" y="624.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-118" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="540" y="644.5" as="sourcePoint" />
+            <mxPoint x="610" y="644.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-119" parent="1" style="shape=ellipse;fillColor=light-dark(#000000,#000000);strokeColor=none;html=1;sketch=0;" value="" vertex="1">
+          <mxGeometry height="10" width="10" x="555" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-122" parent="1" style="shape=ellipse;fillColor=light-dark(#000000,#000000);strokeColor=none;html=1;sketch=0;" value="" vertex="1">
+          <mxGeometry height="10" width="10" x="555" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-123" parent="1" style="shape=rect;html=1;overflow=fill;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;/p&gt;&lt;p style=&quot;text-align: left; margin: 0px;&quot;&gt;&lt;b&gt;Title: E155 Lab 6 Breadboard Connections&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: left; margin: 0px;&quot;&gt;&lt;i&gt;Author: Rai Wandeler&lt;/i&gt;&lt;/p&gt;&lt;p style=&quot;text-align: left; margin: 0px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: left; margin: 0px;&quot;&gt;&lt;i style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;Date: 2026-11-01&lt;/i&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="80" width="300" x="120" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="opAyRclEg1-gguK_loMC-125" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;i&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;internal connections to ESP8266 omitted as internal to E155 PCB and part of starter code&lt;/font&gt;&lt;/i&gt;" vertex="1">
+          <mxGeometry height="10" width="240" x="220" y="725" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
