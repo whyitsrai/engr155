@@ -1,0 +1,15 @@
+force -freeze sim:/round_key_gen/clk 1 0, 0 5ns -repeat 10ns
+force -freeze sim:/round_key_gen/rc 'h01
+force -freeze sim:/round_key_gen/round_key_prev 'h2b7e151628aed2a6abf7158809cf4f3c
+run 50
+
+force -freeze sim:/shift_rows/a 'h8582858f6e19eaf66113bcc23ce026ed
+run 10
+
+force -freeze sim:/sub_bytes/clk 1 0, 0 5ns -repeat 10ns
+force -freeze sim:/sub_bytes/a 'h67116773458ebbd6d88278a86da02353
+run 10
+
+force -freeze sim:/add_round_key/a 'h6b85d3f040adbb828ad89131cdc42cb3
+force -freeze sim:/add_round_key/round_key 'ha0fafe1788542cb123a339392a6c7605
+run 10
