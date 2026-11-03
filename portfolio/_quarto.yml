@@ -20,7 +20,7 @@ website:
           - labs/lab4.qmd
           - labs/lab5.qmd
           - labs/lab6.qmd
-          - text: "lab 7 to come"
+          - labs/lab7.qmd
       - href: "https://hmc-e155.github.io/resources/"
         text: Class Resources
     right:
