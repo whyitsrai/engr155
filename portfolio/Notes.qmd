@@ -161,3 +161,36 @@ module photon_detector(input logic clk, reset, photon,
     - POCI PICO
 - Something SSOE control bit something
 - Chip select edges determine when a packet is getting sent (so errr sad)
+
+# 2026-10-13
+- AES
+- You can encrypt with private key and decrypt with public key
+    - verifying identity
+- AES is much much faster than asymetric encryption
+- Galois Arithmetic for digital hardware
+    - makes addition xor and multplication bit-shifts (occasionally with modulus)
+
+# 2026-11-05
+Guest Speaker [Nathan Johnes](https://www.linkedin.com/in/nathancharlesjones/)
+
+- [Slides Presentation and Such](https://github.com/nathancharlesjones/mistakes-were-made)
+- The Infinite Impulse Response Filter
+- Made embedded for everyone github guide
+    - trying to blink an LED on as many different MCU's as possible
+- Embedded.fm podcast is cool: also both hosts are Mudders
+    - They also have a really cool slack community **(with job postings)**
+- Videos on maker.io
+- Embedded CTF competitions???
+- Ask yourself what the likeliest reason for failure is
+    - In our case it is probably the display protocol
+- Make all decisions explicit when working with sub-systems
+- Get a simplest system that works
+    - "make it a fucking wire"
+
+> A good scientist is a person with original ideas. A good engineer is a person who makes a design
+> that works with as few original ideas as possible. 
+-Freeman Dyson
+
+- Basically, don't be original if you are able to avoid it
+- Write down what you do. Take breaks to clean head
+- Changelog for commits
